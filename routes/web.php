@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UploadController;
+use App\Models\Shot;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,6 +32,18 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/', function () {
+    return Inertia::render('Home');
+})->middleware(['auth', 'verified'])->name('home');
+
+Route::get('/shots/{id}', function (string $id) {
+    return Inertia::render('Shots/Show', [
+        'shot' => fn () => Shot::whereId($id)->firstOrFail()
+    ]);
+})->name('shots.show');
+
+Route::post('/upload', UploadController::class)->middleware(['auth', 'verified'])->name('upload');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
