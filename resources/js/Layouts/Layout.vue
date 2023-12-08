@@ -35,7 +35,7 @@ const initials = computed(() => {
                     ShotShare
                 </Button>
             </Link>
-            <DropdownMenu>
+            <DropdownMenu v-if="user">
                 <DropdownMenuTrigger>
                     <Button variant="ghost">
                         <Avatar class="w-6 h-6 mr-2">
@@ -49,7 +49,7 @@ const initials = computed(() => {
 
                     <DropdownMenuSeparator />
 
-                    <Link :href="route('login')">
+                    <Link :href="route('profile.edit')">
                         <DropdownMenuItem class="cursor-pointer">
                             Profile
                         </DropdownMenuItem>
@@ -70,6 +70,20 @@ const initials = computed(() => {
                     </Link>
                 </DropdownMenuContent>
             </DropdownMenu>
+
+            <div v-else class="space-x-2">
+                <Link :href="route('login')">
+                    <Button>
+                        Log In
+                    </Button>
+                </Link>
+
+                <Link :href="route('register')">
+                    <Button variant="secondary">
+                        Sign Up
+                    </Button>
+                </Link>
+            </div>
         </nav>
         <slot/>
     </div>

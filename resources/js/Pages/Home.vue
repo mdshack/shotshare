@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import Layout from '@/Layouts/Layout.vue'
 import { Input } from '@/Components/ui/input'
 import { Progress } from '@/Components/ui/progress'
 
@@ -25,6 +25,20 @@ const dropFile = (event) => {
     })
 }
 
+const selectFile = (event) => {
+
+    form.images = [
+        ...form.images,
+        ...event.target.files
+    ]
+
+    form.post('upload', {
+        onFinish: () => {
+            form.images = []
+        }
+    })
+}
+
 const pasteFile = (event) => {
     form.images = [
         ...form.images,
@@ -40,7 +54,7 @@ const pasteFile = (event) => {
 </script>
 
 <template>
-    <AuthenticatedLayout>
+    <Layout>
         <form v-if="!form.progress" @submit.prevent="submit" class="flex flex-col items-center space-y-8">
             <div class="flex items-center justify-center w-full">
                 <label
@@ -49,7 +63,8 @@ const pasteFile = (event) => {
                     :class="{'dark:border-white': hoveringDropzone}"
                     @dragover.prevent="hoveringDropzone = true"
                     @dragleave.prevent="hoveringDropzone = false"
-                    @drop.prevent="dropFile">
+                    @drop.prevent="dropFile"
+                    @change.prevent="selectFile">
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
                         <svg class="w-8 h-8 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
@@ -73,5 +88,5 @@ const pasteFile = (event) => {
             <Progress :model-value="form.progress.percentage" />
             <h3 class="font-semibold text-lg mt-4">Uploading...</h3>
         </div>
-    </AuthenticatedLayout>
+    </Layout>
 </template>
