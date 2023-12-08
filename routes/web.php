@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
 use App\Models\Shot;
 use Illuminate\Foundation\Application;
@@ -21,27 +22,17 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('home');
 
-Route::get('/shots/{id}', function (string $id) {
-    return Inertia::render('Shots/Show', [
-        'shot' => fn () => Shot::whereId($id)->firstOrFail()
-    ]);
-})->name('shots.show');
+Route::prefix("shots")
+    ->name("shots.")
+    ->prefix("shots")
+    ->controller(ShotController::class)
+    ->group(function() {
+        Route::get('', 'index')->name('index');
+        Route::get('{id}', 'show')->name('show');
+    });
 
 Route::post('/upload', UploadController::class)->middleware(['auth', 'verified'])->name('upload');
 

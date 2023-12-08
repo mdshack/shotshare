@@ -55,7 +55,7 @@ const initials = computed(() => {
                         </DropdownMenuItem>
                     </Link>
 
-                    <Link :href="route('login')">
+                    <Link :href="route('shots.index')">
                         <DropdownMenuItem class="cursor-pointer">
                             Shots
                         </DropdownMenuItem>
