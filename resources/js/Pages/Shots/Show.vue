@@ -5,6 +5,7 @@ import { Label } from '@/Components/ui/label'
 import { Button } from '@/Components/ui/button'
 import { UseClipboard } from '@vueuse/components'
 import { ClipboardIcon, CheckIcon } from "@heroicons/vue/24/outline";
+import { Head } from '@inertiajs/vue3';
 
 defineProps({
     shot: Object
@@ -14,6 +15,8 @@ const shareUrl = window.location.href
 </script>
 
 <template>
+    <Head title="Shot" />
+
     <Layout>
         <div class="space-y-4">
 

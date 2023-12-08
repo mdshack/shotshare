@@ -23,18 +23,22 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Home');
-})->middleware(['auth', 'verified'])->name('home');
+})->name('home');
 
 Route::prefix("shots")
     ->name("shots.")
     ->prefix("shots")
     ->controller(ShotController::class)
     ->group(function() {
-        Route::get('', 'index')->name('index');
+        Route::get('', 'index')
+            ->middleware(['auth', 'verified'])
+            ->name('index');
         Route::get('{id}', 'show')->name('show');
     });
 
-Route::post('/upload', UploadController::class)->middleware(['auth', 'verified'])->name('upload');
+Route::post('/upload', UploadController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('upload');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
