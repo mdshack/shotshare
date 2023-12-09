@@ -1,0 +1,14 @@
+localhost:80 {
+    log
+
+    root * /app/public
+
+    # Add compressing
+    encode zstd gzip
+
+    # Proxy to PHP FPM
+    php_fastcgi fpm:9000
+
+    # Serve static files
+    file_server
+}
