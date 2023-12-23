@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "shotshare.fullname" . }}-caddy-config
+  labels:
+    {{- include "shotshare.labels" . | nindent 4 }}
+data:
+  Caddyfile: |
+    :80 {
+      log
+
+      root * /app/public
+
+      # Add compressing
+      encode zstd gzip
+
+      # Proxy to PHP FPM
+      php_fastcgi 127.0.0.1:9000
+
+      # Serve static files
+      file_server
+    }
