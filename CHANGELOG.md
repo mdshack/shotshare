@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/mdshack/shotshare/compare/v1.0.2...v1.0.3) (2023-12-28)
+
+
+### Bug Fixes
+
+* use get-tag output ([2b370f5](https://github.com/mdshack/shotshare/commit/2b370f5490d25865df893bb4839542e036044be5))
+
 ## [1.0.2](https://github.com/mdshack/shotshare/compare/v1.0.1...v1.0.2) (2023-12-28)
 
 
