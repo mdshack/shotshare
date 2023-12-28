@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/mdshack/shotshare/compare/v1.0.1...v1.0.2) (2023-12-28)
+
+
+### Bug Fixes
+
+* remove pinned 1.0.0 ([a374b6f](https://github.com/mdshack/shotshare/commit/a374b6f5d388ab2028a30dd064781092e0717b9c))
+
 ## [1.0.1](https://github.com/mdshack/shotshare/compare/v1.0.0...v1.0.1) (2023-12-28)
 
 
