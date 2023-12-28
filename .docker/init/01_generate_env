@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if ! grep -q "APP_KEY" /app/.env; then
+    echo "Generating config"
+    echo "APP_KEY=$(php artisan key:generate --show)" >> /app/.env
+fi

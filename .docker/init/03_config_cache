@@ -1,0 +1,8 @@
+#!/bin/sh
+
+DEVELOP="${DEVELOP:-false}"
+
+if [[ $DEVELOP != *"true"* ]];then
+    echo "Caching application configuration"
+    php artisan config:cache
+fi

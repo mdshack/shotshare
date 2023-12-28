@@ -1,57 +1,24 @@
 services:
-    fpm:
+    app:
         build:
             context: .
-            dockerfile: Dockerfile
-            args:
-                USER: ${USER:-www-data}
-                UID: ${UID:-1000}
+            dockerfile: './.docker/Dockerfile'
+        ports:
+            - '${HTTPS_PORT:-443}:443'
+            - '${HTTP_PORT:-80}:80'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes:
             - '.:/app'
+            - 'caddy_data:/data'
+            - 'caddy_config:/config'
+        environment:
+            DEVELOP: true
         networks:
             - sail
         depends_on:
             - mysql
 
-    caddy:
-        image: 'caddy:latest'
-        ports:
-            - '${HTTP_PORT:-443}:443'
-            - '${HTTP_PORT:-80}:80'
-        volumes:
-            - './Caddyfile:/etc/caddy/Caddyfile'
-            - './:/app'
-        depends_on:
-            - fpm
-        networks:
-            - sail
-
-    # laravel.test:
-    #     build:
-    #         context: ./vendor/laravel/sail/runtimes/8.2
-    #         dockerfile: Dockerfile
-    #         args:
-    #             WWWGROUP: '${WWWGROUP}'
-    #     image: sail-8.2/app
-    #     extra_hosts:
-    #         - 'host.docker.internal:host-gateway'
-    #     ports:
-    #         - '${APP_PORT:-80}:80'
-    #         - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
-    #     environment:
-    #         WWWUSER: '${WWWUSER}'
-    #         LARAVEL_SAIL: 1
-    #         XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-    #         XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-    #         IGNITION_LOCAL_SITES_PATH: '${PWD}'
-    #     volumes:
-    #         - '.:/var/www/html'
-    #     networks:
-    #         - sail
-    #     depends_on:
-    #         - mysql
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -80,5 +47,7 @@ networks:
     sail:
         driver: bridge
 volumes:
+    caddy_data:
+    caddy_config:
     sail-mysql:
         driver: local

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+php artisan migrate --no-interaction --force

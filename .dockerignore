@@ -2,6 +2,7 @@
 *
 
 # Except Directories
+!.docker
 !app
 !bootstrap
 !config
