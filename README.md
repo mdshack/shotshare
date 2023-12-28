@@ -16,8 +16,8 @@ ShotShare is an open source, self hosted, bare bones image posting/sharing platf
 
 ## Installation & Setup
 
-1. Create a directory for ShotShare: `mkdir /shotshare`
-2. Create a `.env` file that will manage ShotShare generated environment variables (ex. your application key): `touch /shotshare/.env`
+1. Create a directory for ShotShare: `sudo mkdir /shotshare`
+2. Create a `.env` file that will manage ShotShare generated environment variables (ex. your application key): `sudo touch /shotshare/.env`
 3. Ensure the user/group 82 (`www-data` user in docker container) own the `.env` file: `sudo chown 82:82 /shotshare/.env`
 4. Start the ShotShare container
 
