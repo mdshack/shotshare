@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/mdshack/shotshare/compare/v1.0.3...v1.1.0) (2023-12-28)
+
+
+### Features
+
+* readme + license ([7c02ad9](https://github.com/mdshack/shotshare/commit/7c02ad93ae5233caeb2289b44f65a7bc4066ff84))
+
 ## [1.0.3](https://github.com/mdshack/shotshare/compare/v1.0.2...v1.0.3) (2023-12-28)
 
 
