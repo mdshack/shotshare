@@ -1,4 +1,4 @@
-{$HOST:http://*} {
+{$HOST:localhost} {
 	log
 	root * /app/public
 

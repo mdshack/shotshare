@@ -1,66 +1,71 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+
+![ShotShare banner image](/.docs/assets/banner.png)
+
 </p>
 
-## About Laravel
+<p align="center">
+An open-source self hosted image sharing platform.
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## About
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+ShotShare is an open source, self hosted, bare bones image posting/sharing platform, it was built to allow friends to upload screenshots and send links to their friends without the constant barrage of ads/extraneous features.
 
-## Learning Laravel
+## Installation & Setup
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Create a directory for ShotShare: `mkdir /shotshare`
+2. Create a `.env` file that will manage ShotShare generated environment variables (ex. your application key): `touch /shotshare/.env`
+3. Ensure the user/group 82 (`www-data` user in docker container) own the `.env` file: `sudo chown 82:82 /shotshare/.env`
+4. Start the ShotShare container
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+_You may wish to customize environment variables (such as the `HOST`) before running this command, see below for a list of environment variables._
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```sh
+docker run \
+  -p 80:80 \
+  -p 443:443 \
+  -e HOST=localhost \
+  -v shotshare_caddy_data:/data \
+  -v shotshare_caddy_config:/config \
+  -v shotshare_database:/app/database \
+  -v shotshare_data:/app/storage \
+  --mount type=bind,source=/shotshare/.env,target=/app/.env \
+  -d \
+  --restart unless-stopped \
+  mdshack/shotshare:latest
+```
 
-## Laravel Sponsors
+### Configuration Options
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+_Note: These are not all of the configuration options, only the most used ones, feel free to open a PR if you see any missing. For a more in-depth look at all the available options check out [here](/config)._
 
-### Premium Partners
+| Environment Variable  | Default | Options | Description |
+| ------------- | ------------- | ------------- | ------------- |
+| `DB_CONNECTION`  | `sqlite`  | `sqlite`,`mysql`,`pgsql`,`sqlsrv` | Indicates what database connection will be used |
+| `DB_HOST`  | `127.0.0.1` | _N/A_ | Not required if using `sqlite`, indicates the database host |
+| `DB_PORT`  | `3306` | _N/A_ | Not required if using `sqlite`, indicates the database port |
+| `DB_DATABASE`  | `shotshare` | _N/A_ | Not required if using `sqlite`, indicates the database database |
+| `DB_USERNAME`  | `shotshare` | _N/A_ | Not required if using `sqlite`, indicates the database username |
+| `DB_PASSWORD`  | _none_ | _N/A_ | Not required if using `sqlite`, indicates the database password |
+| `HOST`  | localhost | _N/A_ | Public host used by Caddy, thanks to caddy, this host will automatically be issued a SSL certificate |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Local Development
+
+Local development is done using `docker compose`
+
+1. Pull the repo: `git clone git@github.com:mdshack/shotshare.git`
+2. Change to the ShotShare directory: `cd shotshare`
+3. Install dependencies: `composer install; npm install`
+4. Build frontend: `npm run build`
+5. Start docker compose: `docker compose up`
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+There is currently no established pattern for contributing, if you see something missing or feel like something could be better feel free to pop open an issue and/or PR.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+ShotShare is open-sourced and licensed under the [MIT License](/LICENSE).
