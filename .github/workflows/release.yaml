@@ -21,7 +21,7 @@ jobs:
       - name: Get Docker image tag
         id: get-tag
         run: |
-          version=$(echo "v1.0.0" | sed -e "s/^v//")
+          version=$(echo "${{ steps.release.outputs.tag_name }}" | sed -e "s/^v//")
           echo "tag=$version" >> "$GITHUB_OUTPUT"
       - name: Set up Docker Buildx
         if: ${{ steps.release.outputs.release_created }}
@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: mdshack/shotshare:latest,mdshack/shotshare:${{ steps.get-tag.outputs.tag }}
+          tags: mdshack/shotshare:latest,mdshack/shotshare:${{ steps.release.outputs.tag_name }}
           cache-from: type=registry,ref=mdshack/shotshare:latest
           cache-to: type=inline
           file: ./.docker/Dockerfile
