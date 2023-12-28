@@ -30,16 +30,16 @@ class UploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images'   => ['array', 'min:1', 'max:1'],
-            'images.*' => ['mimes:'. implode(',', $this->allowedTypes)]
+            'images' => ['array', 'min:1', 'max:1'],
+            'images.*' => ['mimes:'.implode(',', $this->allowedTypes)],
         ];
     }
 
-    public function messages() : array
+    public function messages(): array
     {
         return [
-            'images'   => 'You must upload no more than 1 image at a time.',
-            'images.*' => "You may only upload one of the following types: " . implode(', ', $this->allowedTypes)
+            'images' => 'You must upload no more than 1 image at a time.',
+            'images.*' => 'You may only upload one of the following types: '.implode(', ', $this->allowedTypes),
         ];
     }
 }

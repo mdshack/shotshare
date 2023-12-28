@@ -3,10 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
-use App\Models\Shot;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,11 +22,11 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::prefix("shots")
-    ->name("shots.")
-    ->prefix("shots")
+Route::prefix('shots')
+    ->name('shots.')
+    ->prefix('shots')
     ->controller(ShotController::class)
-    ->group(function() {
+    ->group(function () {
         Route::get('', 'index')
             ->middleware(['auth', 'verified'])
             ->name('index');
