@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/mdshack/shotshare/compare/v1.0.0...v1.0.1) (2023-12-28)
+
+
+### Bug Fixes
+
+* trim 'v' from docker tag ([38c93b9](https://github.com/mdshack/shotshare/commit/38c93b9e39cd0b178b3baa96e84ded3d3b560b9f))
+
 ## 1.0.0 (2023-12-28)
 
 
