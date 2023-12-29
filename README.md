@@ -39,6 +39,7 @@ docker run \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
   -d \
   --restart unless-stopped \
+  --name shotshare \
   mdshack/shotshare:latest
 ```
 
