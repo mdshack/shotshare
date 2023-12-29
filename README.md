@@ -14,6 +14,10 @@ An open-source self hosted image sharing platform.
 
 ShotShare is an open source, self hosted, bare bones image posting/sharing platform, it was built to allow friends to upload screenshots and send links to their friends without the constant barrage of ads/extraneous features.
 
+## Demo
+
+A demo may be found [here](https://demo.shotshare.shackelford.dev/). This environment is _strictly_ for trialing the application; images added here are automatically after a few minutes.
+
 ## Installation, Configuration, & Local Development
 
 ShotShare is meant to be extremely easy to self host. Below is a sample deployment using Docker.
