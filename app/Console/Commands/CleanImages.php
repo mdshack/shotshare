@@ -31,6 +31,6 @@ class CleanImages extends Command
         Shot::query()->truncate();
 
         // Cleanup Filesystem
-        Storage::cleanDirectory('uploads');
+        Storage::deleteDirectory('uploads');
     }
 }
