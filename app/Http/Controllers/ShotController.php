@@ -19,6 +19,7 @@ class ShotController extends Controller
     {
         return Inertia::render('Shots/Show', [
             'shot' => fn () => Shot::whereId($id)->firstOrFail(),
+            'childShots' => fn () => Shot::whereParentShotId($id)->get(),
         ]);
     }
 }

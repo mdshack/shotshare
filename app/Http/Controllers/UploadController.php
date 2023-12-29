@@ -9,17 +9,21 @@ class UploadController extends Controller
 {
     public function __invoke(UploadRequest $request)
     {
-        // TODO: Add multi-image view capabilities
-        // foreach($request->files->get("images") as $image) {
-        //     UploadedFile::createFromBase($image)->store('uploads');
-        // }
+        $parentShot = null;
 
-        $path = UploadedFile::createFromBase($request->files->get('images')[0])->storePublicly('uploads');
+        foreach ($request->files->get('images') as $i => $image) {
+            $path = UploadedFile::createFromBase($image)->storePublicly('uploads');
 
-        $shot = $request->user()->shots()->create([
-            'path' => $path,
-        ]);
+            $shot = $request->user()->shots()->create([
+                'path' => $path,
+                'parent_shot_id' => $parentShot?->getKey(),
+            ]);
 
-        return to_route('shots.show', $shot->getKey());
+            if ($i === 0) {
+                $parentShot = $shot;
+            }
+        }
+
+        return to_route('shots.show', $parentShot->getKey());
     }
 }

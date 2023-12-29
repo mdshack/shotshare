@@ -14,14 +14,6 @@ class UploadRequest extends FormRequest
         'gif',
     ];
 
-    // /**
-    //  * Determine if the user is authorized to make this request.
-    //  */
-    // public function authorize(): bool
-    // {
-    //     return false;
-    // }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,7 +22,7 @@ class UploadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images' => ['array', 'min:1', 'max:1'],
+            'images' => ['array', 'min:1'],
             'images.*' => ['mimes:'.implode(',', $this->allowedTypes)],
         ];
     }
