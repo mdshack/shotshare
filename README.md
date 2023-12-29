@@ -36,7 +36,6 @@ docker run \
   -p 80:80 \
   -p 443:443 \
   -e HOST=localhost \
-  -v shotshare_caddy:/home/www-data/.local/share/caddy \
   -v shotshare_caddy_data:/data \
   -v shotshare_caddy_config:/config \
   -v shotshare_database:/app/database \
