@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/mdshack/shotshare/compare/v1.3.0...v1.4.0) (2023-12-29)
+
+
+### Features
+
+* add ability to disable registration ([651398d](https://github.com/mdshack/shotshare/commit/651398db1ce307cc8fdb4db45aa123aec0da609c))
+* upload multiple images ([9ba286e](https://github.com/mdshack/shotshare/commit/9ba286ee813179e61b3c20a50ac16e06b7481ff9))
+
 ## [1.3.0](https://github.com/mdshack/shotshare/compare/v1.2.1...v1.3.0) (2023-12-29)
 
 
