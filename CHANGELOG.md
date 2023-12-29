@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/mdshack/shotshare/compare/v1.4.0...v1.4.1) (2023-12-29)
+
+
+### Bug Fixes
+
+* caddy persistence ([6467801](https://github.com/mdshack/shotshare/commit/6467801dbd7693cfb99f0c50601ce583feac17f3))
+
 ## [1.4.0](https://github.com/mdshack/shotshare/compare/v1.3.0...v1.4.0) (2023-12-29)
 
 
