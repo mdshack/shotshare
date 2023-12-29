@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/mdshack/shotshare/compare/v1.2.0...v1.2.1) (2023-12-29)
+
+
+### Bug Fixes
+
+* delete uploads dir ([ba67991](https://github.com/mdshack/shotshare/commit/ba6799175400ef8ba97aa31f8e3959742f79223b))
+
 ## [1.2.0](https://github.com/mdshack/shotshare/compare/v1.1.0...v1.2.0) (2023-12-29)
 
 
