@@ -28,7 +28,7 @@ const initials = computed(() => {
 <template>
     <Head title="Home" />
 
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-2xl mx-auto pb-14">
         <nav class="flex justify-between items-center py-4 border-b mb-8">
             <Link :href="route('home')">
                 <Button variant="ghost" class="font-semibold text-xl cursor-pointer">
