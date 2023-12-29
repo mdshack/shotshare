@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/mdshack/shotshare/compare/v1.1.0...v1.2.0) (2023-12-29)
+
+
+### Features
+
+* clean images command ([5e26cef](https://github.com/mdshack/shotshare/commit/5e26cef9f6b7f291146b0bc44aca76b81a1f7657))
+
 ## [1.1.0](https://github.com/mdshack/shotshare/compare/v1.0.3...v1.1.0) (2023-12-28)
 
 
