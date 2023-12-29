@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/mdshack/shotshare/compare/v1.2.1...v1.3.0) (2023-12-29)
+
+
+### Features
+
+* add copy for markdown (multiple flavors), bbcode, and html ([b5e0d5c](https://github.com/mdshack/shotshare/commit/b5e0d5c5312f909eceeaaa8a4f60d8324b6834e3))
+
 ## [1.2.1](https://github.com/mdshack/shotshare/compare/v1.2.0...v1.2.1) (2023-12-29)
 
 
