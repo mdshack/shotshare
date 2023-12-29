@@ -36,8 +36,8 @@ docker run \
   -p 80:80 \
   -p 443:443 \
   -e HOST=localhost \
-  -v shotshare_caddy_data:/data \
-  -v shotshare_caddy_config:/config \
+  -v shotshare_caddy_data:/data/caddy \
+  -v shotshare_caddy_config:/config/caddy \
   -v shotshare_database:/app/database \
   -v shotshare_data:/app/storage \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \

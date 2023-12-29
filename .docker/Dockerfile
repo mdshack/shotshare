@@ -1,5 +1,8 @@
 FROM mdshack/php:8.3-fpm-alpine-caddy
 
+ENV XDG_CONFIG_HOME /config
+ENV XDG_DATA_HOME /data
+
 EXPOSE 80
 EXPOSE 443
 
@@ -43,5 +46,3 @@ COPY --chown=www-data ./.docker/init/* /docker-init/
 
 RUN touch /app/.env
 RUN chown www-data:www-data /app/.env
-
-USER www-data
