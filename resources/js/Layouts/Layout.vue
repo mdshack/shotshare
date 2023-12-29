@@ -78,7 +78,7 @@ const initials = computed(() => {
                     </Button>
                 </Link>
 
-                <Link :href="route('register')">
+                <Link v-if="$page.props.auth.allow_registration" :href="route('register')">
                     <Button variant="secondary">
                         Sign Up
                     </Button>

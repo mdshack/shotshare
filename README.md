@@ -53,6 +53,7 @@ _Note: These are not all of the configuration options, only the most used ones, 
 
 | Environment Variable  | Default | Options | Description |
 | ------------- | ------------- | ------------- | ------------- |
+| `ALLOW_REGISTRATION`  | `true`  | `true`, `false` | Allows new users to register |
 | `DB_CONNECTION`  | `sqlite`  | `sqlite`,`mysql`,`pgsql`,`sqlsrv` | Indicates what database connection will be used |
 | `DB_HOST`  | `127.0.0.1` | _N/A_ | Not required if using `sqlite`, indicates the database host |
 | `DB_PORT`  | `3306` | _N/A_ | Not required if using `sqlite`, indicates the database port |
@@ -60,6 +61,15 @@ _Note: These are not all of the configuration options, only the most used ones, 
 | `DB_USERNAME`  | `shotshare` | _N/A_ | Not required if using `sqlite`, indicates the database username |
 | `DB_PASSWORD`  | _none_ | _N/A_ | Not required if using `sqlite`, indicates the database password |
 | `HOST`  | localhost | _N/A_ | Public host used by Caddy, thanks to caddy, this host will automatically be issued a SSL certificate |
+
+### Commands
+
+_Note: these are all "artisan" commands, and thus must be prefixed with `php artisan` (ex. `php artisan shotshare:clean-images`). These also must be executed inside of your docker container, an easy way to do that is using `docker exec -it shotshare php artisan [command you wish to issue]`._
+
+| Environment Variable | Description |
+| ------------- | ------------- |
+| `shotshare:clean-images` | Clears out all images (from storage and application) |
+| `shotshare:create-user`  | Creates a new user (useful for `ALLOW_REGISTRATION=false`) |
 
 ### Local Development
 
