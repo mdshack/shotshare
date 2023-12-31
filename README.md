@@ -27,9 +27,13 @@ ShotShare is meant to be extremely easy to self host. Below is a sample deployme
 1. Create a directory for ShotShare: `sudo mkdir /shotshare`
 2. Create a `.env` file that will manage ShotShare generated environment variables (ex. your application key): `sudo touch /shotshare/.env`
 3. Ensure the user/group 82 (`www-data` user in docker container) own the `.env` file: `sudo chown 82:82 /shotshare/.env`
-4. Start the ShotShare container
+4. Start the ShotShare container 
 
 _You may wish to customize environment variables (such as the `HOST`) before running this command, see below for a list of environment variables._
+
+#### Run in HTTPS mode
+
+This will use Caddy's [Automatic HTTPs](https://caddyserver.com/docs/automatic-https) setup generate SSL certificates, handle renewals, and automagically redirect your visitors to HTTPS. For most scenarios, this is the "preferred" installation method.
 
 ```sh
 docker run \
@@ -38,6 +42,23 @@ docker run \
   -e HOST=localhost \
   -v shotshare_caddy_data:/data/caddy \
   -v shotshare_caddy_config:/config/caddy \
+  -v shotshare_database:/app/database \
+  -v shotshare_data:/app/storage \
+  --mount type=bind,source=/shotshare/.env,target=/app/.env \
+  -d \
+  --restart unless-stopped \
+  --name shotshare \
+  mdshack/shotshare:latest
+```
+
+#### Run in HTTP mode
+
+This will _not_ issue any SSL and will just serve over HTTP. This may be useful if you plan to front ShotShare with your own reverse proxy.
+
+```sh
+docker run \
+  -p 80:80 \
+  -e HOST=http://* \
   -v shotshare_database:/app/database \
   -v shotshare_data:/app/storage \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
