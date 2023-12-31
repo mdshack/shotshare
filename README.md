@@ -16,7 +16,7 @@ ShotShare is an open source, self hosted, bare bones image posting/sharing platf
 
 ## Demo
 
-A demo may be found [here](https://demo.shotshare.shackelford.dev/). This environment is _strictly_ for trialing the application; images added here are automatically after a few minutes.
+A demo may be found [here](https://demo.shotshare.shackelford.dev/). This environment is _strictly_ for trialing the application; images added here are automatically cleaned up after a few minutes.
 
 ## Installation, Configuration, & Local Development
 
