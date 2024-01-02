@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/mdshack/shotshare/compare/v1.4.1...v1.4.2) (2024-01-02)
+
+
+### Miscellaneous Chores
+
+* allow users to specify http/https port ([db4af2e](https://github.com/mdshack/shotshare/commit/db4af2e7e016c6d3f046126d2c3cd606ad831bce))
+
 ## [1.4.1](https://github.com/mdshack/shotshare/compare/v1.4.0...v1.4.1) (2023-12-29)
 
 
