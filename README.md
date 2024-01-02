@@ -55,10 +55,12 @@ docker run \
 
 This will _not_ issue any SSL and will just serve over HTTP. This may be useful if you plan to front ShotShare with your own reverse proxy.
 
+If you plan to force HTTPS before it gets to ShotShare, you will also need to force ShotShare to utilize HTTPS links, you may do so by adding `-e FORCE_HTTPS=true`.
+
 ```sh
 docker run \
   -p 80:80 \
-  -e HOST=http://* \
+  -e HOST=":80" \
   -v shotshare_database:/app/database \
   -v shotshare_data:/app/storage \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
