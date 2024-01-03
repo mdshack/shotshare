@@ -26,7 +26,7 @@ jobs:
           tags: mdshack/shotshare:ci
           cache-from: type=registry,ref=mdshack/shotshare:latest
           file: ./.docker/Dockerfile
-          outputs: type=oci,dest=/tmp/image.tar
+          outputs: type=local,dest=/tmp/image.tar
 
       - name: Upload docker image
         uses: actions/upload-artifact@v4
