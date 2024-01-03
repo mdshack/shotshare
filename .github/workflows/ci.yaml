@@ -1,0 +1,76 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+name: ci
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        if: ${{ steps.release.outputs.release_created }}
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        if: ${{ steps.release.outputs.release_created }}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: mdshack/shotshare:ci
+          cache-from: type=registry,ref=mdshack/shotshare:latest
+          file: ./.docker/Dockerfile
+          outputs: type=oci,dest=/tmp/image.tar
+
+      - name: Upload docker image
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp/image.tar
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp/image.tar
+
+      - name: Load docker image
+        run: docker load --input /tmp/image.tar
+
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: mdshack/shotshare:ci
+          run: /app/vendor/bin/pest
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: /tmp/image.tar
+
+      - name: Load docker image
+        run: docker load --input /tmp/image.tar
+
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: mdshack/shotshare:ci
+          run: /app/vendor/bin/pint --test
+
+  # static-analysis:
+  #   runs-on: ubuntu-latest
+  #   steps:
