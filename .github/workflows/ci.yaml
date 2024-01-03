@@ -30,6 +30,8 @@ jobs:
           file: ./.docker/Dockerfile
           outputs: type=local,dest=${{ runner.temp }}/docker/image.tar
 
+      - run: chown -R runner:runner ${{ runner.temp }}/docker
+
       - name: Upload docker image
         uses: actions/upload-artifact@v4
         with:
