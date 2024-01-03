@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/mdshack/shotshare/compare/v1.4.2...v1.4.3) (2024-01-02)
+
+
+### Bug Fixes
+
+* update 'http' mode instructions, add 'FORCE_HTTPS' flag ([9b17401](https://github.com/mdshack/shotshare/commit/9b17401b3e5a9a1e7d5c4a44c56e77b977bb64b7))
+
 ## [1.4.2](https://github.com/mdshack/shotshare/compare/v1.4.1...v1.4.2) (2024-01-02)
 
 
