@@ -23,9 +23,9 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          tags: mdshack/shotshare:ci
-          cache-from: type=registry,ref=mdshack/shotshare:latest
+          context: .
           file: ./.docker/Dockerfile
+          tags: mdshack/shotshare:ci
           outputs: type=docker,dest=${{ runner.temp }}/image.tar
 
       - name: Upload docker image
