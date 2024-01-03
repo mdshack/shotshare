@@ -23,10 +23,12 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./.docker/Dockerfile
           tags: mdshack/shotshare:ci
-          outputs: type=docker,dest=${{ runner.temp }}/image.tar
+          cache-from: type=registry,ref=mdshack/shotshare:latest
+          file: ./.docker/Dockerfile
+          outputs: type=local,dest=${{ runner.temp }}/image.tar
+
+      - run: chmod -R 777 ${{ runner.temp }}/image.tar
 
       - name: Upload docker image
         uses: actions/upload-artifact@v4
