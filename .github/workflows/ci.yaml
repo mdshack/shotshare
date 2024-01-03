@@ -26,13 +26,13 @@ jobs:
           tags: mdshack/shotshare:ci
           cache-from: type=registry,ref=mdshack/shotshare:latest
           file: ./.docker/Dockerfile
-          outputs: type=local,dest=/tmp/image.tar
+          outputs: type=local,dest=${{ runner.temp }}/image.tar
 
       - name: Upload docker image
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
-          path: /tmp/image.tar
+          path: ${{ runner.temp }}/image.tar
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -42,10 +42,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docker-image
-          path: /tmp/image.tar
+          path: ${{ runner.temp }}/image.tar
 
       - name: Load docker image
-        run: docker load --input /tmp/image.tar
+        run: docker load --input ${{ runner.temp }}/image.tar
 
       - uses: addnab/docker-run-action@v3
         with:
@@ -60,10 +60,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docker-image
-          path: /tmp/image.tar
+          path: ${{ runner.temp }}/image.tar
 
       - name: Load docker image
-        run: docker load --input /tmp/image.tar
+        run: docker load --input ${{ runner.temp }}/image.tar
 
       - uses: addnab/docker-run-action@v3
         with:
