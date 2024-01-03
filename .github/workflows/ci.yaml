@@ -20,21 +20,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - run: mkdir -p ${{ runner.temp }}/docker
+
       - name: Build
         uses: docker/build-push-action@v5
         with:
           tags: mdshack/shotshare:ci
           cache-from: type=registry,ref=mdshack/shotshare:latest
           file: ./.docker/Dockerfile
-          outputs: type=local,dest=${{ runner.temp }}/image.tar
-
-      - run: chmod -R 777 ${{ runner.temp }}/image.tar
+          outputs: type=local,dest=${{ runner.temp }}/docker/image.tar
 
       - name: Upload docker image
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
-          path: ${{ runner.temp }}/image.tar
+          path: ${{ runner.temp }}/docker
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -44,10 +44,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docker-image
-          path: ${{ runner.temp }}/image.tar
+          path: ${{ runner.temp }}/docker
 
       - name: Load docker image
-        run: docker load --input ${{ runner.temp }}/image.tar
+        run: docker load --input ${{ runner.temp }}/docker/image.tar
 
       - uses: addnab/docker-run-action@v3
         with:
@@ -62,10 +62,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docker-image
-          path: ${{ runner.temp }}/image.tar
+          path: ${{ runner.temp }}/docker
 
       - name: Load docker image
-        run: docker load --input ${{ runner.temp }}/image.tar
+        run: docker load --input ${{ runner.temp }}/docker/image.tar
 
       - uses: addnab/docker-run-action@v3
         with:
