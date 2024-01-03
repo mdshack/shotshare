@@ -23,7 +23,6 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          push: true
           tags: mdshack/shotshare:ci
           cache-from: type=registry,ref=mdshack/shotshare:latest
           file: ./.docker/Dockerfile
