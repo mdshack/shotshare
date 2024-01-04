@@ -1,5 +1,10 @@
 on:
-  push
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 name: ci
 
@@ -33,7 +38,7 @@ jobs:
 
   unit-tests:
     runs-on: ubuntu-latest
-    needs: build
+    needs: prepare
     steps:
       - name: Download workspace
         uses: actions/download-artifact@v4
@@ -48,7 +53,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    needs: build
+    needs: prepare
     steps:
       - name: Download workspace
         uses: actions/download-artifact@v4
