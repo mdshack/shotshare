@@ -4,9 +4,15 @@
 
 </p>
 
-<p align="center">
-An open-source self hosted image sharing platform.
-</p>
+<div align="center">
+
+<p>An open-source self hosted image sharing platform.</p>
+
+<a href="">![ci](https://img.shields.io/github/actions/workflow/status/mdshack/shotshare/.github%2Fworkflows%2Fci.yaml?style=for-the-badge&label=CI)</a>
+<a href="">![coverage report](https://img.shields.io/codecov/c/github/mdshack/shotshare?style=for-the-badge)</a>
+<a href="">![latest release](https://img.shields.io/github/v/release/mdshack/shotshare?logo=github&style=for-the-badge)</a>
+
+</div>
 
 ---
 
