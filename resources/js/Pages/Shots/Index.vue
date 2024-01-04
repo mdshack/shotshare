@@ -16,7 +16,7 @@ defineProps({
                 v-for="shot in shots"
                 class="flex items-center justify-center p-1 rounded-lg border aspect-square hover:bg-accent"
                 :href="route('shots.show', shot.id)">
-                <img :src="shot.url"/>
+                <img :src="shot.links.asset_url"/>
             </Link>
         </div>
     </Layout>
