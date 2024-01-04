@@ -9,7 +9,7 @@ on:
 name: ci
 
 jobs:
-  build:
+  prepare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,8 +29,6 @@ jobs:
       - run: |
           npm ci
           npm run build
-
-      - run: chmod +x ${{ github.workspace }}/vendor/bin/pest ${{ github.workspace }}/vendor/bin/pint
 
       - name: Upload workspace
         uses: actions/upload-artifact@v4
