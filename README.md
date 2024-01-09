@@ -31,11 +31,13 @@ ShotShare is meant to be extremely easy to self host. Below is a sample deployme
 ### Example Deployment with Docker
 
 1. Create a directory for ShotShare: `sudo mkdir /shotshare`
-2. Create a `.env` file that will manage ShotShare generated environment variables (ex. your application key): `sudo touch /shotshare/.env`
-3. Ensure the user/group 82 (`www-data` user in docker container) own the `.env` file: `sudo chown 82:82 /shotshare/.env`
-4. Start the ShotShare container 
+2. Create persistent files: `sudo touch /shotshare/.env /shotshare/database.sqlite`
+3. Ensure the user/group 82 (`www-data` user in docker container) own the `.env` file: `sudo chown 82:82 /shotshare/.env /shotshare/database.sqlite`
+4. Start the ShotShare container
 
 _You may wish to customize environment variables (such as the `HOST`) before running this command, see below for a list of environment variables._
+
+_If you used ShotShare before 1.5.1, the "database" mount has changed to a file bind, you will need to manually migrate your `database.sqlite` file to use these new commands._
 
 #### Run in HTTPS mode
 
@@ -48,8 +50,8 @@ docker run \
   -e HOST=localhost \
   -v shotshare_caddy_data:/data/caddy \
   -v shotshare_caddy_config:/config/caddy \
-  -v shotshare_database:/app/database \
   -v shotshare_data:/app/storage \
+  --mount type=bind,source=/shotshare/database.sqlite,target=/app/database/database.sqlite \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
   -d \
   --restart unless-stopped \
@@ -67,8 +69,8 @@ If you plan to force HTTPS before it gets to ShotShare, you will also need to fo
 docker run \
   -p 80:80 \
   -e HOST=":80" \
-  -v shotshare_database:/app/database \
   -v shotshare_data:/app/storage \
+  --mount type=bind,source=/shotshare/database.sqlite,target=/app/database/database.sqlite \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
   -d \
   --restart unless-stopped \

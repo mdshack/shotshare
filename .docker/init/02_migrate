@@ -1,3 +1,5 @@
 #!/bin/sh
 
 php artisan migrate --no-interaction --force
+
+chown -R www-data:www-data /app/database/database.sqlite
