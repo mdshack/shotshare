@@ -1,5 +1,45 @@
 # Changelog
 
+## [1.5.0](https://github.com/mdshack/shotshare/compare/v1.4.3...v1.5.0) (2024-01-04)
+
+
+### Features
+
+* add CI (test/lint) action ([0d996ef](https://github.com/mdshack/shotshare/commit/0d996ef172ac37e2a5b13162d7c893423f0e8b8b))
+* badgees ([ccc1af7](https://github.com/mdshack/shotshare/commit/ccc1af7b70e2a231b2ea321a64e94ad43804d158))
+* don't run against docker image ([e23b774](https://github.com/mdshack/shotshare/commit/e23b7741e1a2d2bfdba10964a67dd8a436234b57))
+
+
+### Bug Fixes
+
+* blocked by ([6fac0ff](https://github.com/mdshack/shotshare/commit/6fac0ff701be2c1ee88d67e4309bf25eb89d420a))
+* codecov ([9fb465e](https://github.com/mdshack/shotshare/commit/9fb465ebf44ad1850a0c2674814b9870ce3fc04b))
+* codecov badge ([5aed599](https://github.com/mdshack/shotshare/commit/5aed59968c7b358d0d3c9e0f5a1285d2eacbf7f0))
+* dont push ([45ff210](https://github.com/mdshack/shotshare/commit/45ff210ee8ac01bd63b1be2cb58d8018224e80f6))
+* images not found on index route ([b7de64f](https://github.com/mdshack/shotshare/commit/b7de64fcfd06487d11c45a54c0a32e2b660f9bbf))
+* remove 'if' from build step ([717f140](https://github.com/mdshack/shotshare/commit/717f140f4fc424dda9d67da6d2c6c159da67accf))
+* use local output ([e3b163b](https://github.com/mdshack/shotshare/commit/e3b163b3972c34020f28a4b07b5ab07bd2565e30))
+
+
+### Miscellaneous Chores
+
+* add codecov ([5b6ba73](https://github.com/mdshack/shotshare/commit/5b6ba732938b2bc72b13ee02708ee8a4d513d145))
+* adjust perms ([53728cc](https://github.com/mdshack/shotshare/commit/53728cc32db2d5176eea337aba240738b04f3a68))
+* chmod after download ([c418eee](https://github.com/mdshack/shotshare/commit/c418eeeb3c4cd196eec1538b217c87f400ece762))
+* cleanup junk, create .env on composer install/update ([84536ed](https://github.com/mdshack/shotshare/commit/84536edec5057e3829064134da491aa6f9c53767))
+* drop cache ([d588cd7](https://github.com/mdshack/shotshare/commit/d588cd708a7c5430f36cb7a50d2d59843517390f))
+* drop codecov ([c2ee5ff](https://github.com/mdshack/shotshare/commit/c2ee5ffb14be8e0b512d8b2c5a2daea7a16161d8))
+* gitkeep unit dir ([f2b0f9d](https://github.com/mdshack/shotshare/commit/f2b0f9dee215f02d980f8ee4ce899c965d8027ef))
+* make executable ([79318bd](https://github.com/mdshack/shotshare/commit/79318bd7aef15a39b67da7e287e696c88070b200))
+* on push ([82a0dc4](https://github.com/mdshack/shotshare/commit/82a0dc4ec699d70311d2558a1ce9d0f6ed3fbece))
+* own recursive ([15a9b06](https://github.com/mdshack/shotshare/commit/15a9b06f1c8276a18e81354da980d7e32de181e9))
+* poitn to prep ([15694a3](https://github.com/mdshack/shotshare/commit/15694a35550e01044d95744c32e09ba4f848988c))
+* try docker type ([8d0be67](https://github.com/mdshack/shotshare/commit/8d0be6724bd8b03a0212bf24b7ff5cad463bd4a9))
+* use buildx ([bc05ab1](https://github.com/mdshack/shotshare/commit/bc05ab14bc0544ceaba518afc1ae38e8ac06d732))
+* use dir ([2fd720d](https://github.com/mdshack/shotshare/commit/2fd720d19e89859ea78de4940c6f07fe0ee51afb))
+* use runner.temp ([9be6123](https://github.com/mdshack/shotshare/commit/9be6123d144ba34444190fec1d00d4af31e373f5))
+* xdebug ([8dc2a54](https://github.com/mdshack/shotshare/commit/8dc2a543514ec6063f082bd50c07ae1e5a8e2f8d))
+
 ## [1.4.3](https://github.com/mdshack/shotshare/compare/v1.4.2...v1.4.3) (2024-01-02)
 
 
