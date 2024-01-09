@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/mdshack/shotshare/compare/v1.5.0...v1.5.1) (2024-01-09)
+
+
+### Bug Fixes
+
+* volume mount instructions, chown database in 02_migrate hook ([b1729ce](https://github.com/mdshack/shotshare/commit/b1729cef3f4efc6d55e3fa7a2a0124f34534431c))
+
 ## [1.5.0](https://github.com/mdshack/shotshare/compare/v1.4.3...v1.5.0) (2024-01-04)
 
 
