@@ -9,6 +9,7 @@ import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
     shot: Object,
+    showLinks: Object,
     childShots: Array,
 })
 
@@ -19,26 +20,32 @@ let shots = [
     ...s,
     urls: [
         {
+            id: "share",
             label: "Share Link",
             value: s.links.url
         },
         {
+            id: "direct",
             label: "Direct Link",
             value: s.links.asset_url
         },
         {
+            id: "markdown_reddit",
             label: "Markdown (Reddit)",
             value: `[Alt Text](${s.links.asset_url})`
         },
         {
+            id: "markdown_other",
             label: "Markdown (GitHub & StackOverflow)",
             value: `![Alt Text](${s.links.asset_url})`
         },
         {
+            id: "bbcode",
             label: "BBCode",
             value: `[url=${s.links.url}][img]${s.links.asset_url}[/img][/url]`
         },
         {
+            id: "html",
             label: "HTML",
             value: `<a href='${s.links.url}' target='_blank'><img src='${s.links.asset_url}' border='0' alt='Alt Text'/></a>`
         },
@@ -46,7 +53,10 @@ let shots = [
 }))
 
 const stringToId = (str) => {
-    return str.toLowerCase().replace(" ", "-")
+    return str
+        .toLowerCase()
+        .replace("_", "-")
+        .replace(" ", "-")
 }
 </script>
 
@@ -60,10 +70,10 @@ const stringToId = (str) => {
                     <img :src="image.links.asset_url"/>
                 </div>
 
-                <div v-for="url in image.urls">
-                    <Label :for="stringToId(image.id + '-' + url.label)" class="mb-2">{{url.label}}</Label>
+                <div v-for="url in image.urls" v-show="showLinks[url.id] ?? true">
+                    <Label :for="stringToId(image.id + '-' + url.id)" class="mb-2">{{url.label}}</Label>
                     <div class="relative">
-                        <Input :id="stringToId(image.id + '-' + url.label)" :model-value="url.value" disabled/>
+                        <Input :id="stringToId(image.id + '-' + url.id)" :model-value="url.value" disabled/>
                         <UseClipboard
                             v-slot="{ copy, copied }"
                             :source="url.value">

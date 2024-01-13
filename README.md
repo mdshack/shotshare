@@ -92,6 +92,12 @@ _Note: These are not all of the configuration options, only the most used ones, 
 | `DB_USERNAME`  | `shotshare` | _N/A_ | Not required if using `sqlite`, indicates the database username |
 | `DB_PASSWORD`  | _none_ | _N/A_ | Not required if using `sqlite`, indicates the database password |
 | `HOST`  | localhost | _N/A_ | Public host used by Caddy, thanks to caddy, this host will automatically be issued a SSL certificate |
+| `SHOTS_LINKS_SHARE_LINK`  | `true` | `true`, `false` | Indicates if the "Share Link" will be displayed on the shot screen |
+| `SHOTS_LINKS_DIRECT_LINK`  | `true` | `true`, `false` | Indicates if the "Direct Link" will be displayed on the shot screen |
+| `SHOTS_LINKS_MARKDOWN_REDDIT`  | `true` | `true`, `false` | Indicates if the "Markdown (Reddit)" link will be displayed on the shot screen |
+| `SHOTS_LINKS_MARKDOWN_OTHER`  | `true` | `true`, `false` | Indicates if the "Markdown (GitHub & StackOverflow)" link will be displayed on the shot screen |
+| `SHOTS_LINKS_BBCODE`  | `true` | `true`, `false` | Indicates if the "BBCode" link will be displayed on the shot screen |
+| `SHOTS_LINKS_HTML`  | `true` | `true`, `false` | Indicates if the "HTML" link will be displayed on the shot screen |
 
 ### Commands
 
