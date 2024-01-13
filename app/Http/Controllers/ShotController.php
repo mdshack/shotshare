@@ -21,7 +21,7 @@ class ShotController extends Controller
             'shot' => fn () => Shot::whereId($id)->firstOrFail(),
             'childShots' => fn () => Shot::whereParentShotId($id)->get(),
 
-            'showLinks' => config("shots.links")
+            'showLinks' => config('shots.links'),
         ]);
     }
 }
