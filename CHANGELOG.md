@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.6.0](https://github.com/mdshack/shotshare/compare/v1.5.2...v1.6.0) (2024-01-13)
+
+
+### Features
+
+* add the ability to show/hide buttons on the shot view screen ([6505bea](https://github.com/mdshack/shotshare/commit/6505bea32596dd029f62d27a7a7c46556ca6a1d3))
+
+
+### Bug Fixes
+
+* shotshare image share input IDs ([5c9b227](https://github.com/mdshack/shotshare/commit/5c9b227e804e1f774f45213926692e683c4cccc4))
+
+
+### Miscellaneous Chores
+
+* drop dockerfile for local dev (just use sail runtime) ([e45b66c](https://github.com/mdshack/shotshare/commit/e45b66c7f4cadc6c96e59d2eca83257a7ec2a07f))
+* lint ([349aee4](https://github.com/mdshack/shotshare/commit/349aee4d69efe5948ef1202c3bc926ddc8286363))
+
 ## [1.5.2](https://github.com/mdshack/shotshare/compare/v1.5.1...v1.5.2) (2024-01-09)
 
 
