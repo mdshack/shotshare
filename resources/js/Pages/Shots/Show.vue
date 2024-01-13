@@ -44,6 +44,10 @@ let shots = [
         },
     ]
 }))
+
+const stringToId = (str) => {
+    return str.toLowerCase().replace(" ", "-")
+}
 </script>
 
 <template>
@@ -57,9 +61,9 @@ let shots = [
                 </div>
 
                 <div v-for="url in image.urls">
-                    <Label for="email" class="mb-2">{{url.label}}</Label>
+                    <Label :for="stringToId(image.id + '-' + url.label)" class="mb-2">{{url.label}}</Label>
                     <div class="relative">
-                        <Input :model-value="url.value"/>
+                        <Input :id="stringToId(image.id + '-' + url.label)" :model-value="url.value" disabled/>
                         <UseClipboard
                             v-slot="{ copy, copied }"
                             :source="url.value">
