@@ -16,7 +16,7 @@ class Feature
      */
     public function handle(Request $request, Closure $next, string $feature): Response
     {
-        if(!config("features.$feature")) {
+        if (! config("features.$feature")) {
             return response(status: HttpResponse::HTTP_NOT_FOUND);
         }
 

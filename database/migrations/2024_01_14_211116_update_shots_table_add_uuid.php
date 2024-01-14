@@ -17,8 +17,8 @@ return new class extends Migration
             $table->uuid()->after('id')->index();
         });
 
-        Shot::all()->each(fn($shot) => $shot->forceFill([
-            'uuid' => Str::orderedUuid()
+        Shot::all()->each(fn ($shot) => $shot->forceFill([
+            'uuid' => Str::orderedUuid(),
         ])->save());
     }
 

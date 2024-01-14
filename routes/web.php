@@ -35,8 +35,8 @@ Route::prefix('shots')
         Route::delete('{id}', 'destroy')->name('destroy');
 
         Route::post('{id}/react', 'react')
-            ->name("react")
-            ->middleware("feature:reactions");
+            ->name('react')
+            ->middleware('feature:reactions');
     });
 
 Route::post('/upload', UploadController::class)

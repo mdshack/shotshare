@@ -9,7 +9,6 @@ use App\Models\ShotReaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -19,16 +18,16 @@ class ShotController extends Controller
     {
         return Inertia::render('Shots/Index', [
             'shots' => fn () => $request->user()->shots()
-                ->orderByDesc("id")
-                ->whereNull("parent_shot_id")
+                ->orderByDesc('id')
+                ->whereNull('parent_shot_id')
                 ->with('childShots')
-                ->with('reactions', fn($reactionQuery) => $reactionQuery
+                ->with('reactions', fn ($reactionQuery) => $reactionQuery
                     ->select('reaction', DB::raw('count(*) as count'), 'shot_id')
                     ->groupBy('reaction', 'shot_id'))
                 ->get()
-                ->map(fn($shot) => array_merge($shot->toArray(), [
+                ->map(fn ($shot) => array_merge($shot->toArray(), [
                     'reactions' => $shot['reactions']
-                        ->mapWithKeys(fn($result) => [$result['reaction'] => $result['count']]),
+                        ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
                 ])),
         ]);
     }
@@ -39,8 +38,8 @@ class ShotController extends Controller
             ? Shot::whereUuid($id)
             : Shot::whereId($id))->firstOrFail();
 
-        if($shot->parent_shot_id) {
-            return to_route("shots.show", [
+        if ($shot->parent_shot_id) {
+            return to_route('shots.show', [
                 'id' => $shot->parent_shot_id,
                 'selected_shot_id' => $shot->getKey(),
             ]);
@@ -49,13 +48,13 @@ class ShotController extends Controller
         return Inertia::render('Shots/Show', [
             'shot' => fn () => $shot->fresh(),
             'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
-            'author' => fn() => $shot->user->only(["id", "name"]),
+            'author' => fn () => $shot->user->only(['id', 'name']),
             'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
             'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
                 ->select('reaction', DB::raw('count(*) as count'))
                 ->groupBy('reaction')
                 ->get()
-                ->mapWithKeys(fn($result) => [$result['reaction'] => $result['count']]),
+                ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
             'showLinks' => config('shots.links'),
         ]);
     }
@@ -91,7 +90,7 @@ class ShotController extends Controller
             ->delete();
 
         // They didn't delete anything, lets create their reaction
-        if(!$deleted) {
+        if (! $deleted) {
             ShotReaction::updateOrCreate([
                 'shot_id' => $id,
                 'user_id' => $userId,

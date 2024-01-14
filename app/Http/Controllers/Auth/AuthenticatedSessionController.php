@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(Request $request): Response
     {
-        if($redirectTo = $request->get('redirect_to')) {
+        if ($redirectTo = $request->get('redirect_to')) {
             $request->session()->put('url.intended', $redirectTo);
         }
 
