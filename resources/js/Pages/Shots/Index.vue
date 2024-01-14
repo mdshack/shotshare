@@ -26,7 +26,6 @@ onMounted(() => {
     <Head title="My Shots" />
 
     <Layout>
-
         <div v-if="shots.length < 1" class="text-center text-lg">
             You haven't uploaded any shots!
         </div>

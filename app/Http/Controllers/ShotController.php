@@ -48,10 +48,10 @@ class ShotController extends Controller
 
         return Inertia::render('Shots/Show', [
             'shot' => fn () => $shot->fresh(),
-            'childShots' => fn () => Shot::whereParentShotId($id)->get(),
+            'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
             'author' => fn() => $shot->user->only(["id", "name"]),
-            'reaction' => fn () => $request->user()?->reactions()->whereShotId($id)->first(),
-            'reactionCounts' => fn () => ShotReaction::whereShotId($id)
+            'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
+            'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
                 ->select('reaction', DB::raw('count(*) as count'))
                 ->groupBy('reaction')
                 ->get()
@@ -69,9 +69,13 @@ class ShotController extends Controller
         return response(status: Response::HTTP_NO_CONTENT);
     }
 
-    public function destroy()
+    public function destroy(Request $request, string $id)
     {
+        Shot::where('user_id', $request->user()->getKey())
+            ->whereId($id)
+            ->delete();
 
+        return response(status: Response::HTTP_NO_CONTENT);
     }
 
     public function react(Request $request, string $id)

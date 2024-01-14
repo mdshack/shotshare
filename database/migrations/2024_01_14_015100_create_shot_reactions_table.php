@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('shot_reactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Shot::class);
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Shot::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string("reaction")->index();
         });
     }

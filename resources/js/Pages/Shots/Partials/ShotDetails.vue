@@ -1,4 +1,5 @@
 <script setup>
+import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue';
 import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
 import UserAvatar from '@/Components/ui/UserAvatar.vue'
 
@@ -31,14 +32,24 @@ const isOwner = computed(() => {
 })
 
 const updateName = (event) => {
-    axios.patch(route('shots.update', props.shot.id), {
-        'name': event.target.innerText
-    }).then(() => {
-        event.target.blur()
-        router.reload({ only: [
-            'shot',
-        ] })
-    })
+    axios
+        .patch(route('shots.update', props.shot.id), {
+            'name': event.target.innerText
+        })
+        .then(() => {
+            event.target.blur()
+            router.reload({ only: [
+                'shot',
+            ] })
+        })
+}
+
+const deleteShot = () => {
+    axios
+        .delete(route('shots.destroy', props.shot.id))
+        .then(() => {
+            router.visit(route('shots.index'))
+        })
 }
 </script>
 
@@ -53,11 +64,28 @@ const updateName = (event) => {
                 {{shot.name ?? "Unnamed Shot"}}
             </h1>
 
-            <!-- Owner Options -->
             <div v-if="isOwner" class="flex items-center space-x-1">
-                <button class="text-gray-500 hover:text-primary transition">
-                    <TrashIcon class="h-6 w-6" />
-                </button>
+                <RequireConfirmationDialog :action="deleteShot">
+                    <template #title>
+                        Are you sure you wish to delete this shot?
+                    </template>
+
+                    <template #description>
+                        Deleting shots is a destructive action. You will not be able to recover this image if you delete it.
+                    </template>
+
+                    <template #reject>
+                        Cancel
+                    </template>
+
+                    <template #confirm>
+                        Delete Shot
+                    </template>
+
+                    <button class="text-gray-500 hover:text-primary transition">
+                        <TrashIcon class="h-6 w-6" />
+                    </button>
+                </RequireConfirmationDialog>
             </div>
         </div>
 

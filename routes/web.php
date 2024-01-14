@@ -32,6 +32,7 @@ Route::prefix('shots')
             ->name('index');
         Route::get('{id}', 'show')->name('show');
         Route::patch('{id}', 'update')->name('update');
+        Route::delete('{id}', 'destroy')->name('destroy');
 
         Route::post('{id}/react', 'react')
             ->name("react")
