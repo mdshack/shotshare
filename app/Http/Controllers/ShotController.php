@@ -34,7 +34,9 @@ class ShotController extends Controller
 
     public function show(Request $request, string $id)
     {
-        $shot = Shot::whereId($id)->firstOrFail();
+        $shot = (config('features.uuid_routes')
+            ? Shot::whereUuid($id)
+            : Shot::whereId($id))->firstOrFail();
 
         if($shot->parent_shot_id) {
             return to_route("shots.show", [

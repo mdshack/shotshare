@@ -35,7 +35,7 @@ onMounted(() => {
             <Link
                 v-for="shot in shots"
                 class="flex items-center justify-center p-1"
-                :href="route('shots.show', shot.id)">
+                :href="shot.links.url">
                 <div class="border rounded-lg hover:bg-accent overflow-hidden w-full relative">
                     <img :src="shot.links.asset_url" class="w-full"/>
 
