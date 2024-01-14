@@ -31,6 +31,7 @@ Route::prefix('shots')
             ->middleware(['auth', 'verified'])
             ->name('index');
         Route::get('{id}', 'show')->name('show');
+        Route::patch('{id}', 'update')->name('update');
 
         Route::post('{id}/react', 'react')
             ->name("react")

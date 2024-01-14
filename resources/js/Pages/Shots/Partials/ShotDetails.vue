@@ -5,7 +5,8 @@ import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import { HandThumbUpIcon, HandThumbDownIcon, TrashIcon, PencilSquareIcon } from "@heroicons/vue/24/outline"
 import axios from 'axios'
 import { format } from 'timeago.js'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue'
 
 const props = defineProps({
     shot: Object,
@@ -24,19 +25,36 @@ const reactToShot = (shotId, reaction) => {
         ] })
     })
 }
+
+const isOwner = computed(() => {
+    return props.author.id === usePage().props.auth.user?.id
+})
+
+const updateName = (event) => {
+    axios.patch(route('shots.update', props.shot.id), {
+        'name': event.target.innerText
+    }).then(() => {
+        event.target.blur()
+        router.reload({ only: [
+            'shot',
+        ] })
+    })
+}
 </script>
 
 <template>
     <div class="space-y-2">
-        <div class="flex items-center space-x-2">
-            <h1 class="text-xl font-semibold">Name of my screen shot</h1>
+        <div v-if="shot.name || isOwner" class="flex items-center space-x-2">
+            <h1
+                class="text-xl font-semibold"
+                :class="{'text-gray-400 italic': !shot.name}"
+                contenteditable
+                @keydown.enter.prevent="updateName">
+                {{shot.name ?? "Unnamed Shot"}}
+            </h1>
 
             <!-- Owner Options -->
-            <div v-if="author.id === $page.props.auth.user?.id" class="flex items-center space-x-1">
-                <button class="text-gray-500 hover:text-primary transition">
-                    <PencilSquareIcon class="h-6 w-6" />
-                </button>
-
+            <div v-if="isOwner" class="flex items-center space-x-1">
                 <button class="text-gray-500 hover:text-primary transition">
                     <TrashIcon class="h-6 w-6" />
                 </button>

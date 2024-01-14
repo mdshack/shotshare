@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ReactionType;
+use App\Http\Requests\UpdateShotRequest;
 use App\Models\Shot;
 use App\Models\ShotReaction;
 use Illuminate\Http\Request;
@@ -59,9 +60,13 @@ class ShotController extends Controller
         ]);
     }
 
-    public function update()
+    public function update(UpdateShotRequest $request, string $id)
     {
+        Shot::where('user_id', $request->user()->getKey())
+            ->whereId($id)
+            ->update($request->validated());
 
+        return response(status: Response::HTTP_NO_CONTENT);
     }
 
     public function destroy()
