@@ -36,7 +36,7 @@ class ShotController extends Controller
             'shot' => fn () => $shot->fresh(),
             'childShots' => fn () => Shot::whereParentShotId($id)->get(),
             'author' => fn() => $shot->user->only(["id", "name"]),
-            'reaction' => fn () => $request->user()->reactions()->whereShotId($id)->first(),
+            'reaction' => fn () => $request->user()?->reactions()->whereShotId($id)->first(),
             'reactionCounts' => fn () => ShotReaction::whereShotId($id)
                 ->select('reaction', DB::raw('count(*) as count'))
                 ->groupBy('reaction')

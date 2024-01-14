@@ -26,8 +26,6 @@ const initials = computed(() => {
 </script>
 
 <template>
-    <Head title="Home" />
-
     <div class="max-w-2xl mx-auto pb-14">
         <nav class="flex justify-between items-center py-4 border-b mb-8">
             <Link :href="route('home')">

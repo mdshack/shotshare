@@ -1,4 +1,5 @@
 <script setup>
+import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
 import UserAvatar from '@/Components/ui/UserAvatar.vue'
 
 import { HandThumbUpIcon, HandThumbDownIcon, TrashIcon, PencilSquareIcon } from "@heroicons/vue/24/outline"
@@ -31,7 +32,7 @@ const reactToShot = (shotId, reaction) => {
             <h1 class="text-xl font-semibold">Name of my screen shot</h1>
 
             <!-- Owner Options -->
-            <div v-if="author.id === $page.props.auth.user.id" class="flex items-center space-x-1">
+            <div v-if="author.id === $page.props.auth.user?.id" class="flex items-center space-x-1">
                 <button class="text-gray-500 hover:text-primary transition">
                     <PencilSquareIcon class="h-6 w-6" />
                 </button>
@@ -54,21 +55,23 @@ const reactToShot = (shotId, reaction) => {
 
             <!-- Reactions -->
             <div v-if="$page.props.features.reactions" class="flex space-x-4 text-xs">
-                <button
-                    @click.prevent="() => reactToShot(shot.id, 'upvote')"
-                    class="text-gray-500 hover:text-green-500 transition"
-                    :class="{'text-green-500': reaction?.reaction === 'upvote'}">
-                    <HandThumbUpIcon class="h-6 w-6" />
-                    {{ reactionCounts?.upvote ?? '0' }}
-                </button>
+                <MustBeAuthenticatedDialog :action="() => reactToShot(shot.id, 'upvote')">
+                    <button
+                        class="text-gray-500 hover:text-green-500 transition"
+                        :class="{'text-green-500': reaction?.reaction === 'upvote'}">
+                        <HandThumbUpIcon class="h-6 w-6" />
+                        {{ reactionCounts?.upvote ?? '0' }}
+                    </button>
+                </MustBeAuthenticatedDialog>
 
-                <button
-                    @click.prevent="() => reactToShot(shot.id, 'downvote')"
-                    class="text-gray-500 hover:text-red-500 transition"
-                    :class="{'text-red-500': reaction?.reaction === 'downvote'}">
-                    <HandThumbDownIcon class="h-6 w-6" />
-                    {{ reactionCounts?.downvote ?? '0' }}
-                </button>
+                <MustBeAuthenticatedDialog :action="() => reactToShot(shot.id, 'downvote')">
+                    <button
+                        class="text-gray-500 hover:text-red-500 transition"
+                        :class="{'text-red-500': reaction?.reaction === 'downvote'}">
+                        <HandThumbDownIcon class="h-6 w-6" />
+                        {{ reactionCounts?.downvote ?? '0' }}
+                    </button>
+                </MustBeAuthenticatedDialog>
             </div>
         </div>
     </div>
