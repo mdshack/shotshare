@@ -39,8 +39,12 @@ class ShotController extends Controller
             : Shot::whereId($id))->firstOrFail();
 
         if ($shot->parent_shot_id) {
+            $parentShotId = config('features.uuid_routes')
+                ? $shot->parentShot->uuid
+                : $shot->parent_shot_id;
+
             return to_route('shots.show', [
-                'id' => $shot->parent_shot_id,
+                'id' => $parentShotId,
                 'selected_shot_id' => $shot->getKey(),
             ]);
         }

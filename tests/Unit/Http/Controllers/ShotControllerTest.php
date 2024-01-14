@@ -82,6 +82,32 @@ class ShotControllerTest extends TestCase
                 ->where('shot.uuid', $shot->uuid));
     }
 
+    public function test_show_redirects_to_parent_shot_for_id()
+    {
+        config()->set('features.uuid_routes', false);
+        [$shot, $childShot] = $this->createShot();
+
+        $this->actingAs($this->user)
+            ->get(route('shots.show', $childShot->id))
+            ->assertRedirect(route('shots.show', [
+                'id' => $shot->id,
+                'selected_shot_id' => $childShot->id,
+            ]));
+    }
+
+    public function test_show_redirects_to_parent_shot_for_uuid()
+    {
+        config()->set('features.uuid_routes', true);
+        [$shot, $childShot] = $this->createShot();
+
+        $this->actingAs($this->user)
+            ->get(route('shots.show', $childShot->uuid))
+            ->assertRedirect(route('shots.show', [
+                'id' => $shot->uuid,
+                'selected_shot_id' => $childShot->id,
+            ]));
+    }
+
     public function test_update_updates_shots_name()
     {
         [$shot, $_] = $this->createShot(true);

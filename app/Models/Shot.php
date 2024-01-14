@@ -61,6 +61,11 @@ class Shot extends Model
         return $this->hasMany(Shot::class, 'parent_shot_id');
     }
 
+    public function parentShot(): BelongsTo
+    {
+        return $this->belongsTo(Shot::class, 'parent_shot_id');
+    }
+
     public function reactions(): HasMany
     {
         return $this->hasMany(ShotReaction::class);
