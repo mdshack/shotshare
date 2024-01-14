@@ -31,6 +31,10 @@ Route::prefix('shots')
             ->middleware(['auth', 'verified'])
             ->name('index');
         Route::get('{id}', 'show')->name('show');
+
+        Route::post('{id}/react', 'react')
+            ->name("react")
+            ->middleware("feature:reactions");
     });
 
 Route::post('/upload', UploadController::class)

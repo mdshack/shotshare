@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Shot::class);
     }
+
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(ShotReaction::class);
+    }
 }
