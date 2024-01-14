@@ -17,7 +17,18 @@ class ShotController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Shots/Index', [
-            'shots' => fn () => $request->user()->shots()->orderByDesc("id")->get(),
+            'shots' => fn () => $request->user()->shots()
+                ->orderByDesc("id")
+                ->whereNull("parent_shot_id")
+                ->with('childShots')
+                ->with('reactions', fn($reactionQuery) => $reactionQuery
+                    ->select('reaction', DB::raw('count(*) as count'), 'shot_id')
+                    ->groupBy('reaction', 'shot_id'))
+                ->get()
+                ->map(fn($shot) => array_merge($shot->toArray(), [
+                    'reactions' => $shot['reactions']
+                        ->mapWithKeys(fn($result) => [$result['reaction'] => $result['count']]),
+                ])),
         ]);
     }
 
