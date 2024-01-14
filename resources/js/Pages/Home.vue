@@ -80,10 +80,12 @@ const pasteFile = (event) => {
                     </label>
                 </div>
 
-                <Input placeholder="or paste shot" class="text-center" @paste.prevent="pasteFile"/>
+                <div class="w-full">
+                    <Input placeholder="or paste shot" class="text-center" @paste.prevent="pasteFile"/>
 
-                <div v-if="form.errors" class="text-red-500">
-                    {{ Object.values(form.errors)[0] }}
+                    <div v-if="form.errors" class="text-red-500">
+                        {{ Object.values(form.errors)[0] }}
+                    </div>
                 </div>
             </form>
 
