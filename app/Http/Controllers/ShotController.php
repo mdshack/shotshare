@@ -17,7 +17,7 @@ class ShotController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Shots/Index', [
-            'shots' => fn () => $request->user()->shots,
+            'shots' => fn () => $request->user()->shots()->orderByDesc("id")->get(),
         ]);
     }
 

@@ -25,6 +25,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
         "lucide-vue-next": "^0.294.0",
+        "macy": "^2.5.1",
         "tailwind-merge": "^2.1.0",
         "tailwindcss-animate": "^1.0.7",
         "timeago.js": "^4.0.2",
