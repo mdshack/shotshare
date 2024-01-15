@@ -3,7 +3,7 @@ import Layout from '@/Layouts/Layout.vue'
 import { Input } from '@/Components/ui/input'
 import { Progress } from '@/Components/ui/progress'
 
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const form = useForm({
@@ -54,6 +54,8 @@ const pasteFile = (event) => {
 </script>
 
 <template>
+    <Head title="Home" />
+
     <Layout>
         <template v-if="$page.props.auth.user">
             <form v-if="!form.progress" @submit.prevent="submit" class="flex flex-col items-center space-y-8">
@@ -78,10 +80,12 @@ const pasteFile = (event) => {
                     </label>
                 </div>
 
-                <Input placeholder="or paste shot" class="text-center" @paste.prevent="pasteFile"/>
+                <div class="w-full">
+                    <Input placeholder="or paste shot" class="text-center" @paste.prevent="pasteFile"/>
 
-                <div v-if="form.errors" class="text-red-500">
-                    {{ Object.values(form.errors)[0] }}
+                    <div v-if="form.errors" class="text-red-500">
+                        {{ Object.values(form.errors)[0] }}
+                    </div>
                 </div>
             </form>
 

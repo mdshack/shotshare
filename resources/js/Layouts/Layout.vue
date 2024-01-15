@@ -26,8 +26,6 @@ const initials = computed(() => {
 </script>
 
 <template>
-    <Head title="Home" />
-
     <div class="max-w-2xl mx-auto pb-14">
         <nav class="flex justify-between items-center py-4 border-b mb-8">
             <Link :href="route('home')">
@@ -85,6 +83,26 @@ const initials = computed(() => {
                 </Link>
             </div>
         </nav>
-        <slot/>
+
+        <main class="pb-8">
+            <slot/>
+        </main>
+
+        <footer v-if="$page.props.features.footer" class="items-center justify-center space-y-2 text-center text-sm">
+            <p>
+                Made with ❤️ by
+                <a
+                    target="_blank"
+                    href="https://github.com/mdshack"
+                    class="text-blue-300 hover:text-blue-500 hover:underline">@mdshack</a>
+            </p>
+
+            <p>
+                Check out the <a
+                    target="_blank"
+                    href="https://github.com/mdshack/shotshare"
+                    class="text-blue-300 hover:text-blue-500 hover:underline">source code</a>
+            </p>
+        </footer>
     </div>
 </template>
