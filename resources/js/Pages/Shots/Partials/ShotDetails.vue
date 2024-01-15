@@ -59,7 +59,7 @@ const deleteShot = () => {
             <h1
                 class="text-xl font-semibold"
                 :class="{'text-gray-400 italic': !shot.name}"
-                contenteditable
+                :contenteditable="isOwner"
                 @keydown.enter.prevent="updateName">
                 {{shot.name ?? "Unnamed Shot"}}
             </h1>
