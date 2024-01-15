@@ -1,0 +1,17 @@
+{
+  "Version": "15.0.0",
+  "Name": "ShotShare",
+  "DestinationType": "ImageUploader",
+  "RequestMethod": "POST",
+  "RequestURL": "{Your ShotShare URL}/api/upload",
+  "Headers": {
+    "Authorization": "Bearer {Your API Key}",
+    "Accept": "application/json"
+  },
+  "Body": "MultipartFormData",
+  "Arguments": {
+    "images[0]": null
+  },
+  "FileFormName": "images[0]",
+  "URL": "{json:data.link}"
+}

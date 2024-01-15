@@ -24,8 +24,18 @@ class UploadController extends Controller
             }
         }
 
-        return to_route('shots.show', config('features.uuid_routes')
+        $id = config('features.uuid_routes')
             ? $parentShot?->uuid
-            : $parentShot?->getKey());
+            : $parentShot?->getKey();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'data' => [
+                    'link' => route('shots.show', $id)
+                ]
+            ]);
+        }
+
+        return to_route('shots.show', $id);
     }
 }
