@@ -3,6 +3,7 @@ import Layout from '@/Layouts/Layout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import CardApiKeys from './Partials/CardApiKeys.vue';
 import { Head } from '@inertiajs/vue3';
 import {
     Card,
@@ -14,6 +15,7 @@ import {
 } from '@/Components/ui/card'
 
 defineProps({
+    apiKeys: Array,
     mustVerifyEmail: {
         type: Boolean,
     },
@@ -41,7 +43,6 @@ defineProps({
                     <UpdateProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
-                        class="max-w-xl"
                     />
                 </CardContent>
             </Card>
@@ -52,9 +53,11 @@ defineProps({
                     <CardDescription>Ensure your account is using a long, random password to stay secure.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <UpdatePasswordForm class="max-w-xl" />
+                    <UpdatePasswordForm />
                 </CardContent>
             </Card>
+
+            <CardApiKeys :api-keys="apiKeys"/>
 
             <Card>
                 <CardHeader>
@@ -62,7 +65,7 @@ defineProps({
                     <CardDescription>Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <DeleteUserForm class="max-w-xl" />
+                    <DeleteUserForm />
                 </CardContent>
             </Card>
         </div>
