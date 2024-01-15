@@ -42,7 +42,7 @@ Route::prefix('shots')
 Route::prefix('api-keys')
     ->name('api-keys.')
     ->controller(ApiKeyController::class)
-    ->group(function() {
+    ->group(function () {
         Route::post('', 'store')->name('store');
         Route::delete('{id}', 'destroy')->name('destroy');
     });

@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
-use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -48,14 +48,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
+    public function createToken(string $name, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null)
     {
         $plainTextToken = $this->generateTokenString();
 
         $token = $this->tokens()->create([
             'name' => $name,
             'token' => hash('sha256', $plainTextToken),
-            'anonymized_token' => Str::mask($plainTextToken, "•", "5"),
+            'anonymized_token' => Str::mask($plainTextToken, '•', '5'),
             'abilities' => $abilities,
             'expires_at' => $expiresAt,
         ]);

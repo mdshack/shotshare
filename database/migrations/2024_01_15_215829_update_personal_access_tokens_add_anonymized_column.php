@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('personal_access_tokens', function (Blueprint $table) {
-            $table->string("anonymized_token")->nullable()->after("token");
+            $table->string('anonymized_token')->nullable()->after('token');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('personal_access_tokens', function (Blueprint $table) {
-            $table->dropColumn("anonymized_token");
+            $table->dropColumn('anonymized_token');
         });
     }
 };

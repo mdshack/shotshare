@@ -12,7 +12,7 @@ class ApiKeyController extends Controller
             'name' => ['string', 'sometimes', 'nullable'],
         ]);
 
-        $token = $request->user()->createToken($request->get('name') ?? "Unnamed Key");
+        $token = $request->user()->createToken($request->get('name') ?? 'Unnamed Key');
 
         return response()->json([
             'token' => $token->plainTextToken,
