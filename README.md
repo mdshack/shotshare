@@ -48,6 +48,7 @@ docker run \
   -p 80:80 \
   -p 443:443 \
   -e HOST=localhost \
+  -e FEATURE_UUID_ROUTES=true \
   -v shotshare_caddy_data:/data/caddy \
   -v shotshare_caddy_config:/config/caddy \
   -v shotshare_data:/app/storage \
@@ -69,6 +70,7 @@ If you plan to force HTTPS before it gets to ShotShare, you will also need to fo
 docker run \
   -p 80:80 \
   -e HOST=":80" \
+  -e FEATURE_UUID_ROUTES=true \
   -v shotshare_data:/app/storage \
   --mount type=bind,source=/shotshare/database.sqlite,target=/app/database/database.sqlite \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
