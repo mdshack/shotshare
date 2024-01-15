@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.7.0](https://github.com/mdshack/shotshare/compare/v1.6.0...v1.7.0) (2024-01-15)
+
+
+### Features
+
+* ability to delete own shots ([1ba20e5](https://github.com/mdshack/shotshare/commit/1ba20e54720f351ee45cb8f6afb5a7748980b48a))
+* ability to set name ([f71c756](https://github.com/mdshack/shotshare/commit/f71c756af1ad7ca692bd99bea6de2deea935306e))
+* add footer ([ba97e46](https://github.com/mdshack/shotshare/commit/ba97e46225f2e25e1ab3ba3bbfbe652fbd52a293))
+* add new feature flags to environment variables ([1fd8f6a](https://github.com/mdshack/shotshare/commit/1fd8f6aa8780dd103ace2714b73e4f597219cb4d))
+* allow use of UUIDs ([ea6410e](https://github.com/mdshack/shotshare/commit/ea6410e28bbb3abe2731adb8f5eb49e9e537726b))
+* group images on index, show reaction counts on index, show number of images in group on index ([d9729e5](https://github.com/mdshack/shotshare/commit/d9729e5fb703373da104f2df39ded96f493f9511))
+* handle unauthenticated users w/ reactions, create helper dialog for logged in actions ([d261efd](https://github.com/mdshack/shotshare/commit/d261efd3a7bdf511d571a8f3f2579ec7541a7033))
+* masonry layout for shots index ([0a7a818](https://github.com/mdshack/shotshare/commit/0a7a81802b610052deb783e7e4a4e8da819bb02e))
+* multiple shots show up as a carousel, going to link of child shot redirects you to parent shot and scrolls to index of carousel, added reactions (upvote/downvote) as an opt-in feature, added author/created at to shot view, stubbed out edit/delete functionality ([9773921](https://github.com/mdshack/shotshare/commit/9773921f70fc0b477925e5eaa1ac3369338d8953))
+
+
+### Miscellaneous Chores
+
+* add shotcontroller test ([6328160](https://github.com/mdshack/shotshare/commit/6328160153c928cb5dafae7046c9a3ca409998d1))
+* add test for show redirect ([7db53a0](https://github.com/mdshack/shotshare/commit/7db53a0a2afb9edf208a3b2f97eee6244dc5a2b0))
+* lint php ([f36fde3](https://github.com/mdshack/shotshare/commit/f36fde37bc3a63158616f2b5c91de3729a2cd203))
+* revert change to features defaults ([0a6c4cd](https://github.com/mdshack/shotshare/commit/0a6c4cdd28bd9d2ee8caba9aba7dca503e44664a))
+* test upload ([c2f682e](https://github.com/mdshack/shotshare/commit/c2f682e6c2f93e3a81ba8e5f83dffd65afe4079a))
+
 ## [1.6.0](https://github.com/mdshack/shotshare/compare/v1.5.2...v1.6.0) (2024-01-13)
 
 
