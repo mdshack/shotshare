@@ -123,6 +123,16 @@ Local development is done using `docker compose`
 4. Build frontend: `npm run build`
 5. Start docker compose: `docker compose up`
 
+### ShareX Setup
+
+ShotShare is configured to work with [ShareX](https://getsharex.com/) a popular screenshot tool. Included in this repo is an [example configuration](/shotshare.sxcu) (`/shotshare.sxcu`). Below are a few instructions on how to get this running on your local install.
+
+1. On your ShotShare profile page (when logged in it will be at `{your installation}/profile`), create a new API key
+2. Copy the contents of `/shotshare.sxcu` into a notepad
+3. Replace `{Your ShotShare URL}` with your ShotShare installation URL, for example `https://demo.shotshare.mdsh.dev`
+4. Replace `{Your API Key}` with the API key you created in step #1
+5. In ShareX, click `Destinations -> Custom Uploader Settings -> Import -> `
+
 ## Contributing
 
 There is currently no established pattern for contributing, if you see something missing or feel like something could be better feel free to pop open an issue and/or PR.
