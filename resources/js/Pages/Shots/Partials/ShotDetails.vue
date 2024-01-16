@@ -2,12 +2,19 @@
 import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue';
 import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
 import UserAvatar from '@/Components/ui/UserAvatar.vue'
+import { PopoverAnchor } from "radix-vue";
 
 import { HandThumbUpIcon, HandThumbDownIcon, TrashIcon, PencilSquareIcon } from "@heroicons/vue/24/outline"
 import axios from 'axios'
 import { format } from 'timeago.js'
 import { router, usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
+import { ref } from 'vue';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/Components/ui/popover'
 
 const props = defineProps({
     shot: Object,
@@ -15,6 +22,8 @@ const props = defineProps({
     reaction: Object,
     reactionCounts: Object,
 })
+
+const titleFocus = ref(false)
 
 const reactToShot = (shotId, reaction) => {
     axios.post(route('shots.react', shotId), {
@@ -56,15 +65,34 @@ const deleteShot = () => {
 <template>
     <div class="space-y-2">
         <div v-if="shot.name || isOwner" class="flex items-center space-x-2">
-            <h1
-                class="text-xl font-semibold"
-                :class="{'text-gray-400 italic': !shot.name}"
-                :contenteditable="isOwner"
-                @keydown.enter.prevent="updateName">
-                {{shot.name ?? "Unnamed Shot"}}
-            </h1>
+            <Popover :open="true">
+                <PopoverAnchor>
+                    <h1
+                        class="text-xl font-semibold"
+                        :class="{'text-gray-400 italic': !shot.name}"
+                        :contenteditable="isOwner"
+                        ref="name"
+                        @keydown.enter.prevent="updateName"
+                        @focusin="() => titleFocus = true"
+                        @focusout="() => titleFocus = false">
+                        {{shot.name ?? "Unnamed Shot"}}
+                    </h1>
+                </PopoverAnchor>
+                <PopoverContent class="w-32 p-2 flex items-center justify-center">
+                    <div class="text-gray-500 flex items-center justify-center">
+                        <kbd class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 mr-1">
+                            Enter
+                        </kbd>
+                        to save
+                    </div>
+                </PopoverContent>
+            </Popover>
 
             <div v-if="isOwner" class="flex items-center space-x-1">
+                <button class="text-gray-500 hover:text-primary transition">
+                    <PencilSquareIcon class="h-6 w-6" @click.prevent="() => $refs.name.focus()" />
+                </button>
+
                 <RequireConfirmationDialog :action="deleteShot">
                     <template #title>
                         Are you sure you wish to delete this shot?
@@ -82,12 +110,14 @@ const deleteShot = () => {
                         Delete Shot
                     </template>
 
-                    <button class="text-gray-500 hover:text-primary transition">
+                    <button class="text-gray-500 hover:text-primary transition flex items-center justify-center">
                         <TrashIcon class="h-6 w-6" />
                     </button>
                 </RequireConfirmationDialog>
             </div>
         </div>
+
+
 
         <div class="flex items-center justify-between">
             <!-- User & Posted at -->
