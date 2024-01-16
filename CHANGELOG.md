@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.8.0](https://github.com/mdshack/shotshare/compare/v1.7.0...v1.8.0) (2024-01-16)
+
+
+### Features
+
+* add sanctum support + API key management on profile page ([7db7d85](https://github.com/mdshack/shotshare/commit/7db7d8588d0ef14c9fa5865f32efdaf8e0f63b92))
+* support API uploads (sharex support) ([2be1260](https://github.com/mdshack/shotshare/commit/2be1260adbcdb7414b94db381d56851357a59c16))
+
+
+### Bug Fixes
+
+* title content editable by guests/non-owners ([dffc43d](https://github.com/mdshack/shotshare/commit/dffc43d082418bacc8c9ad3f588bdd28afdc9f8b))
+
+
+### Miscellaneous Chores
+
+* add tests for apikey ([169047e](https://github.com/mdshack/shotshare/commit/169047e79c3ce44b49884ff79c110ee9592e42e8))
+* add upload controller test (json add), consolidate most of 'public identifier' logic ([0497567](https://github.com/mdshack/shotshare/commit/049756738f3801308478ba33d2b8d8bea94d4df8))
+* lint php ([9f6c1bb](https://github.com/mdshack/shotshare/commit/9f6c1bbfd3cf7c9c6eff5dfdfacf03fd5ced99ed))
+
 ## [1.7.0](https://github.com/mdshack/shotshare/compare/v1.6.0...v1.7.0) (2024-01-15)
 
 
