@@ -4,7 +4,7 @@ import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vu
 import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import { PopoverAnchor } from "radix-vue";
 
-import { HandThumbUpIcon, HandThumbDownIcon, TrashIcon, PencilSquareIcon } from "@heroicons/vue/24/outline"
+import { HandThumbUpIcon, HandThumbDownIcon, TrashIcon, PencilSquareIcon, Cog6ToothIcon, EyeSlashIcon, EyeIcon } from "@heroicons/vue/24/outline"
 import axios from 'axios'
 import { format } from 'timeago.js'
 import { router, usePage } from '@inertiajs/vue3'
@@ -15,6 +15,8 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/Components/ui/popover'
+import { Checkbox } from '@/Components/ui/checkbox'
+import Spinner from '@/Components/ui/Spinner.vue'
 
 const props = defineProps({
     shot: Object,
@@ -40,17 +42,28 @@ const isOwner = computed(() => {
     return props.author.id === usePage().props.auth.user?.id
 })
 
+let updating = ref({})
+
+const updateShot = (body = {}) => {
+    let updateKeys = Object.keys(body)
+
+    updateKeys.forEach(key => updating.value[key] = true)
+
+    return axios.patch(route('shots.update', props.shot.id), body)
+        .then((response) => {
+            router.reload({
+                only: ['shot'],
+                onFinish: () => updateKeys.forEach(key => updating.value[key] = false)
+            })
+
+            return response
+        })
+}
+
 const updateName = (event) => {
-    axios
-        .patch(route('shots.update', props.shot.id), {
-            'name': event.target.innerText
-        })
-        .then(() => {
-            event.target.blur()
-            router.reload({ only: [
-                'shot',
-            ] })
-        })
+    return updateShot({'name': event.target.innerText}).then(() => {
+        event.target.blur()
+    })
 }
 
 const deleteShot = () => {
@@ -92,8 +105,57 @@ const deleteShot = () => {
 
             <div v-if="isOwner" class="flex items-center space-x-1">
                 <button class="text-gray-500 hover:text-primary transition">
-                    <PencilSquareIcon class="h-6 w-6" @click.prevent="() => $refs.name.focus()" />
+                    <PencilSquareIcon class="h-6 w-6" @click.prevent="$refs.name.focus()" />
                 </button>
+
+                <Popover>
+                    <PopoverTrigger as="button" class="text-gray-500 hover:text-primary transition flex items-center justify-center">
+                        <EyeIcon class="h-6 w-6"/>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <div class="grid gap-4">
+                            <div class="space-y-2">
+                                <h4 class="font-medium leading-none">
+                                    Visibility
+                                </h4>
+                                <p class="text-sm text-muted-foreground">
+                                    Set the shot's visibility settings.
+                                </p>
+
+                            </div>
+
+                            <div class="flex items-center space-x-2">
+                                <Checkbox
+                                    v-if="!updating?.require_logged_in"
+                                    id="require_logged_in"
+                                    :checked="shot.require_logged_in"
+                                    @update:checked="(checked) => updateShot({require_logged_in: checked})"
+                                />
+                                <Spinner v-else/>
+                                <label
+                                    for="require_logged_in"
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Require viewers to be logged in
+                                </label>
+                            </div>
+
+                            <div class="flex items-center space-x-2">
+                                <Checkbox
+                                    v-if="!updating?.anonymize"
+                                    id="anonymize"
+                                    :checked="shot.anonymize"
+                                    @update:checked="(checked) => updateShot({anonymize: checked})"
+                                />
+                                <Spinner v-else/>
+                                <label
+                                    for="anonymize"
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Anonymize "posted by" details
+                                </label>
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
 
                 <RequireConfirmationDialog :action="deleteShot">
                     <template #title>
@@ -112,14 +174,12 @@ const deleteShot = () => {
                         Delete Shot
                     </template>
 
-                    <button class="text-gray-500 hover:text-primary transition flex items-center justify-center">
+                    <button class="text-gray-500 hover:text-destructive transition flex items-center justify-center">
                         <TrashIcon class="h-6 w-6" />
                     </button>
                 </RequireConfirmationDialog>
             </div>
         </div>
-
-
 
         <div class="flex items-center justify-between">
             <!-- User & Posted at -->

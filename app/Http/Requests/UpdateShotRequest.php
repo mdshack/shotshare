@@ -14,7 +14,9 @@ class UpdateShotRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'required', 'min:1', 'max:255'],
+            'name' => ['string', 'min:1', 'max:255'],
+            'require_logged_in' => ['boolean', 'sometimes'],
+            'anonymize' => ['boolean', 'sometimes'],
         ];
     }
 }

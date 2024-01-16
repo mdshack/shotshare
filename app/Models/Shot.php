@@ -14,7 +14,11 @@ use Illuminate\Support\Str;
  * @property int    $id
  * @property string $uuid
  * @property int    $user_id
+ * @property string $name
  * @property string $path
+ * @property int    $parent_shot_id
+ * @property bool   $require_logged_in
+ * @property bool   $anonymize
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -29,6 +33,11 @@ class Shot extends Model
 
     protected $appends = [
         'links',
+    ];
+
+    protected $casts = [
+        'require_logged_in' => 'bool',
+        'anonymize' => 'bool',
     ];
 
     protected static function booted(): void
