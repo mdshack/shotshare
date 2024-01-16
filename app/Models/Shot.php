@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,12 +44,28 @@ class Shot extends Model
     {
         return Attribute::make(
             get: fn ($_, array $attributes) => [
-                'url' => config('features.uuid_routes')
-                    ? route('shots.show', $attributes['uuid'])
-                    : route('shots.show', $attributes['id']),
+                'url' => route('shots.show', $this->publicIdentifier),
                 'asset_url' => asset($attributes['path']),
             ],
         );
+    }
+
+    protected function publicIdentifier(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($_, array $attributes) => config('features.uuid_routes')
+                ? $attributes['uuid']
+                : $attributes['id'],
+        );
+    }
+
+    public function scopeWherePublicIdentifier(Builder $query, string|int $id): void
+    {
+        if (config('features.uuid_routes')) {
+            $query->whereUuid($id);
+        } else {
+            $query->whereId($id);
+        }
     }
 
     public function user(): BelongsTo

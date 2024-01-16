@@ -24,9 +24,7 @@ class UploadController extends Controller
             }
         }
 
-        $id = config('features.uuid_routes')
-            ? $parentShot?->uuid
-            : $parentShot?->getKey();
+        $id = $parentShot->publicIdentifier;
 
         if ($request->expectsJson()) {
             return response()->json([
