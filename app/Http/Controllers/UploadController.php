@@ -31,8 +31,8 @@ class UploadController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'data' => [
-                    'link' => route('shots.show', $id)
-                ]
+                    'link' => route('shots.show', $id),
+                ],
             ]);
         }
 

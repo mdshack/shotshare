@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ApiKeyController extends Controller
 {
@@ -23,6 +24,6 @@ class ApiKeyController extends Controller
     {
         $request->user()->tokens()->whereId($id)->delete();
 
-        return response(status: 204);
+        return response(status: Response::HTTP_NO_CONTENT);
     }
 }
