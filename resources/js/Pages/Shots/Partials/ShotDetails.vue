@@ -65,7 +65,7 @@ const deleteShot = () => {
 <template>
     <div class="space-y-2">
         <div v-if="shot.name || isOwner" class="flex items-center space-x-2">
-            <Popover :open="true">
+            <Popover :open="titleFocus">
                 <PopoverAnchor>
                     <h1
                         class="text-xl font-semibold"
@@ -78,7 +78,9 @@ const deleteShot = () => {
                         {{shot.name ?? "Unnamed Shot"}}
                     </h1>
                 </PopoverAnchor>
-                <PopoverContent class="w-32 p-2 flex items-center justify-center">
+                <PopoverContent
+                    class="w-32 p-2 flex items-center justify-center"
+                    align="start">
                     <div class="text-gray-500 flex items-center justify-center">
                         <kbd class="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 mr-1">
                             Enter
