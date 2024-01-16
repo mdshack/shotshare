@@ -48,4 +48,27 @@ class UploadControllerTest extends TestCase
         $this->assertNotNull($parentRecord, 'it created parent record');
         $this->assertNotNull($childRecord, 'it created child record');
     }
+
+    public function test_it_returns_json()
+    {
+        Storage::fake();
+
+        $image = UploadedFile::fake()->image('fileA.jpg');
+
+        $response = $this
+            ->actingAs($this->user)
+            ->post(route('api.upload'), [
+                'images' => [$image],
+            ], [
+                'accept' => 'application/json',
+            ]);
+
+        $shot = Shot::first();
+
+        $this->assertEquals([
+            'data' => [
+                'link' => $shot->links['url'],
+            ],
+        ], json_decode($response->getContent(), true), 'it returns json');
+    }
 }

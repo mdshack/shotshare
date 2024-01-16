@@ -34,12 +34,11 @@ class ShotController extends Controller
 
     public function show(Request $request, string $id)
     {
-        $shot = (config('features.uuid_routes')
-            ? Shot::whereUuid($id)
-            : Shot::whereId($id))->firstOrFail();
+        $shot = Shot::wherePublicIdentifier($id)->firstOrFail();
 
         if ($shot->parent_shot_id) {
             $parentShotId = config('features.uuid_routes')
+                // TODO: Don't load parent (perhaps migrate parent_shot_id to be either uuid or id pending settings)
                 ? $shot->parentShot->uuid
                 : $shot->parent_shot_id;
 

@@ -23,7 +23,7 @@ const reactToShot = (shotId, reaction) => {
         router.reload({ only: [
             'reaction',
             'reactionCounts',
-        ] })
+        ]})
     })
 }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
@@ -24,7 +25,6 @@ Route::get('/', function () {
 
 Route::prefix('shots')
     ->name('shots.')
-    ->prefix('shots')
     ->controller(ShotController::class)
     ->group(function () {
         Route::get('', 'index')
@@ -37,6 +37,14 @@ Route::prefix('shots')
         Route::post('{id}/react', 'react')
             ->name('react')
             ->middleware('feature:reactions');
+    });
+
+Route::prefix('api-keys')
+    ->name('api-keys.')
+    ->controller(ApiKeyController::class)
+    ->group(function () {
+        Route::post('', 'store')->name('store');
+        Route::delete('{id}', 'destroy')->name('destroy');
     });
 
 Route::post('/upload', UploadController::class)
