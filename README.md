@@ -1,6 +1,6 @@
 <p align="center">
 
-![ShotShare banner image](/.docs/assets/banner.png)
+![ShotShare banner image](/.assets/banner.png)
 
 </p>
 

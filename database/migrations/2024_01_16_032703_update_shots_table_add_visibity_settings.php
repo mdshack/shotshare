@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::table('shots', function (Blueprint $table) {
             $table->boolean('require_logged_in')
-                ->after("parent_shot_id")
+                ->after('parent_shot_id')
                 ->nullable()
                 ->default(false);
 
             $table->boolean('anonymize')
-                ->after("require_logged_in")
+                ->after('require_logged_in')
                 ->nullable()
                 ->default(false);
         });
