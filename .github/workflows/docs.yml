@@ -3,6 +3,7 @@ name: Deploy Documentation
 on:
   push:
     branches: ["main"]
+    paths: [".docs/**"]
   workflow_dispatch:
 
 permissions:
@@ -29,21 +30,21 @@ jobs:
         uses: actions/configure-pages@v4
         with:
           static_site_generator: nuxt
-      - name: Set working directory
-        run: cd ./.docs
       - name: Restore cache
         uses: actions/cache@v3
         with:
           path: |
-            dist
-            .nuxt
+            ./.docs/dist
+            ./.docs/.nuxt
           key: ${{ runner.os }}-nuxt-build-${{ hashFiles('docs/dist') }}
           restore-keys: |
             ${{ runner.os }}-nuxt-build-
       - name: Install dependencies
         run: npm ci
+        working-directory: ./.docs
       - name: Static HTML export with Nuxt
         run: npm run generate
+        working-directory: ./.docs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
