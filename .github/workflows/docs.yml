@@ -15,7 +15,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +30,7 @@ jobs:
         with:
           static_site_generator: nuxt
       - name: Set working directory
-        run: ./.docs
+        run: cd ./.docs
       - name: Restore cache
         uses: actions/cache@v3
         with:
@@ -50,7 +49,6 @@ jobs:
         with:
           path: ./.docs/dist
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages
