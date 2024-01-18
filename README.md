@@ -22,7 +22,7 @@ ShotShare is an open source, self hosted, bare bones image posting/sharing platf
 
 ## Demo
 
-A demo may be found [here](https://demo.shotshare.mdsh.dev/). This environment is _strictly_ for trialing the application; images added here are automatically cleaned up after a few minutes.
+A demo may be found [here](https://demo.shotshare.dev/). This environment is _strictly_ for trialing the application; images added here are automatically cleaned up after a few minutes.
 
 ## Installation, Configuration, & Local Development
 
@@ -129,7 +129,7 @@ ShotShare is configured to work with [ShareX](https://getsharex.com/) a popular 
 
 1. On your ShotShare profile page (when logged in it will be at `{your installation}/profile`), create a new API key
 2. Copy the contents of `/shotshare.sxcu` into a notepad
-3. Replace `{Your ShotShare URL}` with your ShotShare installation URL, for example `https://demo.shotshare.mdsh.dev`
+3. Replace `{Your ShotShare URL}` with your ShotShare installation URL, for example `https://demo.shotshare.dev`
 4. Replace `{Your API Key}` with the API key you created in step #1
 5. Copy the contents of your modified `shotshare.sxcu`
 6. In ShareX, click `Destinations -> Custom Uploader Settings -> Import -> From Clipboard`
