@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.9.0](https://github.com/mdshack/shotshare/compare/v1.8.0...v1.9.0) (2024-01-21)
+
+
+### Features
+
+* add ability to cleanup images that do not correspond to any shot ([0521298](https://github.com/mdshack/shotshare/commit/0521298c6e7df5dbf84a6de53404bda261c4afd9))
+* add functionality for require logged in, anonymize ([e70b1ea](https://github.com/mdshack/shotshare/commit/e70b1eaeaed0a04f84412fce9ffee2edc8700da6))
+* add popover for shot name save key (press enter to save) ([f8c4ab8](https://github.com/mdshack/shotshare/commit/f8c4ab81ba4ad509662f1ed20f671693a7c77107))
+* visibility dropdown ([7b12229](https://github.com/mdshack/shotshare/commit/7b122298dfd57d2779628916b6f7ee39a2a3bd02))
+
+
+### Bug Fixes
+
+* delete image if shot deleted ([e9bbadd](https://github.com/mdshack/shotshare/commit/e9bbadd6c0b6c0a92dcb55d33e0a7dc9b515b554))
+* deleting event doesnt get fired w/ real databases, add to controller instead ([e9d3fe9](https://github.com/mdshack/shotshare/commit/e9d3fe9477c9839093ae64edde128a9e3c518e08))
+* paths ([64f6407](https://github.com/mdshack/shotshare/commit/64f64070baf1f913b93c53c4d74bc33deae66911))
+
+
+### Miscellaneous Chores
+
+* add unit tests ([a1bdb88](https://github.com/mdshack/shotshare/commit/a1bdb88daeee2845d9f32ba118b5d13519a92d4c))
+* correct path ([e56aa92](https://github.com/mdshack/shotshare/commit/e56aa9292127c599130bdd06d13451f8e76bbfc8))
+* deploy docs to pages ([c319553](https://github.com/mdshack/shotshare/commit/c3195539c314f9de5103ff310a23bebb9f522163))
+* don't run gha CI workflow when updating docs dir ([4183f4d](https://github.com/mdshack/shotshare/commit/4183f4dc37ea7d169b0ffd62bee5783d30066005))
+* left align title kbd popover ([ec22139](https://github.com/mdshack/shotshare/commit/ec22139de8745cdd5c9923b8776829d9dc553655))
+* lint php ([9f8a25c](https://github.com/mdshack/shotshare/commit/9f8a25c2d37e5f5da6b3eb2209844d5a77bcfc17))
+* move shotshare demo ([9132f75](https://github.com/mdshack/shotshare/commit/9132f759256baf6d6a8ac77cf09c4d809441757c))
+* set dir ([5951e26](https://github.com/mdshack/shotshare/commit/5951e268c7c178ec541371634a6c5f9dc0fb4d54))
+* trigger rplz ([403e63a](https://github.com/mdshack/shotshare/commit/403e63ac48a233318165ede2f44278b2d0df1080))
+
 ## [1.8.0](https://github.com/mdshack/shotshare/compare/v1.7.0...v1.8.0) (2024-01-16)
 
 
