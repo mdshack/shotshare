@@ -6,6 +6,7 @@ use App\Enums\ReactionType;
 use App\Models\Shot;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
@@ -123,13 +124,18 @@ class ShotControllerTest extends TestCase
 
     public function test_destroy_deletes_shot()
     {
-        [$shot, $_] = $this->createShot(true);
+        Storage::fake();
+
+        [$shot, $_] = $this->createShot(true, shotData: [
+            'path' => Storage::put($path = 'img.png', 'contents'),
+        ]);
 
         $this->actingAs($this->user)
             ->delete(route('shots.destroy', $shot->id))
             ->assertNoContent();
 
-        $this->assertNull($shot->fresh(), 'it deletes shot');
+        $this->assertNull($shot->fresh(), 'it deletes shot record');
+        $this->assertFileDoesNotExist($path, 'it deletes image file');
     }
 
     public function test_users_can_react_to_a_shot()
@@ -165,9 +171,9 @@ class ShotControllerTest extends TestCase
         $this->assertCount(0, $reactions = $shot->reactions()->get(), 'it toggles existing reaction');
     }
 
-    protected function createShot(bool $onlyShot = false): array
+    protected function createShot(bool $onlyShot = false, array $shotData = []): array
     {
-        $shot = $this->user->shots()->save(Shot::factory()->make());
+        $shot = $this->user->shots()->save(Shot::factory()->make($shotData));
 
         if (! $onlyShot) {
             // Create "childShots"
