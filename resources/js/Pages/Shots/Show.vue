@@ -13,6 +13,7 @@ const props = defineProps({
     reaction: Object,
     reactionCounts: Object,
     childShots: Array,
+    isOwner: Boolean,
 })
 
 let shots = [
@@ -37,6 +38,7 @@ const selectedIndex = ref(0)
                 <ShotDetails
                     :shot="shot"
                     :author="author"
+                    :is-owner="isOwner"
                     :reaction="reaction"
                     :reaction-counts="reactionCounts">
                 </ShotDetails>

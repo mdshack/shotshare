@@ -49,10 +49,14 @@ class ShotController extends Controller
             ]);
         }
 
+        if($shot->require_logged_in && !$request->user()) {
+            abort(404);
+        }
+
         return Inertia::render('Shots/Show', [
             'shot' => fn () => $shot->fresh(),
             'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
-            'author' => fn () => $shot->user->only(['id', 'name']),
+            'author' => fn () => $shot->anonymize ? null : $shot->user->only(['id', 'name']),
             'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
             'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
                 ->select('reaction', DB::raw('count(*) as count'))
@@ -60,6 +64,7 @@ class ShotController extends Controller
                 ->get()
                 ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
             'showLinks' => config('shots.links'),
+            'isOwner' => $shot->user_id == $request->user()->getKey(),
         ]);
     }
 

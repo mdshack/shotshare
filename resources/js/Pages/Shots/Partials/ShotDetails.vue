@@ -23,6 +23,7 @@ const props = defineProps({
     author: Object,
     reaction: Object,
     reactionCounts: Object,
+    isOwner: Boolean,
 })
 
 const titleFocus = ref(false)
@@ -38,10 +39,6 @@ const reactToShot = (shotId, reaction) => {
     })
 }
 
-const isOwner = computed(() => {
-    return props.author.id === usePage().props.auth.user?.id
-})
-
 let updating = ref({})
 
 const updateShot = (body = {}) => {
@@ -52,7 +49,7 @@ const updateShot = (body = {}) => {
     return axios.patch(route('shots.update', props.shot.id), body)
         .then((response) => {
             router.reload({
-                only: ['shot'],
+                only: ['shot', 'author'],
                 onFinish: () => updateKeys.forEach(key => updating.value[key] = false)
             })
 
@@ -186,7 +183,14 @@ const deleteShot = () => {
             <div class="flex items-center">
                 <UserAvatar  class="text-lg" :user="author"/>
                 <div class="flex flex-col text-sm">
-                    <div class="text-blue-500 font-semibold">{{ author.name }}</div>
+                    <div
+                        class="font-semibold"
+                        :class="{
+                            'text-blue-500': author,
+                            'text-gray-300': !author,
+                        }">
+                        {{ author?.name ?? "Anonymous User" }}
+                    </div>
                     <div class="text-muted-foreground">{{ format(shot.created_at) }}</div>
                 </div>
             </div>

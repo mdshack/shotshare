@@ -7,7 +7,7 @@ const props = defineProps({
 })
 
 const initials = computed(() => {
-    return props.user?.name.split(' ').map(fragment => fragment[0].toUpperCase()).join('')
+    return props.user?.name?.split(' ').map(fragment => fragment[0].toUpperCase()).join('') ?? "A"
 })
 </script>
 
