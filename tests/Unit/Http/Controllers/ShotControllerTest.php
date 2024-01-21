@@ -109,6 +109,41 @@ class ShotControllerTest extends TestCase
             ]));
     }
 
+    public function test_show_shows_images_to_logged_in_users()
+    {
+        [$shot, $_] = $this->createShot(true, shotData: [
+            'require_logged_in' => true,
+        ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('shots.show', $shot->id))
+            ->assertOk();
+    }
+
+    public function test_show_hides_image_from_guests()
+    {
+        [$shot, $_] = $this->createShot(true, shotData: [
+            'require_logged_in' => true,
+        ]);
+
+        $this->get(route('shots.show', $shot->id))->assertNotFound();
+    }
+
+    public function test_show_hides_author_on_anonymize()
+    {
+        [$shot, $_] = $this->createShot(true, shotData: [
+            'anonymize' => true,
+        ]);
+
+        $this->actingAs($this->user)
+            ->get(route('shots.show', $shot->id))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Shots/Show')
+                ->where('author', null));
+
+    }
+
     public function test_update_updates_shots_name()
     {
         [$shot, $_] = $this->createShot(true);
