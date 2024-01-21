@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/mdshack/shotshare/compare/v1.9.0...v1.9.1) (2024-01-21)
+
+
+### Bug Fixes
+
+* bug with guests viewing any shots ([fcc4cb6](https://github.com/mdshack/shotshare/commit/fcc4cb6b72881eabf5586dd5a8efe5e51fa56ff9))
+
 ## [1.9.0](https://github.com/mdshack/shotshare/compare/v1.8.0...v1.9.0) (2024-01-21)
 
 
