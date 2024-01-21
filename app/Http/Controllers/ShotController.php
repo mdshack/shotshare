@@ -49,7 +49,7 @@ class ShotController extends Controller
             ]);
         }
 
-        if($shot->require_logged_in && !$request->user()) {
+        if ($shot->require_logged_in && ! $request->user()) {
             abort(404);
         }
 
