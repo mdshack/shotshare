@@ -31,6 +31,8 @@ class CleanImagesTest extends TestCase
 
     public function test_it_cleans_up_files_with_missing_shot_records()
     {
+        Storage::fake();
+
         $user = User::factory()->create();
 
         $shots = Shot::factory(3)->make();

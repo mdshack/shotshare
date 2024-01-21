@@ -64,7 +64,7 @@ class ShotController extends Controller
                 ->get()
                 ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
             'showLinks' => config('shots.links'),
-            'isOwner' => $shot->user_id == $request->user()->getKey(),
+            'isOwner' => $shot->user_id == $request->user()?->getKey(),
         ]);
     }
 

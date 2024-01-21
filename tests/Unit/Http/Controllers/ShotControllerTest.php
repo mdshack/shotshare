@@ -83,6 +83,17 @@ class ShotControllerTest extends TestCase
                 ->where('shot.uuid', $shot->uuid));
     }
 
+    public function test_it_shows_shot_to_guest()
+    {
+        [$shot, $_] = $this->createShot();
+        config()->set('features.uuid_routes', false);
+
+        $this->get(route('shots.show', $shot->id))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Shots/Show')
+            );
+    }
+
     public function test_show_redirects_to_parent_shot_for_id()
     {
         config()->set('features.uuid_routes', false);
