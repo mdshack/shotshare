@@ -9,6 +9,7 @@ use App\Models\ShotReaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -73,9 +74,14 @@ class ShotController extends Controller
 
     public function destroy(Request $request, string $id)
     {
-        Shot::where('user_id', $request->user()->getKey())
+        $shot = Shot::where('user_id', $request->user()->getKey())
             ->whereId($id)
-            ->delete();
+            ->firstOrFail();
+
+        if ($shot) {
+            Storage::delete($shot->path);
+            $shot->delete();
+        }
 
         return response(status: Response::HTTP_NO_CONTENT);
     }
