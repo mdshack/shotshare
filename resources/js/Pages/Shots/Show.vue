@@ -25,7 +25,10 @@ const selectedIndex = ref(0)
 </script>
 
 <template>
-    <Head title="Shot" />
+    <Head title="Shot">
+        <meta property="og:site_name" content="ShotShare"/>
+        <meta v-if="shot" property="og:image" :content="shot.links.asset_url"/>
+    </Head>
 
     <Layout>
         <div class="space-y-8">
