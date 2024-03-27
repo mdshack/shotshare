@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <meta property="og:site_name" content="ShotShare"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:locale" content="en_US"/>
+
         <title inertia>{{ config('app.name', 'ShotShare') }}</title>
 
         <!-- Fonts -->
