@@ -28,6 +28,9 @@ const selectedIndex = ref(0)
     <Head title="Shot">
         <meta property="og:site_name" content="ShotShare"/>
         <meta v-if="shot" property="og:image" :content="shot.links.asset_url"/>
+        <meta v-if="shot?.type" property="og:image:type" :content="shot.type">
+        <meta v-if="shot?.width" property="og:image:width" :content="shot.width">
+        <meta v-if="shot?.height" property="og:image:height" :content="shot.height">
     </Head>
 
     <Layout>

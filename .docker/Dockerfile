@@ -29,7 +29,7 @@ RUN install-php-extensions \
 
 
 # Install frontend dependencies
-COPY package*.json /app
+COPY package.json package-lock.json /app/
 RUN npm install --omit optional
 
 # Copy Application

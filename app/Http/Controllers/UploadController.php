@@ -12,11 +12,15 @@ class UploadController extends Controller
         $parentShot = null;
 
         foreach ($request->files->get('images') as $i => $image) {
+            $imageInfo = getimagesize($image->getPathname());
             $path = UploadedFile::createFromBase($image)->storePublicly('uploads');
 
             $shot = $request->user()->shots()->create([
                 'path' => $path,
                 'parent_shot_id' => $parentShot?->getKey(),
+                'width' => $imageInfo[0] ?? null,
+                'height' => $imageInfo[1] ?? null,
+                'type' => $imageInfo['mime'] ?? null,
             ]);
 
             if ($i === 0) {
