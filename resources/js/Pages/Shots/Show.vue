@@ -22,10 +22,23 @@ let shots = [
 ]
 
 const selectedIndex = ref(0)
+
+const url = window.location.href
 </script>
 
 <template>
-    <Head title="Shot" />
+    <Head title="Shot">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+
+        <meta property="og:url" :content="url">
+        <meta property="og:title" :content="shot?.name ?? 'Unnamed Image'" />
+        <meta property="og:description" content="An image shared on ShotShare" />
+        <meta v-if="shot?.links?.asset_url" property="og:image" :content="shot.links.asset_url"/>
+        <meta v-if="shot?.type" property="og:image:type" :content="shot.type">
+        <meta v-if="shot?.width" property="og:image:width" :content="shot.width">
+        <meta v-if="shot?.height" property="og:image:height" :content="shot.height">
+    </Head>
 
     <Layout>
         <div class="space-y-8">
