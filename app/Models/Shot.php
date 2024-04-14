@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 /**
- * @property int    $id
+ * @property int $id
  * @property string $uuid
- * @property int    $user_id
+ * @property int $user_id
  * @property string $name
  * @property string $path
- * @property int    $parent_shot_id
- * @property bool   $require_logged_in
- * @property bool   $anonymize
+ * @property int $parent_shot_id
+ * @property bool $require_logged_in
+ * @property bool $anonymize
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
