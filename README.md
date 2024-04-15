@@ -97,6 +97,10 @@ _Note: These are not all of the configuration options, only the most used ones, 
 | `FEATURE_UUID_ROUTES`  | `false` | `true`, `false` | Utilizes UUIDs instead of IDs, will be the default in 2.0.0 |
 | `FEATURE_FOOTER`  | `true` | `true`, `false` | Adds credits footer ("Made with love" + "Check out source code"), leaving these should help generate additional traffic to this project, keeping it alive |
 | `HOST`  | localhost | _N/A_ | Public host used by Caddy, thanks to caddy, this host will automatically be issued a SSL certificate |
+| `PHP_MEMORY_LIMIT`  | `128M` | _N/A_ | Memory limit for PHP FPM |
+| `PHP_UPLOAD_MAX_FILESIZE`  | `2M` | _N/A_ | Max allowed upload size (Must include file size unit) |
+| `PHP_MAX_UPLOADS`  | `20` | _N/A_ | Max number of file uploads in a single request |
+| `PHP_POST_MAX_SIZE`  | `8M` | _N/A_ | Max size of a POST request |
 | `SHOTS_LINKS_SHARE_LINK`  | `true` | `true`, `false` | Indicates if the "Share Link" will be displayed on the shot screen |
 | `SHOTS_LINKS_DIRECT_LINK`  | `true` | `true`, `false` | Indicates if the "Direct Link" will be displayed on the shot screen |
 | `SHOTS_LINKS_MARKDOWN_REDDIT`  | `true` | `true`, `false` | Indicates if the "Markdown (Reddit)" link will be displayed on the shot screen |
