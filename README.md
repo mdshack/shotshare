@@ -51,7 +51,7 @@ docker run \
   -e FEATURE_UUID_ROUTES=true \
   -v shotshare_caddy_data:/data/caddy \
   -v shotshare_caddy_config:/config/caddy \
-  -v shotshare_data:/app/storage \
+  -v shotshare_data:/app/storage/app/uploads" \
   --mount type=bind,source=/shotshare/database.sqlite,target=/app/database/database.sqlite \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
   -d \
@@ -71,7 +71,7 @@ docker run \
   -p 80:80 \
   -e HOST=":80" \
   -e FEATURE_UUID_ROUTES=true \
-  -v shotshare_data:/app/storage \
+  -v shotshare_data:/app/storage/app/uploads" \
   --mount type=bind,source=/shotshare/database.sqlite,target=/app/database/database.sqlite \
   --mount type=bind,source=/shotshare/.env,target=/app/.env \
   -d \
