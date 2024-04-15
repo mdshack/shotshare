@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.10.0](https://github.com/mdshack/shotshare/compare/v1.9.1...v1.10.0) (2024-04-15)
+
+
+### Features
+
+* ability to configure fpm ([56d8ab5](https://github.com/mdshack/shotshare/commit/56d8ab54c149dfb163666aaab2fcea19ed91a6e9))
+* add required env variables to get docker compose to work ([8a0633d](https://github.com/mdshack/shotshare/commit/8a0633dfaf23f838e3effea1e1ab839bae31582e))
+
+
+### Miscellaneous Chores
+
+* docs ([657d977](https://github.com/mdshack/shotshare/commit/657d97709e133bcc1854ea44f7bd3627ec67b63f))
+* moved default env values to docker-compose file ([907a49f](https://github.com/mdshack/shotshare/commit/907a49f79f39c3a46b974edabd0d1296b9bc173d))
+
 ## [1.9.1](https://github.com/mdshack/shotshare/compare/v1.9.0...v1.9.1) (2024-01-21)
 
 
