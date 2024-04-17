@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/mdshack/shotshare/compare/v1.10.0...v1.11.0) (2024-04-17)
+
+
+### Features
+
+* upgrade to laravel 11 ([0cc5b97](https://github.com/mdshack/shotshare/commit/0cc5b970a88796a074d74be4e5e19e2ec7856031))
+
 ## [1.10.0](https://github.com/mdshack/shotshare/compare/v1.9.1...v1.10.0) (2024-04-15)
 
 
