@@ -31,11 +31,14 @@ const selectedIndex = ref(0)
         <div class="space-y-8">
             <div class="space-y-8">
                 <ShotImage
+                    :shot="shot"
                     :shots="shots"
+                    :author="author"
+                    :is-owner="isOwner"
                     @focus="(index) =>  selectedIndex = index">
                 </ShotImage>
 
-                <ShotDetails
+                <!-- <ShotDetails
                     :shot="shot"
                     :author="author"
                     :is-owner="isOwner"
@@ -47,7 +50,7 @@ const selectedIndex = ref(0)
                     :shots="shots"
                     :selected-index="selectedIndex"
                     :show-links="showLinks">
-                </ShotLinks>
+                </ShotLinks> -->
             </div>
         </div>
     </Layout>
