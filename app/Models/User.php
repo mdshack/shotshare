@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,6 +25,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'handle',
         'email',
         'password',
         'bio',
@@ -49,6 +51,27 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $appends = [
+        'display_handle',
+    ];
+
+    public function shots(): HasMany
+    {
+        return $this->hasMany(Shot::class);
+    }
+
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(ShotReaction::class);
+    }
+
+    public function displayHandle() : Attribute
+    {
+        return Attribute::make(
+            get: fn() => "@$this->handle"
+        );
+    }
+
     public function createToken(string $name, array $abilities = ['*'], ?DateTimeInterface $expiresAt = null)
     {
         $plainTextToken = $this->generateTokenString();
@@ -64,13 +87,4 @@ class User extends Authenticatable
         return new NewAccessToken($token, $plainTextToken);
     }
 
-    public function shots(): HasMany
-    {
-        return $this->hasMany(Shot::class);
-    }
-
-    public function reactions(): HasMany
-    {
-        return $this->hasMany(ShotReaction::class);
-    }
 }

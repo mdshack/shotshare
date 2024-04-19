@@ -72,16 +72,13 @@ const activeButton = ref(null)
             <div class="flex items-center">
                 <UserAvatar class="text-lg mr-2" :user="author"/>
                 <div>
-                    <h5 class="font-semibold">Micah Shackelford</h5>
-                    <span class="text-red-600 font-semibold text-sm">@mdshack</span>
+                    <h5 class="font-semibold">{{ author.name }}</h5>
+                    <span class="text-red-600 font-semibold text-sm">{{ author.display_handle }}</span>
                 </div>
             </div>
-            <p class="mt-4 max-h-[100px] text-gray-300">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam, at? Optio tempore quis cupiditate corporis perferendis quam voluptatum, modi iure dignissimos vitae minima quisquam doloribus ratione. Magni ab ipsum ullam?
+            <p v-if="author.bio" class="mt-4 max-h-[100px] text-gray-400">
+                {{ author.bio }}
             </p>
-            <!-- <div class="mt-4">
-                Links
-            </div> -->
         </div>
 
         <div class="col-span-9">

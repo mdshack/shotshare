@@ -11,7 +11,7 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from '@/Components/ui/tooltip'
-import { InformationCircleIcon } from "@heroicons/vue/24/solid";
+import { InformationCircleIcon, AtSymbolIcon } from "@heroicons/vue/24/solid";
 
 defineProps({
     mustVerifyEmail: {
@@ -26,6 +26,7 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
     name: user.name,
+    handle: user.handle,
     email: user.email,
     bio: user.bio,
 });
@@ -48,6 +49,26 @@ const form = useForm({
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
+            <div>
+                <InputLabel for="handle" value="Handle" />
+
+                <div class="relative">
+                    <Input
+                        id="handle"
+                        type="text"
+                        class="mt-1 block w-full pl-10"
+                        v-model="form.handle"
+                        required
+                        autocomplete="handle"
+                    />
+                    <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+                        <AtSymbolIcon class="size-6 text-muted-foreground"/>
+                    </span>
+                </div>
+
+                <InputError class="mt-2" :message="form.errors.handle" />
             </div>
 
             <div>

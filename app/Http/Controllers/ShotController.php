@@ -56,7 +56,7 @@ class ShotController extends Controller
         return Inertia::render('Shots/Show', [
             'shot' => fn () => $shot->fresh(),
             'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
-            'author' => fn () => $shot->anonymize ? null : $shot->user->only(['id', 'name']),
+            'author' => fn () => $shot->anonymize ? null : $shot->user->only(['id', 'name', 'bio', 'display_handle']),
             'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
             'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
                 ->select('reaction', DB::raw('count(*) as count'))
