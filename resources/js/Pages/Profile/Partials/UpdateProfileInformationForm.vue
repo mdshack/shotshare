@@ -4,6 +4,14 @@ import InputLabel from '@/Components/InputLabel.vue';
 import { Button } from '@/Components/ui/button'
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { Input } from '@/Components/ui/input'
+import { Textarea } from '@/Components/ui/textarea'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger
+} from '@/Components/ui/tooltip'
+import { InformationCircleIcon } from "@heroicons/vue/24/solid";
 
 defineProps({
     mustVerifyEmail: {
@@ -19,6 +27,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    bio: user.bio,
 });
 </script>
 
@@ -42,7 +51,19 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <div class="flex items-center">
+                    <InputLabel for="email" value="Email" />
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <InformationCircleIcon class="h-5 w-5 text-gray-500 ml-2" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                Your email will not be shared with anyone
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
 
                 <Input
                     id="email"
@@ -75,6 +96,22 @@ const form = useForm({
                 >
                     A new verification link has been sent to your email address.
                 </div>
+            </div>
+
+            <div>
+                <InputLabel for="bio" value="Bio" />
+
+                <div class="relative">
+                    <Textarea
+                        id="bio"
+                        type="bio"
+                        class="mt-1 block w-full"
+                        v-model="form.bio"
+                    />
+                    <p class="absolute right-0 bottom-0 mr-2 mb-1 text-sm text-gray-500">{{form.bio?.length ?? 0}} / 500</p>
+                </div>
+
+                <InputError class="mt-2" :message="form.errors.bio" />
             </div>
 
             <div class="flex items-center gap-4">
