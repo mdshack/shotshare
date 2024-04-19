@@ -1,23 +1,23 @@
-# Ignore All
-*
+# # Ignore All
+# *
 
-# Except Directories
-!.docker
-!app
-!bootstrap
-!config
-!database
-!public
-!resources
-!routes
-!storage
+# # Except Directories
+# !.docker
+# !app
+# !bootstrap
+# !config
+# !database
+# !public
+# !resources
+# !routes
+# !storage
 
-# Except Files
-!artisan
-!composer.json
-!composer.lock
-!package-lock.json
-!package.json
-!postcss.config.js
-!tailwind.config.js
-!vite.config.js
+# # Except Files
+# !artisan
+# !composer.json
+# !composer.lock
+# !package-lock.json
+# !package.json
+# !postcss.config.js
+# !tailwind.config.js
+# !vite.config.js

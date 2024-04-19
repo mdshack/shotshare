@@ -12,6 +12,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^1.0.0",
         "laravel/framework": "^11.0",
+        "laravel/octane": "^2.3",
         "laravel/prompts": "^0.1.14",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
