@@ -1,20 +1,4 @@
-FROM mdshack/php:8.3-fpm-alpine-caddy
-
-ARG CI=false
-
-ENV XDG_CONFIG_HOME /config
-ENV XDG_DATA_HOME /data
-
-EXPOSE 80
-EXPOSE 443
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
-# Install Node/NPM
-RUN apk add --update --no-cache nodejs npm
-
-WORKDIR /app
+FROM dunglas/frankenphp:latest-php8.3.6-alpine
 
 RUN install-php-extensions \
     dom \
@@ -27,27 +11,6 @@ RUN install-php-extensions \
     pcntl \
     pdo_mysql
 
+COPY . /app
 
-# Install frontend dependencies
-COPY package*.json /app
-RUN npm install --omit optional
-
-# Copy Application
-COPY --chown=www-data . /app
-
-RUN if [[ $CI != *"true"* ]]; \
-        then composer install --no-interaction --optimize-autoloader; \
-        else composer install --no-interaction --optimize-autoloader --no-dev; \
-    fi
-
-# Build Frontend
-RUN npm run build
-
-# Cleanup
-RUN if [[ $CI != *"true"* ]] ; then rm -rf /app/node_modules /usr/local/bin/composer /usr/local/bin/npm /usr/local/bin/node /usr/local/lib/node_modules ; fi
-
-COPY --chown=www-data ./.docker/Caddyfile /etc/caddy/Caddyfile
-COPY --chown=www-data ./.docker/init/* /docker-init/
-
-RUN touch /app/.env
-RUN chown www-data:www-data /app/.env
+ENTRYPOINT ["php", "artisan", "octane:start", "--server", "frankenphp", "--host=0.0.0.0", "--port=80", "--admin-port=2019"]
