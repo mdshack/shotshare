@@ -1,6 +1,6 @@
 <script setup>
-import { Head, Link, usePage } from '@inertiajs/vue3';
-import { Avatar } from '@/Components/ui/avatar'
+import { Head, Link, usePage } from '@inertiajs/vue3'
+import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import { Button } from '@/Components/ui/button'
 import {
     DropdownMenu,
@@ -11,7 +11,7 @@ import {
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
 import { computed, ref } from 'vue';
-import { UserIcon } from "@heroicons/vue/16/solid";
+import { UserIcon, Cog6ToothIcon, ArrowRightStartOnRectangleIcon, StarIcon } from "@heroicons/vue/16/solid";
 import { ArrowLeftEndOnRectangleIcon, CloudArrowUpIcon, MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
 import { Separator } from '@/Components/ui/separator'
 import {
@@ -45,63 +45,7 @@ const initials = computed(() => {
                         ShotShare
                     </Button>
                 </Link>
-                <!-- <DropdownMenu v-if="user">
-                    <DropdownMenuTrigger>
-                        <Button variant="ghost">
-                            <Avatar class="w-6 h-6 mr-2">
-                                {{ initials }}
-                            </Avatar>
-                            {{ firstName }}
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-
-                        <DropdownMenuSeparator />
-
-                        <Link :href="route('profile.edit')">
-                            <DropdownMenuItem class="cursor-pointer">
-                                Profile
-                            </DropdownMenuItem>
-                        </Link>
-
-                        <Link :href="route('shots.index')">
-                            <DropdownMenuItem class="cursor-pointer">
-                                Shots
-                            </DropdownMenuItem>
-                        </Link>
-
-                        <DropdownMenuSeparator />
-
-                        <Link :href="route('logout')" method="post" as="button" class="w-full">
-                            <DropdownMenuItem class="cursor-pointer">
-                                Sign Out
-                            </DropdownMenuItem>
-                        </Link>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-
-                <div v-else class="space-x-2">
-                    <Link :href="route('login')">
-                        <Button>
-                            Log In
-                        </Button>
-                    </Link>
-
-                    <Link v-if="$page.props.auth.allow_registration" :href="route('register')">
-                        <Button variant="secondary">
-                            Sign Up
-                        </Button>
-                    </Link>
-                </div> -->
-
                 <div class="flex items-center divide-x">
-                    <!-- <button type="button" class="text-white border-2 border-[#f94144] hover:bg-[#f94144] focus:ring-4 focus:outline-none focus:ring-red-300 font-medium text-sm px-4 py-2 text-center transition">
-                        <div class="flex items-center">
-                            <CloudArrowUpIcon class="h-5 mr-2" />
-                            Upload
-                        </div>
-                    </button> -->
                     <TooltipProvider :delay-duration="100">
                         <div class="flex items-center pr-6 space-x-4">
                             <Tooltip>
@@ -141,32 +85,51 @@ const initials = computed(() => {
                             <DropdownMenu v-if="user" >
                                 <DropdownMenuTrigger>
                                     <button>
-                                        <Avatar class="w-7 h-7">
-                                            {{ initials }}
-                                        </Avatar>
+                                        <UserAvatar class="w-7 h-7" :user="user"/>
                                     </button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent side="bottom" align="end">
-                                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuContent side="bottom" align="end" class="min-w-[170px]">
+                                    <div class="flex items-center p-1">
+                                        <UserAvatar class="mr-2" :user="user"/>
+                                        <div>
+                                            <h3 class="font-bold ">{{ user.name }}</h3>
+                                            <p class="text-sm">{{ user.display_handle }}</p>
+                                        </div>
+                                    </div>
 
                                     <DropdownMenuSeparator />
 
                                     <Link :href="route('profile.edit')">
                                         <DropdownMenuItem class="cursor-pointer">
-                                            Profile
+                                            <UserIcon class="h-6 w-6 text-gray-500 mr-2" />
+                                            My Profile
                                         </DropdownMenuItem>
                                     </Link>
 
-                                    <Link :href="route('shots.index')">
+                                    <Link :href="route('profile.edit')">
                                         <DropdownMenuItem class="cursor-pointer">
-                                            Shots
+                                            <Cog6ToothIcon class="h-6 w-6 text-gray-500 mr-2" />
+                                            Settings
                                         </DropdownMenuItem>
                                     </Link>
 
                                     <DropdownMenuSeparator />
 
+                                    <a
+                                        href="https://github.com/mdshack/shotshare"
+                                        target="_blank"
+                                        rel="noopener">
+                                        <DropdownMenuItem class="cursor-pointer">
+                                            <StarIcon class="h-6 w-6 text-gray-500 mr-2" />
+                                            Star on GitHub
+                                        </DropdownMenuItem>
+                                    </a>
+
+                                    <DropdownMenuSeparator />
+
                                     <Link :href="route('logout')" method="post" as="button" class="w-full">
                                         <DropdownMenuItem class="cursor-pointer">
+                                            <ArrowRightStartOnRectangleIcon class="h-6 w-6 text-gray-500 mr-2" />
                                             Sign Out
                                         </DropdownMenuItem>
                                     </Link>
@@ -186,18 +149,7 @@ const initials = computed(() => {
                         </div>
 
                     </TooltipProvider>
-
-                    <!-- <button class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 transition">
-                        <span class="relative px-4 py-2 transition-all ease-in duration-75 bg-[#09090b] group-hover:bg-opacity-0 flex transition">
-                            <UserIcon class="w-5 mr-2"/>
-                            Log In
-                        </span>
-                    </button> -->
                 </div>
-
-                <!-- <Button class="bg-[#8338EC] text-white">
-                    Upload
-                </Button> -->
             </nav>
         </div>
 

@@ -37,7 +37,7 @@ defineProps({
             <Card>
                 <CardHeader>
                     <CardTitle>Profile Information</CardTitle>
-                    <CardDescription>Update your account's profile information and email address.</CardDescription>
+                    <CardDescription>Update your account's profile information.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <UpdateProfileInformationForm

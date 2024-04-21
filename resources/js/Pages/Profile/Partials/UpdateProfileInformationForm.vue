@@ -1,8 +1,9 @@
 <script setup>
+import {computed, onMounted, ref } from 'vue'
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import { Button } from '@/Components/ui/button'
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { Input } from '@/Components/ui/input'
 import { Textarea } from '@/Components/ui/textarea'
 import {
@@ -11,7 +12,9 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from '@/Components/ui/tooltip'
-import { InformationCircleIcon, AtSymbolIcon } from "@heroicons/vue/24/solid";
+import { InformationCircleIcon, AtSymbolIcon, CloudArrowUpIcon, TrashIcon } from "@heroicons/vue/24/solid";
+import UserAvatar from '@/Components/ui/UserAvatar.vue'
+import Spinner from '@/Components/ui/Spinner.vue'
 
 defineProps({
     mustVerifyEmail: {
@@ -22,18 +25,80 @@ defineProps({
     },
 });
 
-const user = usePage().props.auth.user;
+const user = computed(() => usePage().props.auth.user)
 
 const form = useForm({
-    name: user.name,
-    handle: user.handle,
-    email: user.email,
-    bio: user.bio,
-});
+    name: user.value.name,
+    handle: user.value.handle,
+    email: user.value.email,
+    bio: user.value.bio,
+})
+
+const uploadingAvatar = ref(false)
+
+let handleAvatarUpload = (event) => {
+    uploadingAvatar.value = true
+
+    const avatar = event.target.files[0]
+    return router.post(route("profile.avatar.upload"), {
+        avatar,
+    }, {
+        onFinish: () => {
+            uploadingAvatar.value = false
+            router.reload({only: ['user']})
+        }
+    })
+}
+
+const handleAvatarDestroy = () => {
+    return router.delete(route('profile.avatar.destroy'), {
+        onFinish: () => {
+            router.reload({only: ['user']})
+        }
+    })
+}
 </script>
 
 <template>
     <section>
+        <div>
+            <div>
+                <InputLabel value="Avatar" />
+
+                <div class="flex items-center mt-1">
+                    <UserAvatar v-if="!uploadingAvatar" class="w-24 h-24 text-4xl mr-4" :user="user" />
+                    <div v-else class="w-24 h-24 rounded-full mr-4 flex items-center justify-center border">
+                        <Spinner class="w-8 h-8" />
+                    </div>
+                    <div>
+                        <div class="flex space-x-2">
+                            <input
+                                ref="avatarUpload"
+                                type="file"
+                                class="hidden"
+                                @change="handleAvatarUpload">
+                            <Button
+                                class="w-min"
+                                @click.prevent="$refs.avatarUpload.click()">
+                                <CloudArrowUpIcon class="h-5 w-5 mr-2" />
+                                Upload
+                            </Button>
+                            <Button
+                                class="w-min"
+                                variant="destructive"
+                                @click.prevent="handleAvatarDestroy">
+                                <TrashIcon class="h-5 w-5 mr-2" />
+                                Remove
+                            </Button>
+                        </div>
+                        <p class="text-sm mt-2">Must be at least 96x96. JPG or PNG</p>
+                    </div>
+                </div>
+
+                <InputError class="mt-2" :message="form.errors.avatar" />
+            </div>
+        </div>
+
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
             <div>
                 <InputLabel for="name" value="Name" />
@@ -136,7 +201,7 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <Button :disabled="form.processing">Save</Button>
+                <Button :disabled="form.processing" type="submit">Save</Button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"

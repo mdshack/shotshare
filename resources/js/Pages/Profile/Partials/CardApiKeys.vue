@@ -121,7 +121,7 @@ const deleteApiKey = (apiKeyId) => {
                         <TableRow v-if="apiKeys === undefined">
                             <TableCell :colSpan="5" class="h-36">
                                 <div class="w-full h-full flex items-center justify-center">
-                                    <Spinner/>
+                                    <Spinner class="w-5 h-5"/>
                                 </div>
                             </TableCell>
                         </TableRow>

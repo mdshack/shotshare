@@ -60,13 +60,15 @@ onMounted(() => {
                         :is-favorite="isFavorite"
                     />
 
-                    <hr class="my-14"/>
+                    <template v-if="author">
+                        <hr class="my-14"/>
 
-                    <h3 class="font-bold text-xl mb-4">More from {{ author?.display_handle }}</h3>
+                        <h3 class="font-bold text-xl mb-4">More from {{ author?.display_handle }}</h3>
 
-                    <div class="grid grid-cols-3 gap-4">
-                        <img :src="shot.links.asset_url"/>
-                    </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <img :src="shot.links.asset_url"/>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>

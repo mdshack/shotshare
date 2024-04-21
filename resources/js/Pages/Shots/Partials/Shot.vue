@@ -225,7 +225,7 @@ const settingsOpen = ref(false)
                                 :checked="shot.require_logged_in"
                                 @update:checked="(checked) => updateShot({require_logged_in: checked})"
                             />
-                            <Spinner v-else/>
+                            <Spinner v-else class="w-5 h-5"/>
                             <label
                                 for="require_logged_in"
                                 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -240,7 +240,7 @@ const settingsOpen = ref(false)
                                 :checked="shot.anonymize"
                                 @update:checked="(checked) => updateShot({anonymize: checked})"
                             />
-                            <Spinner v-else/>
+                            <Spinner v-else class="w-5 h-5"/>
                             <label
                                 for="anonymize"
                                 class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
