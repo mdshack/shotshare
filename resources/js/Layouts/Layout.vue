@@ -39,7 +39,7 @@ const initials = computed(() => {
 <template>
     <div class="mx-auto pb-14">
         <div class=" border-b py-4 mb-8">
-            <nav class="max-w-6xl mx-auto flex justify-between items-center">
+            <nav class="max-w-6xl px-4 mx-auto flex justify-between items-center">
                 <Link :href="route('home')">
                     <Button variant="ghost" class="font-semibold text-xl cursor-pointer">
                         ShotShare
@@ -141,7 +141,7 @@ const initials = computed(() => {
                             <DropdownMenu v-if="user" >
                                 <DropdownMenuTrigger>
                                     <button>
-                                        <Avatar class="w-7 h-7 mr-2">
+                                        <Avatar class="w-7 h-7">
                                             {{ initials }}
                                         </Avatar>
                                     </button>
@@ -201,7 +201,7 @@ const initials = computed(() => {
             </nav>
         </div>
 
-        <main class="max-w-6xl mx-auto">
+        <main class="max-w-6xl mx-auto px-4">
             <slot/>
         </main>
 

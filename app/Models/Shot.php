@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
  * @property int $parent_shot_id
  * @property bool $require_logged_in
  * @property bool $anonymize
+ * @property int $views
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -95,5 +96,10 @@ class Shot extends Model
     public function reactions(): HasMany
     {
         return $this->hasMany(ShotReaction::class);
+    }
+
+    public function views() : HasMany
+    {
+        return $this->hasMany(ShotView::class);
     }
 }

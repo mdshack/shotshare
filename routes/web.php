@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\DiscoverController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
@@ -19,9 +20,24 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+// TODO: ability to configure homepage (discover or upload)
+Route::get('/', [UploadController::class, 'create'])->name('home');
+
+Route::prefix("uploads")
+    ->name("uploads.")
+    ->controller(UploadController::class)
+    ->group(function() {
+        Route::get("", "create");
+        // TODO: support guest uploads?
+        Route::post("", "store")->middleware(['auth', 'verified']);
+    });
+
+Route::prefix("discover")
+    ->name("discover.")
+    ->controller(DiscoverController::class)
+    ->group(function() {
+
+    });
 
 Route::prefix('shots')
     ->name('shots.')
@@ -37,6 +53,13 @@ Route::prefix('shots')
         Route::post('{id}/react', 'react')
             ->name('react')
             ->middleware('feature:reactions');
+
+        Route::post('{id}/favorite', 'favorite')
+            ->name('favorite')
+            ->middleware('feature:favorites');
+        Route::delete('{id}/favorite', 'unfavorite')
+            ->name('unfavorite')
+            ->middleware('feature:favorites');
     });
 
 Route::prefix('api-keys')
@@ -46,10 +69,6 @@ Route::prefix('api-keys')
         Route::post('', 'store')->name('store');
         Route::delete('{id}', 'destroy')->name('destroy');
     });
-
-Route::post('/upload', UploadController::class)
-    ->middleware(['auth', 'verified'])
-    ->name('upload');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -76,7 +76,7 @@ const form = useForm({
                     <InputLabel for="email" value="Email" />
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger>
+                            <TooltipTrigger :as-child="true">
                                 <InformationCircleIcon class="h-5 w-5 text-gray-500 ml-2" />
                             </TooltipTrigger>
                             <TooltipContent>

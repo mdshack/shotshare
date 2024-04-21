@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(ShotReaction::class);
     }
 
+    public function favorites() : HasMany
+    {
+        return $this->hasMany(UserFavorite::class);
+    }
+
     public function displayHandle() : Attribute
     {
         return Attribute::make(
