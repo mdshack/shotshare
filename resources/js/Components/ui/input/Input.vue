@@ -32,5 +32,5 @@ const modelValue = useVModel(props, "modelValue", emits, {
       )
     "
     v-bind="rest"
-  />
+  >
 </template>

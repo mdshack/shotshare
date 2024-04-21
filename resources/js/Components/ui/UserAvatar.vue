@@ -13,8 +13,8 @@ const initials = computed(() => {
 </script>
 
 <template>
-    <Avatar class="mr-2">
-        <AvatarImage :src="user.avatar"/>
-        <AvatarFallback>{{ initials }}</AvatarFallback>
-    </Avatar>
+  <Avatar class="mr-2">
+    <AvatarImage :src="user.avatar" />
+    <AvatarFallback>{{ initials }}</AvatarFallback>
+  </Avatar>
 </template>

@@ -18,7 +18,10 @@ const { class: className, ...rest } = useAttrs();
 </script>
 
 <template>
-  <div :class="cn('space-y-2', className ?? '')" v-bind="rest">
+  <div
+    :class="cn('space-y-2', className ?? '')"
+    v-bind="rest"
+  >
     <slot />
   </div>
 </template>

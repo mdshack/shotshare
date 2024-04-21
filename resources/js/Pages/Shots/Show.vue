@@ -42,36 +42,37 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Shot" />
+  <Head title="Shot" />
 
-    <Layout>
-        <div class="space-y-8">
-            <div class="grid grid-cols-12">
+  <Layout>
+    <div class="space-y-8">
+      <div class="grid grid-cols-12">
+        <AuthorSidebar :author="author" />
 
-                <AuthorSidebar :author="author"/>
+        <div class="col-span-12 md:col-span-9">
+          <Shot
+            :shot="shot"
+            :reaction="reaction"
+            :reaction-counts="reactionCounts"
+            :views="views"
+            :is-owner="isOwner"
+            :is-favorite="isFavorite"
+          />
 
-                <div class="col-span-12 md:col-span-9">
-                    <Shot
-                        :shot="shot"
-                        :reaction="reaction"
-                        :reaction-counts="reactionCounts"
-                        :views="views"
-                        :is-owner="isOwner"
-                        :is-favorite="isFavorite"
-                    />
+          <template v-if="author">
+            <hr class="my-14">
 
-                    <template v-if="author">
-                        <hr class="my-14"/>
+            <h3 class="font-bold text-xl mb-4">
+              More from {{ author?.display_handle }}
+            </h3>
 
-                        <h3 class="font-bold text-xl mb-4">More from {{ author?.display_handle }}</h3>
-
-                        <div class="grid grid-cols-3 gap-4">
-                            <img :src="shot.links.asset_url"/>
-                        </div>
-                    </template>
-                </div>
+            <div class="grid grid-cols-3 gap-4">
+              <img :src="shot.links.asset_url">
             </div>
+          </template>
         </div>
-    </Layout>
+      </div>
+    </div>
+  </Layout>
 </template>
 

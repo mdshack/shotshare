@@ -16,16 +16,16 @@ const { class: className, ...rest } = useAttrs();
 </script>
 
 <template>
-    <Label
-        :class="
-        cn(
-            'block text-sm tracking-tight font-medium text-left',
-            invalid ? 'text-destructive' : 'text-foreground',
-            className ?? ''
-        )
-        "
-        v-bind="rest"
-    >
-        <slot />
-    </Label>
+  <Label
+    :class="
+      cn(
+        'block text-sm tracking-tight font-medium text-left',
+        invalid ? 'text-destructive' : 'text-foreground',
+        className ?? ''
+      )
+    "
+    v-bind="rest"
+  >
+    <slot />
+  </Label>
 </template>

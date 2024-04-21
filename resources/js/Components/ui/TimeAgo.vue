@@ -13,21 +13,21 @@ defineProps({
 </script>
 
 <template>
-    <template v-if="datetime">
-        <TooltipProvider>
-            <Tooltip>
-                <TooltipTrigger>
-                    {{ format(datetime) }}
-                </TooltipTrigger>
-                <TooltipContent>
-                    {{ datetime }}
-                </TooltipContent>
-            </Tooltip>
-        </TooltipProvider>
-    </template>
-    <template v-else>
-        <slot name="empty-state">
-            <span class="text-gray-500">--</span>
-        </slot>
-    </template>
+  <template v-if="datetime">
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          {{ format(datetime) }}
+        </TooltipTrigger>
+        <TooltipContent>
+          {{ datetime }}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  </template>
+  <template v-else>
+    <slot name="empty-state">
+      <span class="text-gray-500">--</span>
+    </slot>
+  </template>
 </template>

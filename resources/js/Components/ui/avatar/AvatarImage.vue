@@ -9,5 +9,8 @@ const props = defineProps({
 </script>
 
 <template>
-  <AvatarImage v-bind="props" class="h-full w-full object-cover" />
+  <AvatarImage
+    v-bind="props"
+    class="h-full w-full object-cover"
+  />
 </template>
