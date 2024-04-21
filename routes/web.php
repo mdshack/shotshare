@@ -7,7 +7,6 @@ use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,19 +22,19 @@ use Inertia\Inertia;
 // TODO: ability to configure homepage (discover or upload)
 Route::get('/', [UploadController::class, 'create'])->name('home');
 
-Route::prefix("uploads")
-    ->name("uploads.")
+Route::prefix('uploads')
+    ->name('uploads.')
     ->controller(UploadController::class)
-    ->group(function() {
-        Route::get("", "create");
+    ->group(function () {
+        Route::get('', 'create');
         // TODO: support guest uploads?
-        Route::post("", "store")->middleware(['auth', 'verified']);
+        Route::post('', 'store')->middleware(['auth', 'verified']);
     });
 
-Route::prefix("discover")
-    ->name("discover.")
+Route::prefix('discover')
+    ->name('discover.')
     ->controller(DiscoverController::class)
-    ->group(function() {
+    ->group(function () {
 
     });
 

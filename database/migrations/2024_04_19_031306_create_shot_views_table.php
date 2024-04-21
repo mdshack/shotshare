@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('shot_views', function (Blueprint $table) {
             $table->foreignIdFor(Shot::class);
-            $table->string("identity");
+            $table->string('identity');
 
             $table->unique([
                 'shot_id',

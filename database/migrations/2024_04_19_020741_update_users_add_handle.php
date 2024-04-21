@@ -20,7 +20,7 @@ return new class extends Migration
                 ->unique();
         });
 
-        foreach(User::all() as $user) {
+        foreach (User::all() as $user) {
             $this->setUserHandle($user);
         }
 
@@ -41,16 +41,16 @@ return new class extends Migration
         });
     }
 
-    protected function setUserHandle(User $user) : void
+    protected function setUserHandle(User $user): void
     {
         $user->handle = Str::of($user->name)
             ->lower()
-            ->replace(" ", ".")
+            ->replace(' ', '.')
             ->toString();
 
         // Append numbers until we are unique
         while (User::whereHandle($user->handle)->count() >= 1) {
-            $user->handle .= rand(1,9);
+            $user->handle .= rand(1, 9);
         }
 
         $user->save();

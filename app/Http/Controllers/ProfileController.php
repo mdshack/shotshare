@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -67,10 +67,10 @@ class ProfileController extends Controller
     public function uploadAvatar(Request $request)
     {
         $this->validate($request, [
-            'avatar' => ['required', 'file', "mimes:jpg,png", "dimensions:min_width=96,min_height=96"]
+            'avatar' => ['required', 'file', 'mimes:jpg,png', 'dimensions:min_width=96,min_height=96'],
         ]);
 
-        if($request->user()->avatar_path) {
+        if ($request->user()->avatar_path) {
             Storage::delete($request->user()->avatar_path);
         }
 

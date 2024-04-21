@@ -98,7 +98,7 @@ class Shot extends Model
         return $this->hasMany(ShotReaction::class);
     }
 
-    public function views() : HasMany
+    public function views(): HasMany
     {
         return $this->hasMany(ShotView::class);
     }

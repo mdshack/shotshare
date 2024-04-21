@@ -24,11 +24,11 @@ class ValidateHandle implements ValidationRule
             $fail($message);
         }
 
-        if(preg_match('/\A[.a-zA-Z0-9_-]+\z/u', $value) < 1) {
+        if (preg_match('/\A[.a-zA-Z0-9_-]+\z/u', $value) < 1) {
             $fail($message);
         }
 
-        if(strlen($value) < 3) {
+        if (strlen($value) < 3) {
             $fail("The $attribute field must be at least 3 characters.");
         }
     }

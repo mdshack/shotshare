@@ -6,10 +6,8 @@ use App\Enums\ReactionType;
 use App\Http\Requests\UpdateShotRequest;
 use App\Models\Shot;
 use App\Models\ShotReaction;
-use App\Models\UserFavorite;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -55,7 +53,7 @@ class ShotController extends Controller
             abort(404);
         }
 
-        if($shot->user_id != $request->user()?->getKey()) {
+        if ($shot->user_id != $request->user()?->getKey()) {
             $shot->views()->firstOrCreate(['identity' => md5($request->ip())]);
         }
 
@@ -64,7 +62,7 @@ class ShotController extends Controller
             'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
             'author' => fn () => $shot->anonymize ? null : $shot->user->only(['id', 'name', 'bio', 'display_handle']),
             'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
-            'isFavorite' => fn () => !is_null($request->user()?->favorites()->whereShotId($shot->getKey())->first()),
+            'isFavorite' => fn () => ! is_null($request->user()?->favorites()->whereShotId($shot->getKey())->first()),
             'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
                 ->select('reaction', DB::raw('count(*) as count'))
                 ->groupBy('reaction')
@@ -72,7 +70,7 @@ class ShotController extends Controller
                 ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
             'showLinks' => config('shots.links'),
             'isOwner' => $shot->user_id == $request->user()?->getKey(),
-            'views' => fn() => $shot->views()->count(),
+            'views' => fn () => $shot->views()->count(),
         ]);
     }
 

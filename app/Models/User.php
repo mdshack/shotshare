@@ -68,22 +68,22 @@ class User extends Authenticatable
         return $this->hasMany(ShotReaction::class);
     }
 
-    public function favorites() : HasMany
+    public function favorites(): HasMany
     {
         return $this->hasMany(UserFavorite::class);
     }
 
-    public function displayHandle() : Attribute
+    public function displayHandle(): Attribute
     {
         return Attribute::make(
-            get: fn() => "@$this->handle"
+            get: fn () => "@$this->handle"
         );
     }
 
-    public function avatar() : Attribute
+    public function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn() => Storage::url($this->avatar_path),
+            get: fn () => Storage::url($this->avatar_path),
         );
     }
 
@@ -101,5 +101,4 @@ class User extends Authenticatable
 
         return new NewAccessToken($token, $plainTextToken);
     }
-
 }
