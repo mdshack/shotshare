@@ -1,8 +1,9 @@
 <script setup>
 import { computed } from 'vue'
-import { Avatar } from '@/Components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar'
 
 const props = defineProps({
+    src: String,
     user: Object,
 })
 
@@ -12,7 +13,8 @@ const initials = computed(() => {
 </script>
 
 <template>
-    <Avatar class="mr-2">
-        {{ initials }}
-    </Avatar>
+  <Avatar class="mr-2">
+    <AvatarImage :src="user.avatar" />
+    <AvatarFallback>{{ initials }}</AvatarFallback>
+  </Avatar>
 </template>

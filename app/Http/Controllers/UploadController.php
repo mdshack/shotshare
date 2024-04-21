@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UploadRequest;
 use Illuminate\Http\UploadedFile;
+use Inertia\Inertia;
 
 class UploadController extends Controller
 {
-    public function __invoke(UploadRequest $request)
+    public function create()
+    {
+        return Inertia::render('Upload');
+    }
+
+    public function store(UploadRequest $request)
     {
         $parentShot = null;
 

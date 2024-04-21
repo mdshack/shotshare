@@ -18,27 +18,27 @@ defineProps({
 </script>
 
 <template>
-    <AlertDialog>
-        <AlertDialogTrigger>
-            <slot/>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-            <AlertDialogHeader>
-                <AlertDialogTitle>
-                    <slot name="title" />
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                    <slot name="description" />
-                </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-                <AlertDialogCancel>
-                    <slot name="reject" />
-                </AlertDialogCancel>
-                <AlertDialogAction @click="action">
-                    <slot name="confirm" />
-                </AlertDialogAction>
-            </AlertDialogFooter>
-        </AlertDialogContent>
-    </AlertDialog>
+  <AlertDialog>
+    <AlertDialogTrigger>
+      <slot />
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>
+          <slot name="title" />
+        </AlertDialogTitle>
+        <AlertDialogDescription>
+          <slot name="description" />
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>
+          <slot name="reject" />
+        </AlertDialogCancel>
+        <AlertDialogAction @click="action">
+          <slot name="confirm" />
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
 </template>
