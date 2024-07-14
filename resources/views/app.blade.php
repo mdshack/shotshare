@@ -11,7 +11,9 @@
         <meta property="og:description" content="An image shared on ShotShare" />
 
         <?php if (isset($page['props']['shot']['links']['asset_url'])): ?>
+
         <meta property="og:image" content="{{$page['props']['shot']['links']['asset_url']}}"/>
+
         <?php endif; ?>
 
         <?php endif; ?>
