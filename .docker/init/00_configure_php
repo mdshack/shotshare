@@ -2,7 +2,7 @@
 
 # PHP Configuration Overrides
 
-echo "memory_limit = ${PHP_MEMORY_LIMIT:-128M}" >> /etc/php.d/environment.ini
-echo "upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE:-2M}" >> /etc/php.d/environment.ini
-echo "max_file_uploads = ${PHP_MAX_UPLOADS:-20}" >> /etc/php.d/environment.ini
-echo "post_max_size = ${PHP_POST_MAX_SIZE:-8M}" >> /etc/php.d/environment.ini
+echo "memory_limit = ${PHP_MEMORY_LIMIT:-128M}" >> /usr/local/etc/php/conf.d/environment.ini
+echo "upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE:-2M}" >> /usr/local/etc/php/conf.d/environment.ini
+echo "max_file_uploads = ${PHP_MAX_UPLOADS:-20}" >> /usr/local/etc/php/conf.d/environment.ini
+echo "post_max_size = ${PHP_POST_MAX_SIZE:-8M}" >> /usr/local/etc/php/conf.d/environment.ini
