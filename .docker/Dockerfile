@@ -25,7 +25,8 @@ RUN install-php-extensions \
     xml \
     xmlwriter \
     pcntl \
-    pdo_mysql
+    pdo_mysql \
+    pdo_pgsql
 
 
 # Install frontend dependencies
