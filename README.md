@@ -140,6 +140,12 @@ ShotShare is configured to work with [ShareX](https://getsharex.com/) a popular 
 7. On the main screen of ShareX, click `Destinations -> Image Uploader -> Custom Image Uploader`
 8. Take a test snapshot (`ctrl` + `print screen`), ensure you get a link to ShotShare in your clipboard
 
+### Shutter Setup
+
+[Shutter](https://shutter-project.org) is an advanced screenshot tool for Linux, with support for custom upload plugins.
+
+A plugin [has been created](https://github.com/bentasker/shutter-shotshare) to allow Shutter to upload screenshots and return the resulting ShotShare url.
+
 ## Contributing
 
 There is currently no established pattern for contributing, if you see something missing or feel like something could be better feel free to pop open an issue and/or PR.
