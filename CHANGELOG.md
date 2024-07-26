@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.11.0](https://github.com/mdshack/shotshare/compare/v1.10.0...v1.11.0) (2024-07-26)
+
+
+### Features
+
+* add opengraph markup to enable rich previews in messaging apps ([34fba59](https://github.com/mdshack/shotshare/commit/34fba591e53df0f4f39e5e1ef2cec941ce86c186))
+* add postgres extension ([6f7718f](https://github.com/mdshack/shotshare/commit/6f7718fc7de1cf14334083e6ad0e68c1bfc7883c))
+* upgrade to laravel 11 ([0cc5b97](https://github.com/mdshack/shotshare/commit/0cc5b970a88796a074d74be4e5e19e2ec7856031))
+
+
+### Bug Fixes
+
+* correct .ini path so that environment variable overrides are honoured ([b60bc4a](https://github.com/mdshack/shotshare/commit/b60bc4a87e970c1624b2d009437de708a5998594))
+* prevent server error on upload page ([720091b](https://github.com/mdshack/shotshare/commit/720091bf3381c5a2fb4ac0ff2bcbcf4f23cf1398))
+
+
+### Miscellaneous Chores
+
+* tidy up tag alignment in output ([f44f642](https://github.com/mdshack/shotshare/commit/f44f64282d6e9afe5b4f38d706c4cc59afdab716))
+
 ## [1.10.0](https://github.com/mdshack/shotshare/compare/v1.9.1...v1.10.0) (2024-04-15)
 
 
