@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, UserFollower::class, "user_id", "follower_id");
     }
 
+    public function following()
+    {
+        return $this->belongsToMany(User::class, UserFollower::class, "follower_id", "user_id");
+    }
+
     public function scopeWhereHandle(Builder $query, string $handle)
     {
         $query->where("handle", Str::ltrim($handle, '@'));

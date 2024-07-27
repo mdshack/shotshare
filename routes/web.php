@@ -45,10 +45,12 @@ Route::prefix('users')
     ->name('users.')
     ->controller(UserController::class)
     ->group(function() {
-        Route::get("{handle}", "show");
+        Route::get("{handle}", "show")->name("show");
 
-        Route::post("{handle}/follow", "follow")->name("follow");
-        Route::delete("{handle}/unfollow", "unfollow")->name("unfollow");
+        Route::middleware("feature:followers")->group(function() {
+            Route::post("{handle}/follow", "follow")->name("follow");
+            Route::delete("{handle}/unfollow", "unfollow")->name("unfollow");
+        });
     });
 
 Route::prefix('api-keys')

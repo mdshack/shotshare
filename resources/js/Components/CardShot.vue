@@ -2,11 +2,10 @@
 import { ref } from 'vue'
 import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline';
 
-import ShotImage from '@/Pages/Shots/Partials/ShotImage.vue'
-import ShotDetails from '@/Pages/Shots/Partials/ShotDetails.vue'
-import ShotLinks from '@/Pages/Shots/Partials/ShotLinks.vue'
+import { Button } from '@/Components/ui/button';
 import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
+import { Link } from '@inertiajs/vue3';
 
 defineProps({
     shot: Object
@@ -20,7 +19,17 @@ defineProps({
                 <div class="flex items-center">
                     <UserAvatar :user="shot.author"/>
                     <div>
-                        <h5 class="font-semibold" :class="{'italic': !shot.author?.name}">{{ shot.author?.name ?? "Anonymous User" }}</h5>
+                        <Link
+                            v-if="shot.author"
+                            class="font-semibold hover:underline"
+                            :href="route('users.show', shot.author?.handle)">
+                            {{ shot.author?.name ?? "Anonymous User" }}
+                        </Link>
+                        <div
+                            v-else
+                            class="font-semibold hover:underline italic">
+                            Anonymous User
+                        </div>
                         <div class="text-muted-foreground">
                             <span :class="{'italic': !shot.author?.handle}">{{ shot.author?.handle ?? 'none' }}</span>
                             •

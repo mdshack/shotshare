@@ -11,6 +11,7 @@ import { AtSymbolIcon } from '@heroicons/vue/24/outline';
 
 const form = useForm({
     name: '',
+    handle: '',
     email: '',
     password: '',
     password_confirmation: '',

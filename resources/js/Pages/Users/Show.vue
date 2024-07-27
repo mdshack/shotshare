@@ -1,10 +1,10 @@
 <script setup>
-import CardShot from '@/Components/CardShot.vue';
 import { Button } from '@/Components/ui/button';
 import User from '@/Components/User.vue';
 import Layout from '@/Layouts/Layout.vue';
 import { ref, onMounted } from 'vue';
 import { router } from '@inertiajs/vue3';
+import PaginatedShotList from '@/Components/PaginatedShotList.vue';
 
 const props = defineProps({
     user: Object,
@@ -19,7 +19,7 @@ onMounted(() => {
 })
 
 const loadMore = () => {
-    router.visit(window.location.pathname, {
+    router.reload({
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => {
@@ -44,7 +44,7 @@ const unfollow = () => {
         <div class="space-y-6">
             <div class="flex items-center justify-between">
                 <User :user="user"/>
-                <template v-if="$page.props.auth.user.id != user.id">
+                <template v-if="$page.props.features.followers && $page.props.auth.user.id != user.id">
                     <Button
                         v-if="!isFollowing"
                         @click.prevent="follow">
@@ -61,18 +61,7 @@ const unfollow = () => {
 
             <h2 class="font-semibold text-2xl">Shots</h2>
 
-            <div class="space-y-4">
-                <CardShot v-for="shot in formatted" :shot="shot"/>
-
-                <div class="flex justify-center">
-                    <Button
-                        v-if="shots?.next_cursor"
-                        variant="outline"
-                        @click.prevent="loadMore">
-                        Load More
-                    </Button>
-                </div>
-            </div>
+            <PaginatedShotList :shots="shots"/>
         </div>
     </Layout>
 </template>
