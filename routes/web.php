@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,9 +21,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/', FeedController::class)
+    ->name('feed')
+    ->middleware(['auth', 'verified']);
 
 Route::prefix('shots')
     ->name('shots.')
@@ -37,6 +39,16 @@ Route::prefix('shots')
         Route::post('{id}/react', 'react')
             ->name('react')
             ->middleware('feature:reactions');
+    });
+
+Route::prefix('users')
+    ->name('users.')
+    ->controller(UserController::class)
+    ->group(function() {
+        Route::get("{handle}", "show");
+
+        Route::post("{handle}/follow", "follow")->name("follow");
+        Route::delete("{handle}/unfollow", "unfollow")->name("unfollow");
     });
 
 Route::prefix('api-keys')

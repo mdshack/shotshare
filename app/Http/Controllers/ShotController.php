@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\ShotData;
 use App\Enums\ReactionType;
 use App\Http\Requests\UpdateShotRequest;
 use App\Models\Shot;
@@ -35,36 +36,38 @@ class ShotController extends Controller
 
     public function show(Request $request, string $id)
     {
-        $shot = Shot::wherePublicIdentifier($id)->firstOrFail();
+        $shot = Shot::with(['user', 'uploads'])
+            ->wherePublicIdentifier($id)
+            ->firstOrFail();
 
-        if ($shot->parent_shot_id) {
-            $parentShotId = config('features.uuid_routes')
-                // TODO: Don't load parent (perhaps migrate parent_shot_id to be either uuid or id pending settings)
-                ? $shot->parentShot->uuid
-                : $shot->parent_shot_id;
+        // if ($shot->parent_shot_id) {
+        //     $parentShotId = config('features.uuid_routes')
+        //         // TODO: Don't load parent (perhaps migrate parent_shot_id to be either uuid or id pending settings)
+        //         ? $shot->parentShot->uuid
+        //         : $shot->parent_shot_id;
 
-            return to_route('shots.show', [
-                'id' => $parentShotId,
-                'selected_shot_id' => $shot->getKey(),
-            ]);
-        }
+        //     return to_route('shots.show', [
+        //         'id' => $parentShotId,
+        //         'selected_shot_id' => $shot->getKey(),
+        //     ]);
+        // }
 
         if ($shot->require_logged_in && ! $request->user()) {
             abort(404);
         }
 
         return Inertia::render('Shots/Show', [
-            'shot' => fn () => $shot->fresh(),
-            'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
-            'author' => fn () => $shot->anonymize ? null : $shot->user->only(['id', 'name']),
-            'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
-            'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
-                ->select('reaction', DB::raw('count(*) as count'))
-                ->groupBy('reaction')
-                ->get()
-                ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
-            'showLinks' => config('shots.links'),
-            'isOwner' => $shot->user_id == $request->user()?->getKey(),
+            'shot' => fn () => ShotData::fromModel($shot),
+            // 'author' => fn () => $shot->anonymize ? null : $shot->user->only(['id', 'name']),
+            // 'childShots' => fn () => Shot::whereParentShotId($shot->getKey())->get(),
+            // 'reaction' => fn () => $request->user()?->reactions()->whereShotId($shot->getKey())->first(),
+            // 'reactionCounts' => fn () => ShotReaction::whereShotId($shot->getKey())
+            //     ->select('reaction', DB::raw('count(*) as count'))
+            //     ->groupBy('reaction')
+            //     ->get()
+            //     ->mapWithKeys(fn ($result) => [$result['reaction'] => $result['count']]),
+            // 'showLinks' => config('shots.links'),
+            // 'isOwner' => $shot->user_id == $request->user()?->getKey(),
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ShotType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,12 +16,12 @@ use Illuminate\Support\Str;
  * @property string $uuid
  * @property int $user_id
  * @property string $name
- * @property string $path
+ * @property ShotType $type
  * @property int $parent_shot_id
  * @property bool $require_logged_in
  * @property bool $anonymize
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class Shot extends Model
 {
@@ -32,10 +33,15 @@ class Shot extends Model
     ];
 
     protected $appends = [
-        'links',
+        // 'links',
+    ];
+
+    protected $attributes = [
+        'type' => ShotType::Individual,
     ];
 
     protected $casts = [
+        'type' => ShotType::class,
         'require_logged_in' => 'bool',
         'anonymize' => 'bool',
     ];
@@ -49,15 +55,15 @@ class Shot extends Model
         });
     }
 
-    protected function links(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($_, array $attributes) => [
-                'url' => route('shots.show', $this->publicIdentifier),
-                'asset_url' => asset($attributes['path']),
-            ],
-        );
-    }
+    // protected function links(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($_, array $attributes) => [
+    //             'url' => route('shots.show', $this->publicIdentifier),
+    //             'asset_url' => asset($attributes['path']),
+    //         ],
+    //     );
+    // }
 
     protected function publicIdentifier(): Attribute
     {
@@ -80,6 +86,11 @@ class Shot extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function uploads()
+    {
+        return $this->hasMany(ShotUpload::class);
     }
 
     public function childShots(): HasMany
