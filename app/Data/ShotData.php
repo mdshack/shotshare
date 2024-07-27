@@ -12,6 +12,7 @@ class ShotData extends Data
     public function __construct(
         public string|int $id,
         public ?string $name,
+        public string $url,
         public ShotType $type,
         public Carbon $created_at,
         public Carbon $updated_at,
@@ -30,6 +31,7 @@ class ShotData extends Data
         return new static(
             $shot->publicIdentifier,
             $shot->name,
+            $shot->url,
             $shot->type,
             $shot->created_at,
             $shot->updated_at,

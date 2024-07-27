@@ -27,7 +27,7 @@ class UploadRequest extends FormRequest
             'images' => ['array', 'min:1'],
             'images.*' => ['mimes:'.implode(',', $this->allowedTypes)],
 
-            'title' => ['string', 'sometimes', 'nullable'],
+            'name' => ['string', 'sometimes', 'nullable'],
             'type' => [Rule::enum(ShotType::class), 'sometimes', 'nullable'],
             'require_logged_in' => ['boolean', 'sometimes', 'nullable'],
             'anonymize' => ['boolean', 'sometimes', 'nullable'],

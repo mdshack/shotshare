@@ -63,7 +63,7 @@ const fileInput = ref(null)
 const hoveringGlobalDropzone = ref(false)
 
 const form = useForm({
-    title: "",
+    name: "",
     images: [],
     type: 'individual',
     require_logged_in: false,
@@ -71,6 +71,7 @@ const form = useForm({
 })
 
 const clearForm = () => {
+    form.name = ""
     form.images = []
     form.type = 'individual'
     form.require_logged_in = false
@@ -259,7 +260,7 @@ const previewUrls = computed(() => {
 
                 <div class="space-y-2">
                     <Label>Title</Label>
-                    <Input v-model="form.title" />
+                    <Input v-model="form.name" />
                 </div>
 
                 <div class="space-y-2">

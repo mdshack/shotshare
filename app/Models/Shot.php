@@ -33,7 +33,7 @@ class Shot extends Model
     ];
 
     protected $appends = [
-        // 'links',
+        'url',
     ];
 
     protected $attributes = [
@@ -55,15 +55,12 @@ class Shot extends Model
         });
     }
 
-    // protected function links(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn ($_, array $attributes) => [
-    //             'url' => route('shots.show', $this->publicIdentifier),
-    //             'asset_url' => asset($attributes['path']),
-    //         ],
-    //     );
-    // }
+    protected function url(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => route('shots.show', $this->publicIdentifier),
+        );
+    }
 
     protected function publicIdentifier(): Attribute
     {

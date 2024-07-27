@@ -20,7 +20,7 @@ class UploadController extends Controller
         if($type === ShotType::Individual) {
             foreach($request->files->get('images') as $image) {
                 $shot = $request->user()->shots()->create(array_merge(['type' => $type], $request->only([
-                    'title',
+                    'name',
                     'require_logged_in',
                     'anonymize',
                 ])));
@@ -34,7 +34,7 @@ class UploadController extends Controller
             }
         } else {
             $shot = $request->user()->shots()->create(array_merge(['type' => $type], $request->only([
-                'title',
+                'name',
                 'require_logged_in',
                 'anonymize',
             ])));
