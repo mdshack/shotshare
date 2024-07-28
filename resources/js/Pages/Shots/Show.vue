@@ -1,16 +1,12 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue'
-import { Head, router } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import { ref, computed, onMounted } from 'vue'
-import ShotImage from '@/Pages/Shots/Partials/ShotImage.vue'
-import ShotDetails from '@/Pages/Shots/Partials/ShotDetails.vue'
-import ShotLinks from '@/Pages/Shots/Partials/ShotLinks.vue'
 import { ChatBubbleLeftRightIcon, CheckIcon, ClipboardIcon, EllipsisHorizontalIcon, HandThumbUpIcon, InformationCircleIcon } from '@heroicons/vue/24/outline';
 import { Button } from '@/Components/ui/button'
-import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
 
-import { TabsContent, TabsIndicator, TabsList, TabsRoot, TabsTrigger } from 'radix-vue'
+import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'radix-vue'
 
 
 import CardShot from '@/Components/CardShot.vue'
@@ -20,6 +16,8 @@ import { Label } from '@/Components/ui/label'
 import { UseClipboard } from '@vueuse/components'
 import Spinner from '@/Components/ui/Spinner.vue'
 
+const page = usePage()
+
 const props = defineProps({
     shot: Object,
     tab: String,
@@ -28,13 +26,19 @@ const props = defineProps({
 })
 
 const focusedImageIndex = ref(0)
-const focusedImageLink = computed(() => {
+const focusedImage = computed(() => {
     return props.shot.uploads[focusedImageIndex.value]
 })
 
 const commentsLoading = ref(true)
 const formattedComments = ref([])
 const loadComments = (extra = {}) => {
+    if(!page.props.features.comments) {
+        commentsLoading.value = false
+
+        return
+    }
+
     router.reload({
         ...extra,
         only: ["comments"],
@@ -89,9 +93,9 @@ const loadMore = () => {
             <CardShot :shot="shot" @focus-image="(i) => focusedImageIndex = i"/>
 
             <div class="border rounded-lg">
-                <TabsRoot :default-value="tab ?? 'comments'">
+                <TabsRoot :default-value="tab ?? page.props.features.comments ? 'comments' : 'share'">
                     <TabsList>
-                        <TabsTrigger as-child value="comments">
+                        <TabsTrigger v-if="$page.props.features.comments" as-child value="comments">
                             <button class="text-muted-foreground hover:text-primary p-4 data-[state=active]:border-b-2 data-[state=active]:font-semibold data-[state=active]:text-primary data-[state=active]:border-primary transition">
                                 Comments
                             </button>
@@ -112,7 +116,7 @@ const loadMore = () => {
                     </TabsList>
 
                     <div>
-                        <TabsContent value="comments">
+                        <TabsContent value="comments" v-if="$page.props.features.comments">
                             <div class="divide-y">
                                 <div class="p-4">
                                     <div class="relative">
@@ -187,10 +191,10 @@ const loadMore = () => {
                                             Direct Link
                                         </div>
                                         <div class="relative">
-                                            <Input :model-value="focusedImageLink" disabled/>
+                                            <Input :model-value="focusedImage.url" disabled/>
                                             <UseClipboard
                                                 v-slot="{ copy, copied }"
-                                                :source="focusedImageLink">
+                                                :source="focusedImage.url">
                                                 <Button
                                                     @click.prevent="copy()"
                                                     class="absolute right-0 top-0 bottom-0 text-accent hover:text-primary"
@@ -212,8 +216,33 @@ const loadMore = () => {
                             </div>
                         </TabsContent>
 
-                        <TabsContent value="info">
-                            c
+                        <TabsContent value="info" class="p-4 space-y-4">
+                            <div class="grid grid-cols-7 grid sm:gap-4">
+                                <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
+                                    Resolution
+                                </div>
+                                <div class="col-span-7 sm:col-span-5 font-semibold">
+                                    {{focusedImage.resolution}}
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-7 grid sm:gap-4">
+                                <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
+                                    Size
+                                </div>
+                                <div class="col-span-7 sm:col-span-5 font-semibold">
+                                    {{focusedImage.size}}
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-7 grid sm:gap-4">
+                                <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
+                                    Format
+                                </div>
+                                <div class="col-span-7 sm:col-span-5 font-semibold">
+                                    {{focusedImage.format}}
+                                </div>
+                            </div>
                         </TabsContent>
                     </div>
                 </TabsRoot>

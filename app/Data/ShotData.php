@@ -5,7 +5,9 @@ namespace App\Data;
 use App\Enums\ShotType;
 use App\Models\Shot;
 use Carbon\Carbon;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
 class ShotData extends Data
 {
@@ -17,7 +19,8 @@ class ShotData extends Data
         public Carbon $created_at,
         public Carbon $updated_at,
 
-        public array $uploads,
+        #[DataCollectionOf(UploadData::class)]
+        public $uploads,
         public ?UserData $author,
     ) {}
 
@@ -35,7 +38,7 @@ class ShotData extends Data
             $shot->type,
             $shot->created_at,
             $shot->updated_at,
-            $shot->uploads->pluck("url")->toArray(),
+            $shot->uploads,
             $shot->anonymize
                 ? null
                 : UserData::from($shot->user),

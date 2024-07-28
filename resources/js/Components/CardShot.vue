@@ -13,16 +13,12 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
 import { Button } from '@/Components/ui/button';
-import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import User from '@/Components/User.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
-import { useCarousel } from '@/Components/ui/carousel'
-import throttle from "lodash/throttle"
 import { Link } from '@inertiajs/vue3';
 
 defineProps({
@@ -84,13 +80,13 @@ const setApi = (value) => {
 
         <Carousel v-if="shot.type === 'collection'" @init-api="setApi" class="bg-muted">
             <CarouselContent class="flex items-center">
-                <CarouselItem v-for="upload in shot.uploads"><img :src="upload" class="w-full bg-muted"/></CarouselItem>
+                <CarouselItem v-for="upload in shot.uploads"><img :src="upload.url" class="w-full bg-muted"/></CarouselItem>
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
         </Carousel>
 
-        <img v-else-if="shot.type === 'individual'" :src="shot.uploads[0]" class="w-full bg-muted"/>
+        <img v-else-if="shot.type === 'individual'" :src="shot.uploads[0].url" class="w-full bg-muted"/>
 
         <div class="p-4 flex justify-between items-end">
             <div class="text-muted-foreground">

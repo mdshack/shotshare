@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Enums\ShotType;
 use App\Http\Requests\UploadRequest;
 use App\Models\Shot;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
@@ -17,67 +19,34 @@ class UploadController extends Controller
 
         $returnShot = null;
 
-        if($type === ShotType::Individual) {
-            foreach($request->files->get('images') as $image) {
-                $shot = $request->user()->shots()->create(array_merge(['type' => $type], $request->only([
-                    'name',
-                    'require_logged_in',
-                    'anonymize',
-                ])));
+        foreach($request->files->get('images') as $image) {
+            $shot = match($type) {
+                ShotType::Individual => $this->createShot($request, $type),
+                ShotType::Collection => $returnShot ?? $this->createShot($request, $type),
+            };
 
-                // return the first shot we create
-                $returnShot ??= $shot;
-
-                $shot->uploads()->create([
-                    'path' => UploadedFile::createFromBase($image)->storePublicly('uploads')
-                ]);
-            }
-        } else {
-            $shot = $request->user()->shots()->create(array_merge(['type' => $type], $request->only([
-                'name',
-                'require_logged_in',
-                'anonymize',
-            ])));
-
-            // return the first shot we create
             $returnShot ??= $shot;
 
-            foreach($request->files->get('images') as $image) {
-                $shot->uploads()->create([
-                    'path' => UploadedFile::createFromBase($image)->storePublicly('uploads')
-                ]);
-            }
+            $path = UploadedFile::createFromBase($image)->storePublicly('uploads');
+            $info = getimagesize(Storage::path($path));
+
+            $shot->uploads()->create([
+                'path' => $path,
+                'size_in_bytes' => $image->getSize(),
+                "resolution" => $info[0] . "x" . $info[1] . "px",
+                "format" => $info["mime"],
+            ]);
         }
 
-        // foreach ($request->files->get('images') as $image) {
-
-        // }
-
-        // $parentShot = null;
-
-        // foreach ($request->files->get('images') as $i => $image) {
-        //     $path = UploadedFile::createFromBase($image)->storePublicly('uploads');
-
-        //     $shot = $request->user()->shots()->create([
-        //         'path' => $path,
-        //         'parent_shot_id' => $parentShot?->getKey(),
-        //     ]);
-
-        //     if ($i === 0) {
-        //         $parentShot = $shot;
-        //     }
-        // }
-
-        // $id = $parentShot->publicIdentifier;
-
-        // if ($request->expectsJson()) {
-        //     return response()->json([
-        //         'data' => [
-        //             'link' => route('shots.show', $id),
-        //         ],
-        //     ]);
-        // }
-
         return to_route('shots.show', $returnShot->publicIdentifier);
+    }
+
+    protected function createShot(Request $request, ShotType $type)
+    {
+        return $request->user()->shots()->create(array_merge(['type' => $type], $request->only([
+            'name',
+            'require_logged_in',
+            'anonymize',
+        ])));
     }
 }
