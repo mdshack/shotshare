@@ -26,7 +26,7 @@ class ShotController extends Controller
             ->firstOrFail();
 
         if ($shot->require_logged_in && ! $request->user()) {
-            abort(404);
+            return to_route("login");
         }
 
          return Inertia::render('Shots/Show', [

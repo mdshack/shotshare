@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue"
+import {onMounted, ref, watch} from "vue"
 import axios from "axios"
 import Spinner from "@/Components/ui/Spinner.vue";
 import {Button} from "@/Components/ui/button";
@@ -48,6 +48,23 @@ const load = (cursor = undefined) => {
             loading.value = false
         })
 }
+
+const paramSignature = ref(null)
+watch(() => props.params, () => {
+    const paramSig = JSON.stringify(props.params)
+
+    if(!paramSignature.value) {
+        paramSignature.value = paramSig
+    }
+
+    if(paramSignature.value != paramSig) {
+        console.log("resetting resource")
+        items.value = []
+        loading.value = false
+        next.value = null
+        load()
+    }
+})
 
 onMounted(() => {
     load()

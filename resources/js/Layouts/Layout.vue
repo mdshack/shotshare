@@ -23,6 +23,7 @@ import { Label } from '@/Components/ui/label'
 import { Checkbox } from '@/Components/ui/checkbox';
 // import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group'
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'radix-vue'
+import { ScrollArea } from '@/Components/ui/scroll-area';
 
 const page = usePage()
 
@@ -274,24 +275,26 @@ const previewUrls = computed(() => {
                     <Input v-model="form.name" />
                 </div>
 
-                <div class="space-y-2">
-                    <Label>Image(s)</Label>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div v-for="preview in previewUrls" class="aspect-square border rounded-lg overflow-hidden">
-                            <img :src="preview" class="object-cover object-center w-full h-full" />
-                        </div>
-                        <label for="dropzone-file"
-                            class="cursor-pointer hover:border-primary hover:text-primary text-muted-foreground border border-dashed rounded-lg">
-                            <div
-                                class="aspect-square flex flex-col justify-center items-center transition pointer-events-none text-xs">
-                                <PlusCircleIcon class="w-10 mb-2" />
-                                Add Image
+                <ScrollArea class="max-h-[300px]">
+                    <div class="space-y-2">
+                        <Label>Image(s)</Label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div v-for="preview in previewUrls" class="aspect-square border rounded-lg overflow-hidden">
+                                <img :src="preview" class="object-cover object-center w-full h-full" />
                             </div>
-                        </label>
+                            <label for="dropzone-file"
+                                class="cursor-pointer hover:border-primary hover:text-primary text-muted-foreground border border-dashed rounded-lg">
+                                <div
+                                    class="aspect-square flex flex-col justify-center items-center transition pointer-events-none text-xs">
+                                    <PlusCircleIcon class="w-10 mb-2" />
+                                    Add Image
+                                </div>
+                            </label>
+                        </div>
                     </div>
-                </div>
+                </ScrollArea>
 
-                <div class="space-y-2">
+                <div v-if="form.images.length > 1" class="space-y-2">
                     <Label>Upload As</Label>
                     <RadioGroupRoot
                         v-model="form.type"

@@ -18,6 +18,7 @@ class ShotData extends Data
         public ShotType $type,
         public Carbon $created_at,
         public Carbon $updated_at,
+        public bool $is_owner,
 
         #[DataCollectionOf(UploadData::class)]
         public $uploads,
@@ -38,6 +39,7 @@ class ShotData extends Data
             $shot->type,
             $shot->created_at,
             $shot->updated_at,
+            $shot->user_id === request()->user()?->id,
             $shot->uploads,
             $shot->anonymize
                 ? null

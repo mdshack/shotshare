@@ -4,6 +4,20 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <?php if (isset($page['props']['shot'])):?>
+
+        <meta property="og:url" content="{{$page['props']['shot']['url']}}">
+        <meta property="og:title" content="{{$page['props']['shot']['name']}}" />
+        <meta property="og:description" content="An image shared on ShotShare" />
+
+        <?php if (isset($page['props']['shot']['uploads'][0]['url'])): ?>
+
+        <meta property="og:image" content="{{$page['props']['shot']['uploads'][0]['url']}}"/>
+
+        <?php endif; ?>
+
+        <?php endif; ?>
+
         <title inertia>{{ config('app.name', 'ShotShare') }}</title>
 
         <!-- Fonts -->

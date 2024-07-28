@@ -94,7 +94,7 @@ const react = (reaction) => {
                 </User>
             </div>
 
-            <DropdownMenu v-if="shot.author.id === $page.props.auth.user?.id">
+            <DropdownMenu v-if="shot.is_owner">
                 <DropdownMenuTrigger>
                     <Button variant="ghost" class="px-2">
                         <EllipsisHorizontalIcon class="w-7"/>
