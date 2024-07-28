@@ -19,6 +19,8 @@ class ShotData extends Data
         public Carbon $created_at,
         public Carbon $updated_at,
         public bool $is_owner,
+        public bool $require_logged_in,
+        public bool $anonymize,
 
         #[DataCollectionOf(UploadData::class)]
         public $uploads,
@@ -40,6 +42,8 @@ class ShotData extends Data
             $shot->created_at,
             $shot->updated_at,
             $shot->user_id === request()->user()?->id,
+            $shot->require_logged_in,
+            $shot->anonymize,
             $shot->uploads,
             $shot->anonymize
                 ? null

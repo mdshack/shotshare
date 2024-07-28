@@ -17,6 +17,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { Button } from '@/Components/ui/button';
 import User from '@/Components/User.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
@@ -25,6 +26,7 @@ import axios from 'axios';
 import ShotComments from '@/Components/ShotComments.vue';
 import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
 import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue';
+import DialogEditShot from '@/Components/DialogEditShot.vue';
 
 const props = defineProps({
     shot: Object,
@@ -87,6 +89,8 @@ const deleteShot = () => {
     return axios.delete(route('shots.destroy', props.shot.id))
         .finally(() => window.location.pathname = `/users/${page.props.auth.user.handle}`)
 }
+
+const editShotOpen = ref(false)
 </script>
 
 <template>
@@ -108,7 +112,7 @@ const deleteShot = () => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem class="cursor-pointer">
+                    <DropdownMenuItem class="cursor-pointer" @click.prevent="editShotOpen = true">
                         Edit Shot
                     </DropdownMenuItem>
 
@@ -181,21 +185,32 @@ const deleteShot = () => {
         </div>
     </div>
 
-    <RequireConfirmationDialog v-model:open="deleteShotOpen" :action="deleteShot">
-        <template #title>
-            Are you sure you wish to delete this shot?
-        </template>
+    <div class="!my-0 !py-0">
+        <RequireConfirmationDialog
+            v-if="deleteShotOpen"
+            :open="true"
+            :action="deleteShot">
+            <template #title>
+                Are you sure you wish to delete this shot?
+            </template>
 
-        <template #description>
-            Deleting shots is a destructive action. You will not be able to recover this image if you delete it.
-        </template>
+            <template #description>
+                Deleting shots is a destructive action. You will not be able to recover this image if you delete it.
+            </template>
 
-        <template #reject>
-            Cancel
-        </template>
+            <template #reject>
+                Cancel
+            </template>
 
-        <template #confirm>
-            Delete Shot
-        </template>
-    </RequireConfirmationDialog>
+            <template #confirm>
+                Delete Shot
+            </template>
+        </RequireConfirmationDialog>
+
+        <DialogEditShot
+            v-if="editShotOpen"
+            :shot="shot"
+            @close="editShotOpen = false"
+        />
+    </div>
 </template>

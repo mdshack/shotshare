@@ -53,10 +53,8 @@ class ShotController extends Controller
     public function update(UpdateShotRequest $request, string $id)
     {
         Shot::where('user_id', $request->user()->getKey())
-            ->whereId($id)
+            ->wherePublicIdentifier($id)
             ->update($request->validated());
-
-        return response(status: Response::HTTP_NO_CONTENT);
     }
 
     public function destroy(Request $request, string $id)

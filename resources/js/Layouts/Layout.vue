@@ -1,7 +1,6 @@
 0
 <script setup>
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { Avatar } from '@/Components/ui/avatar'
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { Button } from '@/Components/ui/button'
 import {
     DropdownMenu,
@@ -11,19 +10,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
-import { computed, ref, watch } from 'vue';
-import { Aperture, Scan, Search } from 'lucide-vue-next';
+import { computed, provide, ref, watch } from 'vue';
+import { Search } from 'lucide-vue-next';
 import { Input } from '@/Components/ui/input'
 import { useFocus } from '@vueuse/core'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import DialogCreateShot from '@/Components/DialogCreateShot.vue';
 import UserAvatar from '@/Components/ui/UserAvatar.vue';
-import { ArrowRightEndOnRectangleIcon, PhotoIcon, PlusCircleIcon } from '@heroicons/vue/24/outline';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
+import { ArrowRightEndOnRectangleIcon, PhotoIcon } from '@heroicons/vue/24/outline';
 import { Label } from '@/Components/ui/label'
-import { Checkbox } from '@/Components/ui/checkbox';
-// import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group'
-import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'radix-vue'
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 const page = usePage()
 
@@ -32,7 +27,6 @@ const search = ref(null)
 const { focused: searchFocused } = page.props.features.search
     ? useFocus(search)
     : false
-
 
 const user = computed(() => {
     return page.props?.auth?.user
@@ -79,20 +73,6 @@ const clearForm = () => {
     form.anonymize = false
 }
 
-const uploadAsOptions = [
-    {
-        title: "Individual",
-        description: "Each image will appear on its own page",
-        value: "individual",
-    },
-    {
-        title: "Collection",
-        description: "All uploaded images will appear on this same page",
-        value: "collection",
-    },
-]
-
-// const fileUploadModalOpen = ref(false)
 const fileUploadModalOpen = ref(false)
 
 watch(fileUploadModalOpen, (open) => {
@@ -114,20 +94,6 @@ const handleFileUpload = (event) => {
         fileUploadModalOpen.value = true
     }
 }
-
-const submitUpload = () => {
-    form.post(route('upload'), {
-        onFinish: () => {
-            fileUploadModalOpen.value = false
-            clearForm()
-        }
-    })
-}
-
-const previewUrls = computed(() => {
-    return form.images.map((file) => URL.createObjectURL(file))
-})
-
 </script>
 
 <template>
@@ -263,86 +229,9 @@ const previewUrls = computed(() => {
             <input ref="fileInput" id="dropzone-file" type="file" class="hidden" @change="handleFileUpload" accept="image/png, image/gif, image/jpeg" />
         </label>
 
-        <Dialog v-model:open="fileUploadModalOpen">
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Upload a Shot</DialogTitle>
-                    <DialogDescription>Share your shot with your friends.</DialogDescription>
-                </DialogHeader>
-
-                <div class="space-y-2">
-                    <Label>Title</Label>
-                    <Input v-model="form.name" />
-                </div>
-
-                <ScrollArea class="max-h-[300px]">
-                    <div class="space-y-2">
-                        <Label>Image(s)</Label>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div v-for="preview in previewUrls" class="aspect-square border rounded-lg overflow-hidden">
-                                <img :src="preview" class="object-cover object-center w-full h-full" />
-                            </div>
-                            <label for="dropzone-file"
-                                class="cursor-pointer hover:border-primary hover:text-primary text-muted-foreground border border-dashed rounded-lg">
-                                <div
-                                    class="aspect-square flex flex-col justify-center items-center transition pointer-events-none text-xs">
-                                    <PlusCircleIcon class="w-10 mb-2" />
-                                    Add Image
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </ScrollArea>
-
-                <div v-if="form.images.length > 1" class="space-y-2">
-                    <Label>Upload As</Label>
-                    <RadioGroupRoot
-                        v-model="form.type"
-                        class="flex flex-col gap-2"
-                        default-value="individual"
-                        aria-label="View density">
-                        <label
-                            v-for="{title, description, value} in uploadAsOptions"
-                            class="flex items-center space-x-2 border p-4 rounded-lg" :for="value">
-                            <RadioGroupItem
-                                :id="value"
-                                class="w-5 h-5 border border-primary rounded-full overflow-hidden p-0.5"
-                                :value="value">
-                                <RadioGroupIndicator class="w-5 h-5 bg-primary w-full h-full flex rounded-full" />
-                            </RadioGroupItem>
-                            <div>
-                                <div class="text-sm tracking-tight font-medium text-foreground">{{title}}</div>
-                                <p class="text-muted-foreground text-sm">{{description}}</p>
-                            </div>
-                        </label>
-                    </RadioGroupRoot>
-                </div>
-
-
-                <div class="space-y-2">
-                    <Label>Settings</Label>
-                    <div class="flex items-center space-x-2">
-                        <Checkbox v-model:checked="form.require_logged_in" id="require_logged_in" />
-                        <label for="require_logged_in"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            Require viewers to be logged in
-                        </label>
-                    </div>
-
-                    <div class="flex items-center space-x-2">
-                        <Checkbox v-model:checked="form.anonymize" id="anonymize" />
-                        <label for="anonymize"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            Anonymize "posted by" details
-                        </label>
-                    </div>
-                </div>
-
-                <DialogFooter>
-                    <Button variant="outline" @click="fileUploadModalOpen = false">Cancel</Button>
-                    <Button @click.prevent="submitUpload">Upload Image</Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+        <DialogCreateShot
+            v-model:form="form"
+            v-model:open="fileUploadModalOpen"
+        />
     </div>
 </template>
