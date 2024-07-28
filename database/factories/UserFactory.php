@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Enums\ReactionType;
+use App\Models\Shot;
+use App\Models\ShotReaction;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,6 +29,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'handle' => fake()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

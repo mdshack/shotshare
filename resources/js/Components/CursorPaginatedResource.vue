@@ -6,7 +6,7 @@ import {Button} from "@/Components/ui/button";
 import uniqueBy from 'lodash/uniqBy'
 
 const props = defineProps({
-    route: String,
+    paginatedRoute: String,
     params: Object,
 
     uniqueField: {
@@ -26,7 +26,7 @@ const next = ref(null)
 const load = (cursor = undefined) => {
     loading.value = true
 
-    axios.get(route(props.route, {...props.params, cursor: cursor !== undefined ? cursor : next.value}))
+    axios.get(route(props.paginatedRoute, {...props.params, cursor: cursor !== undefined ? cursor : next.value}))
         .then(({data}) => {
             items.value = uniqueBy([...items.value, ...data.data], props.uniqueField)
 

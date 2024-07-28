@@ -72,29 +72,4 @@ class ShotController extends Controller
 
         return response(status: Response::HTTP_NO_CONTENT);
     }
-
-    public function react(Request $request, string $id)
-    {
-        $shot = Shot::wherePublicIdentifier($id)->firstOrFail();
-
-        $this->validate($request, [
-            'reaction' => ['required', Rule::enum(ReactionType::class)],
-        ]);
-
-        // Delete in the event they are reversing an existing reaction
-        $deleted = $shot->reactions()
-            ->whereUserId($userId = $request->user()->getKey())
-            ->whereReaction($reaction = $request->get('reaction'))
-            ->delete();
-
-        // They didn't delete anything, lets create their reaction
-        if (! $deleted) {
-            $shot->reactions()->updateOrCreate([
-                'shot_id' => $id,
-                'user_id' => $userId,
-            ], ['reaction' => $reaction]);
-        }
-
-        return response(status: Response::HTTP_NO_CONTENT);
-    }
 }

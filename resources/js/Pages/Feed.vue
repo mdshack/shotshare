@@ -1,14 +1,9 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue'
-import { Input } from '@/Components/ui/input'
-import { Progress } from '@/Components/ui/progress'
 
-import { useForm, Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { Avatar } from '@/Components/ui/avatar';
-import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, PhotoIcon } from '@heroicons/vue/24/outline';
+import { Head } from '@inertiajs/vue3';
+import { PhotoIcon } from '@heroicons/vue/24/outline';
 import { Button } from '@/Components/ui/button';
-import { ThumbsUpIcon } from 'lucide-vue-next';
 import PaginatedShotList from '@/Components/PaginatedShotList.vue';
 const props = defineProps({
     shots: Object

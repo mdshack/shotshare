@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <CursorPaginatedResource route="shots.comments.index" :params="{shotId: shot.id}">
+    <CursorPaginatedResource paginated-route="shots.comments.index" :params="{shotId: shot.id}">
         <template #before="{load}">
             <InputComment :shot="shot" @on-success="load(null)"/>
         </template>

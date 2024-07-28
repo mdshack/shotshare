@@ -1,20 +1,16 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue'
-import { Head, router, usePage } from '@inertiajs/vue3'
-import { ref, computed, onMounted } from 'vue'
+import { Head, usePage } from '@inertiajs/vue3'
+import { ref, computed } from 'vue'
 import { CheckIcon, ClipboardIcon, InformationCircleIcon } from '@heroicons/vue/24/outline';
-import { Button } from '@/Components/ui/button'
-import Comment from '@/Components/Comment.vue'
 
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'radix-vue'
 
-import InputComment from '@/Components/InputComment.vue'
-import CardShot from '@/Components/CardShot.vue'
+import { Button } from '@/Components/ui/button'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import { UseClipboard } from '@vueuse/components'
-import Spinner from '@/Components/ui/Spinner.vue'
-import CursorPaginatedResource from '@/Components/CursorPaginatedResource.vue';
+import CardShot from '@/Components/CardShot.vue'
 import ShotComments from '@/Components/ShotComments.vue';
 
 const page = usePage()
@@ -31,60 +27,12 @@ const focusedImageIndex = ref(0)
 const focusedImage = computed(() => {
     return props.shot.uploads[focusedImageIndex.value]
 })
-
-const commentsLoading = ref(true)
-const formattedComments = ref([])
-const loadComments = (extra = {}) => {
-    if(!page.props.features.comments) {
-        commentsLoading.value = false
-
-        return
-    }
-
-    router.reload({
-        ...extra,
-        only: ["comments"],
-        onSuccess: () => {
-            formattedComments.value = [...formattedComments.value, ...props.comments.data]
-
-            formattedComments.value.sort((a,b) => {
-                if (a.created_at > b.created_at) {
-                    return -1
-                } else if (a.created_at < b.created_at) {
-                    return 1
-                }
-
-                return 0
-            })
-
-            commentsLoading.value = false
-        }
-    })
-}
-
-onMounted(() => {
-    loadComments()
-
-    router.reload({ only: [
-        'reactions',
-    ]})
-})
-
-const loadMore = () => {
-    loadComments({
-        data: {
-            comments_cursor: props.comments.next_cursor
-        }
-    })
-}
 </script>
 
 <template>
     <Head title="Shot" />
 
     <Layout>
-
-        {{ reactions }}
         <div class="space-y-8">
             <CardShot :shot="shot" @focus-image="(i) => focusedImageIndex = i"/>
 

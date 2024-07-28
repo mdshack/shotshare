@@ -5,6 +5,7 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShotCommentController;
 use App\Http\Controllers\ShotController;
+use App\Http\Controllers\ShotReactionController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -40,15 +41,19 @@ Route::prefix('shots')
             ->controller(ShotCommentController::class)
             ->group(function() {
                 Route::get("", "index")->name("index");
-
                 Route::post("", "store")
                     ->name("store")
                     ->middleware("throttle:comment");
             });
 
-        Route::post('{id}/react', 'react')
-            ->name('react')
-            ->middleware('feature:reactions');
+        Route::middleware("feature:reactions")
+            ->prefix("{shotId}/reactions")
+            ->name('reactions.')
+            ->controller(ShotReactionController::class)
+            ->group(function() {
+                Route::get("", "index")->name("index");
+                Route::post("", "store")->name("store");
+            });
     });
 
 Route::prefix('users')
