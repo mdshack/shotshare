@@ -52,8 +52,8 @@ const routes = computed(() => ([
     },
     {
         name: "Explore",
-        href: route("feed"),
-        active: false,
+        href: route("explore"),
+        active: route().current("explore"),
         feature: 'explore',
     },
 ]).filter(({feature}) => page.props.features[feature]))

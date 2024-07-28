@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShotCommentController;
@@ -26,6 +27,10 @@ use Inertia\Inertia;
 Route::get('/', FeedController::class)
     ->name('feed')
     ->middleware(['auth', 'verified']);
+
+Route::get('/explore', ExploreController::class)
+    ->name('explore')
+    ->middleware(['auth', 'verified', "feature:explore"]);
 
 Route::prefix('shots')
     ->name('shots.')

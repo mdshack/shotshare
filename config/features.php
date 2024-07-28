@@ -9,10 +9,11 @@ return [
     'uuid_routes' => env('FEATURE_UUID_ROUTES', false),
     'footer' => env('FEATURE_FOOTER', true),
 
-    'home' => false,
+    'home' => false, // inverse of feed
     'feed' => true,
     'explore' => true,
-    'search' => true,
-    'followers' => true,
     'comments' => true,
+    'followers' => true,
+
+    'search' => false,
 ];
