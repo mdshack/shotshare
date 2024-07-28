@@ -16,12 +16,16 @@ class ShotReactionController extends Controller
         $shot = Shot::wherePublicIdentifier($shotId)->firstOrFail();
 
         return [
-            "current_user" => $shot->reactions()->whereUserId($request->user()->getKey())->count() > 0,
-            "users" => UserData::collect($shot->reactions()->with("user")
-                ->whereHas('user.followers', fn($q) => $q->where("follower_id", $request->user()->getKey()))
-                ->limit(2)
-                ->get()
-                ->pluck("user")),
+            "current_user" => $request->user()
+                ? $shot->reactions()->whereUserId($request->user()->getKey())->count() > 0
+                : false,
+            "users" => $request->user()
+                ? UserData::collect($shot->reactions()->with("user")
+                    ->whereHas('user.followers', fn($q) => $q->where("follower_id", $request->user()->getKey()))
+                    ->limit(2)
+                    ->get()
+                    ->pluck("user"))
+                : [],
             "count" => $shot->reactions()->whereReaction(ReactionType::Upvote)->count(),
         ];
     }

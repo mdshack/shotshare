@@ -23,6 +23,7 @@ import TimeAgo from '@/Components/ui/TimeAgo.vue'
 import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import ShotComments from '@/Components/ShotComments.vue';
+import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
 
 const props = defineProps({
     shot: Object,
@@ -93,7 +94,7 @@ const react = (reaction) => {
                 </User>
             </div>
 
-            <DropdownMenu v-if="shot.author.id === $page.props.auth.user.id">
+            <DropdownMenu v-if="shot.author.id === $page.props.auth.user?.id">
                 <DropdownMenuTrigger>
                     <Button variant="ghost" class="px-2">
                         <EllipsisHorizontalIcon class="w-7"/>
@@ -157,10 +158,13 @@ const react = (reaction) => {
                     <ChatBubbleLeftRightIcon v-if="!commentsOpen" class="w-5"/>
                     <ChatSolid v-else class="w-5"/>
                 </button>
-                <button v-if="page.props.features.reactions" class="hover:text-primary text-muted-foreground transition" @click.prevent="react('upvote')">
-                    <HandThumbUpIcon v-if="!(reactions?.current_user ?? false)" class="w-5 text-muted-foreground"/>
-                    <HandSolid v-else class="w-5 text-muted-foreground"/>
-                </button>
+
+                <MustBeAuthenticatedDialog v-if="page.props.features.reactions" @click.prevent="() => react('upvote')">
+                    <button class="hover:text-primary text-muted-foreground transition">
+                        <HandThumbUpIcon v-if="!(reactions?.current_user ?? false)" class="w-5 text-muted-foreground"/>
+                        <HandSolid v-else class="w-5 text-muted-foreground"/>
+                    </button>
+                </MustBeAuthenticatedDialog>
             </div>
         </div>
 

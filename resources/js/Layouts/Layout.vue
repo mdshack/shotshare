@@ -17,7 +17,7 @@ import { Input } from '@/Components/ui/input'
 import { useFocus } from '@vueuse/core'
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import UserAvatar from '@/Components/ui/UserAvatar.vue';
-import { PhotoIcon, PlusCircleIcon } from '@heroicons/vue/24/outline';
+import { ArrowRightEndOnRectangleIcon, PhotoIcon, PlusCircleIcon } from '@heroicons/vue/24/outline';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { Label } from '@/Components/ui/label'
 import { Checkbox } from '@/Components/ui/checkbox';
@@ -197,6 +197,14 @@ const previewUrls = computed(() => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </template>
+            <div v-else>
+                <Link :href="route('login')" as-child>
+                    <button class="flex items-center text-muted-foreground hover:text-primary transition">
+                        Log In
+                        <ArrowRightEndOnRectangleIcon class="ml-2 w-5"/>
+                    </button>
+                </Link>
+            </div>
         </nav>
 
         <Transition>
