@@ -9,12 +9,21 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/Components/ui/carousel'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/Components/ui/dropdown-menu'
 import { Button } from '@/Components/ui/button';
 import UserAvatar from '@/Components/ui/UserAvatar.vue'
 import User from '@/Components/User.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
 import { useCarousel } from '@/Components/ui/carousel'
 import throttle from "lodash/throttle"
+import { Link } from '@inertiajs/vue3';
 
 defineProps({
     shot: Object
@@ -53,9 +62,24 @@ const setApi = (value) => {
                 </User>
             </div>
 
-            <Button variant="ghost" class="px-2">
-                <EllipsisHorizontalIcon class="w-7"/>
-            </Button>
+            <DropdownMenu v-if="shot.author.id === $page.props.auth.user.id">
+                <DropdownMenuTrigger>
+                    <Button variant="ghost" class="px-2">
+                        <EllipsisHorizontalIcon class="w-7"/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuItem class="cursor-pointer">
+                        Edit Shot
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+
+                    <DropdownMenuItem class="cursor-pointer text-red-500">
+                        Delete Shot
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
 
         <Carousel v-if="shot.type === 'collection'" @init-api="setApi" class="bg-muted">
@@ -70,9 +94,12 @@ const setApi = (value) => {
 
         <div class="p-4 flex justify-between items-end">
             <div class="text-muted-foreground">
-                <h5 class="mb-2 text-xl" :class="shot.name ? 'font-semibold text-primary' : 'italic'">
+                <Link
+                    class="mb-2 text-xl hover:underline flex"
+                    :class="shot.name ? 'font-semibold text-primary' : 'italic'"
+                    :href="route('shots.show', shot.id)">
                     {{ shot?.name ?? 'Unnamed Shot' }}
-                </h5>
+                </Link>
                 <span class="font-semibold text-primary">Micah</span> and 4,123 others liked
             </div>
             <div class="space-x-4 flex">

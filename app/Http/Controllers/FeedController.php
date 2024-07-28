@@ -18,7 +18,7 @@ class FeedController extends Controller
             "shots" => ShotData::collect(Shot::whereHas("user.followers", fn($q) => $q->where("user_followers.follower_id", $request->user()->getKey()))
                 ->orderByDesc("created_at")
                 ->where("anonymize", false)
-                ->cursorPaginate()),
+                ->cursorPaginate(pageName: 'comments')),
         ]);
     }
 }

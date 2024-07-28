@@ -14,4 +14,5 @@ return [
     'explore' => true,
     'search' => true,
     'followers' => true,
+    'comments' => true,
 ];

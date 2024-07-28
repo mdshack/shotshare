@@ -3,7 +3,7 @@ import { Button } from '@/Components/ui/button';
 import User from '@/Components/User.vue';
 import Layout from '@/Layouts/Layout.vue';
 import { ref, onMounted } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { router, Head } from '@inertiajs/vue3';
 import PaginatedShotList from '@/Components/PaginatedShotList.vue';
 
 const props = defineProps({
@@ -18,19 +18,6 @@ onMounted(() => {
     formatted.value = [...formatted.value, ...props.shots.data]
 })
 
-const loadMore = () => {
-    router.reload({
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: () => {
-            formatted.value = [...formatted.value, ...props.shots.data]
-        },
-        data: {
-            cursor: props.shots.next_cursor
-        }
-    })
-}
-
 const follow = () => {
     router.post(route("users.follow", props.user.handle))
 }
@@ -40,6 +27,8 @@ const unfollow = () => {
 }
 </script>
 <template>
+    <Head :title="$page.props.auth.user.id === user.id ? 'My Profile' : `${user.handle.replace('@', '')}'s Profile'`"/>
+
     <Layout>
         <div class="space-y-6">
             <div class="flex items-center justify-between">

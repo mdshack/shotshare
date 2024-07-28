@@ -1,7 +1,7 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue'
-import { Head } from '@inertiajs/vue3'
-import { ref, computed } from 'vue'
+import { Head, router } from '@inertiajs/vue3'
+import { ref, computed, onMounted } from 'vue'
 import ShotImage from '@/Pages/Shots/Partials/ShotImage.vue'
 import ShotDetails from '@/Pages/Shots/Partials/ShotDetails.vue'
 import ShotLinks from '@/Pages/Shots/Partials/ShotLinks.vue'
@@ -18,15 +18,67 @@ import User from '@/Components/User.vue'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import { UseClipboard } from '@vueuse/components'
+import Spinner from '@/Components/ui/Spinner.vue'
 
 const props = defineProps({
     shot: Object,
+    tab: String,
+
+    comments: Object,
 })
 
 const focusedImageIndex = ref(0)
 const focusedImageLink = computed(() => {
     return props.shot.uploads[focusedImageIndex.value]
 })
+
+const commentsLoading = ref(true)
+const formattedComments = ref([])
+const loadComments = (extra = {}) => {
+    router.reload({
+        ...extra,
+        only: ["comments"],
+        onSuccess: () => {
+            formattedComments.value = [...formattedComments.value, ...props.comments.data]
+
+            formattedComments.value.sort((a,b) => {
+                if (a.created_at > b.created_at) {
+                    return -1
+                } else if (a.created_at < b.created_at) {
+                    return 1
+                }
+
+                return 0
+            })
+
+            commentsLoading.value = false
+        }
+    })
+}
+
+onMounted(() => {
+    loadComments()
+})
+
+const commentContents = ref("")
+const submitComment = () => {
+    router.post(route("shots.comments.store", props.shot.id), {contents: commentContents.value}, {
+        onBefore: () => {
+            commentContents.value = ""
+        },
+        onSuccess: () => {
+            loadComments()
+        }
+    })
+}
+
+const loadMore = () => {
+    loadComments({
+        data: {
+            comments_cursor: props.comments.next_cursor
+        }
+    })
+}
 </script>
 
 <template>
@@ -37,7 +89,7 @@ const focusedImageLink = computed(() => {
             <CardShot :shot="shot" @focus-image="(i) => focusedImageIndex = i"/>
 
             <div class="border rounded-lg">
-                <TabsRoot default-value="comments">
+                <TabsRoot :default-value="tab ?? 'comments'">
                     <TabsList>
                         <TabsTrigger as-child value="comments">
                             <button class="text-muted-foreground hover:text-primary p-4 data-[state=active]:border-b-2 data-[state=active]:font-semibold data-[state=active]:text-primary data-[state=active]:border-primary transition">
@@ -63,39 +115,45 @@ const focusedImageLink = computed(() => {
                         <TabsContent value="comments">
                             <div class="divide-y">
                                 <div class="p-4">
-                                    <User>
-                                        <template #after-handle>
-                                            •
-                                            <TimeAgo :datetime="shot.created_at"/>
-                                        </template>
-                                    </User>
-                                    <div class="ml-12 mt-2">
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim deserunt, beatae voluptatum consequatur odit ut sunt nihil porro pariatur obcaecati perspiciatis accusantium et adipisci voluptates at dolore. Velit, soluta expedita?
+                                    <div class="relative">
+                                        <Input v-model="commentContents" placeholder="Add your comment" class="peer" @keyup.enter="submitComment"/>
+                                        <kbd
+                                            class="transition opacity-0 peer-focus:opacity-100 inline-flex absolute top-0 bottom-0 right-0 my-auto mr-2 pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                                            enter to post
+                                        </kbd>
                                     </div>
                                 </div>
 
-                                <div class="p-4">
-                                    <User>
+                                <div v-if="!formattedComments.length && !commentsLoading" class="p-4 text-muted-foreground text-center">
+                                    Nothing to see here
+                                </div>
+
+                                <div
+                                    v-for="comment in formattedComments"
+                                    class="p-4">
+                                    <User :user="comment.user">
                                         <template #after-handle>
                                             •
-                                            <TimeAgo :datetime="shot.created_at"/>
+                                            <TimeAgo :datetime="comment.created_at"/>
                                         </template>
                                     </User>
                                     <div class="ml-12 mt-2">
-                                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim deserunt, beatae voluptatum consequatur odit ut sunt nihil porro pariatur obcaecati perspiciatis accusantium et adipisci voluptates at dolore. Velit, soluta expedita?
+                                        {{ comment.contents }}
                                     </div>
                                 </div>
-
                             </div>
+                            <div v-if="commentsLoading || comments?.next_cursor" class="p-4 flex justify-center">
+                                <template>
+                                    <Spinner/>
+                                    <span class="sr-only">Loading</span>
+                                </template>
 
-                            <div class="p-4">
-                                <div class="relative">
-                                    <Input placeholder="Add your comment" class="peer"/>
-                                    <kbd
-                                        class="transition opacity-0 peer-focus:opacity-100 inline-flex absolute top-0 bottom-0 right-0 my-auto mr-2 pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                                        enter to post
-                                    </kbd>
-                                </div>
+                                <Button
+                                    v-if="comments?.next_cursor"
+                                    variant="outline"
+                                    @click.prevent="loadMore">
+                                    Load More
+                                </Button>
                             </div>
                         </TabsContent>
 
@@ -144,7 +202,7 @@ const focusedImageLink = computed(() => {
                                         </div>
                                     </Label>
 
-                                    <div class="border mt-2 rounded-lg p-4 text-muted-foreground flex text-sm">
+                                    <div v-if="shot.type === 'collection'" class="border mt-2 rounded-lg p-4 text-muted-foreground flex text-sm">
                                         <div>
                                             <InformationCircleIcon class="w-5 text-blue-500 dark:text-blue-600 mr-2"/>
                                         </div>

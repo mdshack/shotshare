@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShotCommentController;
 use App\Http\Controllers\ShotController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
@@ -29,12 +30,19 @@ Route::prefix('shots')
     ->name('shots.')
     ->controller(ShotController::class)
     ->group(function () {
-        Route::get('', 'index')
-            ->middleware(['auth', 'verified'])
-            ->name('index');
         Route::get('{id}', 'show')->name('show');
         Route::patch('{id}', 'update')->name('update');
         Route::delete('{id}', 'destroy')->name('destroy');
+
+        Route::middleware("feature:comments")
+            ->prefix("{shotId}/comments")
+            ->name('comments.')
+            ->controller(ShotCommentController::class)
+            ->group(function() {
+                Route::post("", "store")
+                    ->name("store")
+                    ->middleware("throttle:comment");
+            });
 
         Route::post('{id}/react', 'react')
             ->name('react')

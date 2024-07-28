@@ -173,23 +173,23 @@ const previewUrls = computed(() => {
                         <DropdownMenuSeparator />
 
                         <Link :href="route('profile.edit')">
-                        <DropdownMenuItem class="cursor-pointer">
-                            Profile
-                        </DropdownMenuItem>
+                            <DropdownMenuItem class="cursor-pointer">
+                                Profile
+                            </DropdownMenuItem>
                         </Link>
 
-                        <Link :href="route('shots.index')">
-                        <DropdownMenuItem class="cursor-pointer">
-                            Shots
-                        </DropdownMenuItem>
+                        <Link :href="route('users.show', $page.props.auth.user.handle)">
+                            <DropdownMenuItem class="cursor-pointer">
+                                Shots
+                            </DropdownMenuItem>
                         </Link>
 
                         <DropdownMenuSeparator />
 
                         <Link :href="route('logout')" method="post" as="button" class="w-full">
-                        <DropdownMenuItem class="cursor-pointer">
-                            Sign Out
-                        </DropdownMenuItem>
+                            <DropdownMenuItem class="cursor-pointer">
+                                Sign Out
+                            </DropdownMenuItem>
                         </Link>
                     </DropdownMenuContent>
                 </DropdownMenu>
