@@ -107,8 +107,11 @@ const handleFileUpload = (event) => {
         ...(event?.target?.files ?? []),
     ]
 
-    fileUploadModalOpen.value = true
     hoveringGlobalDropzone.value = false
+
+    if(form.images.length) {
+        fileUploadModalOpen.value = true
+    }
 }
 
 const submitUpload = () => {

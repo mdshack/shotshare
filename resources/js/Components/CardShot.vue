@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline';
 import { ChatBubbleLeftRightIcon as ChatSolid } from '@heroicons/vue/24/solid';
 
@@ -24,6 +24,7 @@ import TimeAgo from '@/Components/ui/TimeAgo.vue'
 import { Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import InputComment from '@/Components/InputComment.vue';
+import ShotComments from '@/Components/ShotComments.vue';
 
 const props = defineProps({
     shot: Object,
@@ -78,6 +79,17 @@ const toggleCommentsOpen = () => {
         loadComments()
     }
 }
+
+const react = (reaction) => {
+    axios.post(route('shots.react', props.shot.id), {
+        'reaction': reaction
+    }).then(() => {
+        // router.reload({ only: [
+        //     'reaction',
+        //     'reactionCounts',
+        // ]})
+    })
+}
 </script>
 
 <template>
@@ -130,30 +142,22 @@ const toggleCommentsOpen = () => {
                     :href="route('shots.show', shot.id)">
                     {{ shot?.name ?? 'Unnamed Shot' }}
                 </Link>
-                <span class="font-semibold text-primary">Micah</span> and 4,123 others liked
+                <span class="font-semibold text-primary">@mdshack</span> and 4,123 others liked
             </div>
             <div class="space-x-4 flex">
                 <button v-if="condensed" class="hover:text-primary text-muted-foreground transition" @click.prevent="toggleCommentsOpen">
                     <ChatBubbleLeftRightIcon v-if="!commentsOpen" class="w-5"/>
                     <ChatSolid v-else class="w-5"/>
                 </button>
-                <HandThumbUpIcon class="w-5 text-muted-foreground"/>
+                <button class="hover:text-primary text-muted-foreground transition" @click.prevent="react('upvote')">
+                    <HandThumbUpIcon class="w-5 text-muted-foreground"/>
+                </button>
             </div>
         </div>
 
         <div v-if="commentsOpen" class="border-t">
             <h5 class="font-semibold p-4 pb-0">Comments</h5>
-
-            <InputComment :shot="shot" @on-success="loadComments"/>
-
-            <Comment v-for="comment in comments" :key="comment.id" :comment="comment"/>
-            <div class="p-4 flex justify-center">
-                <Link v-if="commentsNext" :href="route('shots.show', {id: shot.id, tab: 'comments'})">
-                    <Button>
-                        View More
-                    </Button>
-                </Link>
-            </div>
+            <ShotComments :shot="shot"/>
         </div>
     </div>
 </template>

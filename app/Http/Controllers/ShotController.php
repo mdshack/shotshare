@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\CommentData;
 use App\Data\ShotData;
+use App\Data\UserData;
 use App\Enums\ReactionType;
 use App\Http\Requests\UpdateShotRequest;
 use App\Models\Comment;
@@ -28,11 +29,19 @@ class ShotController extends Controller
             abort(404);
         }
 
-        return Inertia::render('Shots/Show', [
+         return Inertia::render('Shots/Show', [
             'shot' => fn () => ShotData::fromModel($shot),
             'tab' => fn () => $request->query('tab', null),
 
             // Lazy Relationships
+            'reactions' => Inertia::lazy(fn() => [
+                "users" => UserData::collect($shot->reactions()->with("user")
+                    ->whereHas('user.followers', fn($q) => $q->where("follower_id", $request->user()->getKey()))
+                    ->limit(2)
+                    ->get()
+                    ->pluck("user")),
+                "count" => $shot->reactions()->whereReaction(ReactionType::Upvote)->count(),
+            ]),
             'comments' => Inertia::lazy(fn() => CommentData::collect(Comment::with("user")
                 ->whereCommentableType(Shot::class)
                 ->whereCommentableId($shot->getKey())
@@ -66,19 +75,21 @@ class ShotController extends Controller
 
     public function react(Request $request, string $id)
     {
+        $shot = Shot::wherePublicIdentifier($id)->firstOrFail();
+
         $this->validate($request, [
             'reaction' => ['required', Rule::enum(ReactionType::class)],
         ]);
 
         // Delete in the event they are reversing an existing reaction
-        $deleted = ShotReaction::whereShotId($id)
+        $deleted = $shot->reactions()
             ->whereUserId($userId = $request->user()->getKey())
             ->whereReaction($reaction = $request->get('reaction'))
             ->delete();
 
         // They didn't delete anything, lets create their reaction
         if (! $deleted) {
-            ShotReaction::updateOrCreate([
+            $shot->reactions()->updateOrCreate([
                 'shot_id' => $id,
                 'user_id' => $userId,
             ], ['reaction' => $reaction]);

@@ -14,6 +14,8 @@ import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import { UseClipboard } from '@vueuse/components'
 import Spinner from '@/Components/ui/Spinner.vue'
+import CursorPaginatedResource from '@/Components/CursorPaginatedResource.vue';
+import ShotComments from '@/Components/ShotComments.vue';
 
 const page = usePage()
 
@@ -21,6 +23,7 @@ const props = defineProps({
     shot: Object,
     tab: String,
 
+    reactions: Object,
     comments: Object,
 })
 
@@ -61,6 +64,10 @@ const loadComments = (extra = {}) => {
 
 onMounted(() => {
     loadComments()
+
+    router.reload({ only: [
+        'reactions',
+    ]})
 })
 
 const loadMore = () => {
@@ -76,6 +83,8 @@ const loadMore = () => {
     <Head title="Shot" />
 
     <Layout>
+
+        {{ reactions }}
         <div class="space-y-8">
             <CardShot :shot="shot" @focus-image="(i) => focusedImageIndex = i"/>
 
@@ -105,26 +114,7 @@ const loadMore = () => {
                     <div>
                         <TabsContent value="comments" v-if="$page.props.features.comments">
                             <div class="divide-y">
-                                <InputComment :shot="shot" @on-success="loadComments"/>
-
-                                <div v-if="!formattedComments.length && !commentsLoading" class="p-4 text-muted-foreground text-center">
-                                    Nothing to see here
-                                </div>
-
-                                <Comment v-for="comment in formattedComments" :comment="comment"/>
-                            </div>
-                            <div v-if="commentsLoading || comments?.next_cursor" class="p-4 flex justify-center">
-                                <template>
-                                    <Spinner/>
-                                    <span class="sr-only">Loading</span>
-                                </template>
-
-                                <Button
-                                    v-if="comments?.next_cursor"
-                                    variant="outline"
-                                    @click.prevent="loadMore">
-                                    Load More
-                                </Button>
+                                <ShotComments :shot="shot"/>
                             </div>
                         </TabsContent>
 
