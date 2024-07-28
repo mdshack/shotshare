@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline';
+import { ChatBubbleLeftRightIcon as ChatSolid } from '@heroicons/vue/24/solid';
 
 import {
     Carousel,
@@ -18,11 +19,18 @@ import {
 } from '@/Components/ui/dropdown-menu'
 import { Button } from '@/Components/ui/button';
 import User from '@/Components/User.vue'
+import Comment from '@/Components/Comment.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
 import { Link } from '@inertiajs/vue3';
+import axios from 'axios';
+import InputComment from '@/Components/InputComment.vue';
 
-defineProps({
-    shot: Object
+const props = defineProps({
+    shot: Object,
+    condensed: {
+        type: Boolean,
+        default: false,
+    }
 })
 
 const emit = defineEmits([
@@ -43,6 +51,32 @@ const setApi = (value) => {
             emit("focus-image", currentSlide.value)
         }, 100)
     })
+}
+
+const comments = ref([])
+const commentsLoading = ref(false)
+const commentsOpen = ref(false)
+const commentsNext = ref(null)
+
+const loadComments = () => {
+    commentsLoading.value = true
+
+    axios.get(route("shots.comments.index", props.shot.id))
+        .then(({data}) => {
+            comments.value = data.data
+            commentsNext.value = data.next_cursor
+        })
+        .finally(() => {
+            commentsLoading.value = false
+        })
+}
+
+const toggleCommentsOpen = () => {
+    commentsOpen.value = !commentsOpen.value
+
+    if(commentsOpen.value) {
+        loadComments()
+    }
 }
 </script>
 
@@ -99,8 +133,26 @@ const setApi = (value) => {
                 <span class="font-semibold text-primary">Micah</span> and 4,123 others liked
             </div>
             <div class="space-x-4 flex">
-                <ChatBubbleLeftRightIcon class="w-5 text-muted-foreground"/>
+                <button v-if="condensed" class="hover:text-primary text-muted-foreground transition" @click.prevent="toggleCommentsOpen">
+                    <ChatBubbleLeftRightIcon v-if="!commentsOpen" class="w-5"/>
+                    <ChatSolid v-else class="w-5"/>
+                </button>
                 <HandThumbUpIcon class="w-5 text-muted-foreground"/>
+            </div>
+        </div>
+
+        <div v-if="commentsOpen" class="border-t">
+            <h5 class="font-semibold p-4 pb-0">Comments</h5>
+
+            <InputComment :shot="shot" @on-success="loadComments"/>
+
+            <Comment v-for="comment in comments" :key="comment.id" :comment="comment"/>
+            <div class="p-4 flex justify-center">
+                <Link v-if="commentsNext" :href="route('shots.show', {id: shot.id, tab: 'comments'})">
+                    <Button>
+                        View More
+                    </Button>
+                </Link>
             </div>
         </div>
     </div>

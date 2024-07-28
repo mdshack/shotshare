@@ -35,7 +35,7 @@ const props = defineProps({
             <template v-if="$page.props.features.feed">
                 <h2 class="font-semibold text-2xl">What's New?</h2>
 
-                <PaginatedShotList :shots="shots"/>
+                <PaginatedShotList :shots="shots" condensed/>
             </template>
         </div>
     </Layout>

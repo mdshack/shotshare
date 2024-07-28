@@ -5,7 +5,11 @@ import { ref, onMounted } from 'vue';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
-    shots: Object
+    shots: Object,
+    condensed: {
+        type: Boolean,
+        default: false,
+    }
 })
 
 const formatted = ref([])
@@ -29,7 +33,7 @@ const loadMore = () => {
 </script>
 <template>
     <div class="space-y-4">
-        <CardShot v-for="shot in formatted" :shot="shot"/>
+        <CardShot v-for="shot in formatted" :shot="shot" :condensed="condensed"/>
 
         <div v-if="!formatted?.length" class="flex items-center justify-center text-xl text-muted-foreground">
             Nothing to see here

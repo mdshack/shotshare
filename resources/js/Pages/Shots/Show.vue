@@ -2,15 +2,14 @@
 import Layout from '@/Layouts/Layout.vue'
 import { Head, router, usePage } from '@inertiajs/vue3'
 import { ref, computed, onMounted } from 'vue'
-import { ChatBubbleLeftRightIcon, CheckIcon, ClipboardIcon, EllipsisHorizontalIcon, HandThumbUpIcon, InformationCircleIcon } from '@heroicons/vue/24/outline';
+import { CheckIcon, ClipboardIcon, InformationCircleIcon } from '@heroicons/vue/24/outline';
 import { Button } from '@/Components/ui/button'
-import TimeAgo from '@/Components/ui/TimeAgo.vue'
+import Comment from '@/Components/Comment.vue'
 
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'radix-vue'
 
-
+import InputComment from '@/Components/InputComment.vue'
 import CardShot from '@/Components/CardShot.vue'
-import User from '@/Components/User.vue'
 import { Input } from '@/Components/ui/input'
 import { Label } from '@/Components/ui/label'
 import { UseClipboard } from '@vueuse/components'
@@ -64,18 +63,6 @@ onMounted(() => {
     loadComments()
 })
 
-const commentContents = ref("")
-const submitComment = () => {
-    router.post(route("shots.comments.store", props.shot.id), {contents: commentContents.value}, {
-        onBefore: () => {
-            commentContents.value = ""
-        },
-        onSuccess: () => {
-            loadComments()
-        }
-    })
-}
-
 const loadMore = () => {
     loadComments({
         data: {
@@ -118,33 +105,13 @@ const loadMore = () => {
                     <div>
                         <TabsContent value="comments" v-if="$page.props.features.comments">
                             <div class="divide-y">
-                                <div class="p-4">
-                                    <div class="relative">
-                                        <Input v-model="commentContents" placeholder="Add your comment" class="peer" @keyup.enter="submitComment"/>
-                                        <kbd
-                                            class="transition opacity-0 peer-focus:opacity-100 inline-flex absolute top-0 bottom-0 right-0 my-auto mr-2 pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                                            enter to post
-                                        </kbd>
-                                    </div>
-                                </div>
+                                <InputComment :shot="shot" @on-success="loadComments"/>
 
                                 <div v-if="!formattedComments.length && !commentsLoading" class="p-4 text-muted-foreground text-center">
                                     Nothing to see here
                                 </div>
 
-                                <div
-                                    v-for="comment in formattedComments"
-                                    class="p-4">
-                                    <User :user="comment.user">
-                                        <template #after-handle>
-                                            •
-                                            <TimeAgo :datetime="comment.created_at"/>
-                                        </template>
-                                    </User>
-                                    <div class="ml-12 mt-2">
-                                        {{ comment.contents }}
-                                    </div>
-                                </div>
+                                <Comment v-for="comment in formattedComments" :comment="comment"/>
                             </div>
                             <div v-if="commentsLoading || comments?.next_cursor" class="p-4 flex justify-center">
                                 <template>

@@ -39,6 +39,8 @@ Route::prefix('shots')
             ->name('comments.')
             ->controller(ShotCommentController::class)
             ->group(function() {
+                Route::get("", "index")->name("index");
+
                 Route::post("", "store")
                     ->name("store")
                     ->middleware("throttle:comment");
