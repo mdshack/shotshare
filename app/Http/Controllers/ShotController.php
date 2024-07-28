@@ -61,12 +61,16 @@ class ShotController extends Controller
 
     public function destroy(Request $request, string $id)
     {
-        $shot = Shot::where('user_id', $request->user()->getKey())
-            ->whereId($id)
+        $shot = Shot::with("uploads")
+            ->where('user_id', $request->user()->getKey())
+            ->wherePublicIdentifier($id)
             ->firstOrFail();
 
         if ($shot) {
-            Storage::delete($shot->path);
+            foreach($shot->uploads as $upload) {
+                Storage::delete($upload->path);
+            }
+
             $shot->delete();
         }
 

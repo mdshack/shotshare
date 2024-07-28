@@ -75,11 +75,9 @@ const focusedImage = computed(() => {
                                         </div>
                                         <div class="relative">
                                             <Input :model-value="shot.url" disabled/>
-                                            <UseClipboard
-                                                v-slot="{ copy, copied }"
-                                                :source="shot.url">
+                                            <UseClipboard v-slot="{ copy, copied }">
                                                 <Button
-                                                    @click.prevent="copy()"
+                                                    @click.prevent="() => copy(shot.url)"
                                                     class="absolute right-0 top-0 bottom-0 text-accent hover:text-primary"
                                                     variant="ghost">
                                                     <CheckIcon v-if="copied" class="h-5 w-5 text-green-500" />
@@ -97,11 +95,9 @@ const focusedImage = computed(() => {
                                         </div>
                                         <div class="relative">
                                             <Input :model-value="focusedImage.url" disabled/>
-                                            <UseClipboard
-                                                v-slot="{ copy, copied }"
-                                                :source="focusedImage.url">
+                                            <UseClipboard v-slot="{ copy, copied }">
                                                 <Button
-                                                    @click.prevent="copy()"
+                                                    @click.prevent="() => copy(focusedImage.url)"
                                                     class="absolute right-0 top-0 bottom-0 text-accent hover:text-primary"
                                                     variant="ghost">
                                                     <CheckIcon v-if="copied" class="h-5 w-5 text-green-500" />

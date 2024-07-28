@@ -20,10 +20,11 @@ import {
 import { Button } from '@/Components/ui/button';
 import User from '@/Components/User.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import ShotComments from '@/Components/ShotComments.vue';
 import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
+import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue';
 
 const props = defineProps({
     shot: Object,
@@ -80,6 +81,12 @@ const react = (reaction) => {
         loadReactions()
     })
 }
+
+const deleteShotOpen = ref(false)
+const deleteShot = () => {
+    return axios.delete(route('shots.destroy', props.shot.id))
+        .finally(() => window.location.pathname = `/users/${page.props.auth.user.handle}`)
+}
 </script>
 
 <template>
@@ -107,7 +114,7 @@ const react = (reaction) => {
 
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem class="cursor-pointer text-red-500">
+                    <DropdownMenuItem class="cursor-pointer text-red-500" @click.prevent="deleteShotOpen = true">
                         Delete Shot
                     </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -173,4 +180,22 @@ const react = (reaction) => {
             <ShotComments :shot="shot"/>
         </div>
     </div>
+
+    <RequireConfirmationDialog v-model:open="deleteShotOpen" :action="deleteShot">
+        <template #title>
+            Are you sure you wish to delete this shot?
+        </template>
+
+        <template #description>
+            Deleting shots is a destructive action. You will not be able to recover this image if you delete it.
+        </template>
+
+        <template #reject>
+            Cancel
+        </template>
+
+        <template #confirm>
+            Delete Shot
+        </template>
+    </RequireConfirmationDialog>
 </template>
