@@ -3,7 +3,8 @@
         ".": {
             "release-type": "php",
             "prerelease": true,
-            "prerelease-type": "beta"
+            "prerelease-type": "beta",
+            "always-bump-prerelease": true
         }
     }
 }
