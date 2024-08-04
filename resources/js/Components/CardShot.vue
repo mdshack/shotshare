@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline';
-import { ChatBubbleLeftRightIcon as ChatSolid, HandThumbUpIcon as HandSolid } from '@heroicons/vue/24/solid';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { ChatBubbleLeftRightIcon, EllipsisHorizontalIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
+import { ChatBubbleLeftRightIcon as ChatSolid, HandThumbUpIcon as HandSolid } from '@heroicons/vue/24/solid'
 
 import {
     Carousel,
@@ -17,17 +17,16 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/ui/button'
 import User from '@/Components/User.vue'
 import TimeAgo from '@/Components/ui/TimeAgo.vue'
-import { Link, router, usePage } from '@inertiajs/vue3';
-import axios from 'axios';
-import ShotComments from '@/Components/ShotComments.vue';
-import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
-import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue';
-import DialogEditShot from '@/Components/DialogEditShot.vue';
-import videojs from 'video.js';
+import { Link, usePage } from '@inertiajs/vue3'
+import axios from 'axios'
+import ShotComments from '@/Components/ShotComments.vue'
+import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue'
+import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue'
+import DialogEditShot from '@/Components/DialogEditShot.vue'
+import videojs from 'video.js'
 
 import "video.js/dist/video-js.min.css"
 
@@ -35,10 +34,11 @@ const videos = ref([])
 
 const props = defineProps({
     shot: Object,
+    visible: Boolean,
     condensed: {
         type: Boolean,
         default: false,
-    }
+    },
 })
 
 const emit = defineEmits([
@@ -48,6 +48,16 @@ const emit = defineEmits([
 const page = usePage()
 
 const currentSlide = ref(0)
+
+watch(() => props.visible, () => {
+    if(!(currentSlide.value in players.value)) return
+
+    if(props.visible) {
+        players.value[currentSlide.value].play()
+    } else {
+        players.value[currentSlide.value].pause()
+    }
+})
 
 const api = ref(null)
 
@@ -73,24 +83,33 @@ const loadReactions = () => {
         })
 }
 
-// const players = ref({})
+const players = ref({})
 onMounted(() => {
     loadReactions()
 
-    props.shot.uploads
-        .filter(({type}) => type === 'video')
-        .forEach((_, i) => {
-            let element
-            if(Array.isArray(videos.value)) {
-                element = videos.value[i]
-            } else {
-                element = videos.value
-            }
+    props.shot.uploads.forEach((shot, i) => {
+        if(shot.type !== 'video') return;
 
-            videojs(element, {
-                controls: true
-            })
+        let element
+        if(Array.isArray(videos.value)) {
+            element = videos.value[i]
+        } else {
+            element = videos.value
+        }
+
+        players.value[i] = videojs(element, {
+            controls: true,
+            loop: true,
+            muted: true,
         })
+
+    })
+})
+
+onUnmounted(() => {
+    for(let player in players.value) {
+        players.value[player].dispose()
+    }
 })
 
 const commentsOpen = ref(false)
@@ -154,7 +173,8 @@ const editShotOpen = ref(false)
                     <video
                         v-else
                         ref="videos"
-                        class="video-js vjs-shotshare w-full max-h-[360px]">
+                        class="video-js vjs-shotshare w-full max-h-[360px]"
+                        :data-url="upload.url">
                         <source :src="upload.url">
                     </video>
                 </CarouselItem>
@@ -173,7 +193,8 @@ const editShotOpen = ref(false)
             <video
                 v-else
                 ref="videos"
-                class="video-js vjs-shotshare w-full max-h-[360px]">
+                class="video-js vjs-shotshare w-full max-h-[360px]"
+                :data-url="shot.uploads[0]?.url">
                 <source :src="shot.uploads[0]?.url">
             </video>
         </template>
@@ -226,35 +247,34 @@ const editShotOpen = ref(false)
             <h5 class="font-semibold p-4 pb-0">Comments</h5>
             <ShotComments :shot="shot"/>
         </div>
-    </div>
+        <div class="!my-0 !py-0">
+            <RequireConfirmationDialog
+                v-if="deleteShotOpen"
+                :open="true"
+                :action="deleteShot">
+                <template #title>
+                    Are you sure you wish to delete this shot?
+                </template>
 
-    <div class="!my-0 !py-0">
-        <RequireConfirmationDialog
-            v-if="deleteShotOpen"
-            :open="true"
-            :action="deleteShot">
-            <template #title>
-                Are you sure you wish to delete this shot?
-            </template>
+                <template #description>
+                    Deleting shots is a destructive action. You will not be able to recover this image if you delete it.
+                </template>
 
-            <template #description>
-                Deleting shots is a destructive action. You will not be able to recover this image if you delete it.
-            </template>
+                <template #reject>
+                    Cancel
+                </template>
 
-            <template #reject>
-                Cancel
-            </template>
+                <template #confirm>
+                    Delete Shot
+                </template>
+            </RequireConfirmationDialog>
 
-            <template #confirm>
-                Delete Shot
-            </template>
-        </RequireConfirmationDialog>
-
-        <DialogEditShot
-            v-if="editShotOpen"
-            :shot="shot"
-            @close="editShotOpen = false"
-        />
+            <DialogEditShot
+                v-if="editShotOpen"
+                :shot="shot"
+                @close="editShotOpen = false"
+            />
+        </div>
     </div>
 </template>
 <style>

@@ -3,6 +3,7 @@ import CardShot from '@/Components/CardShot.vue';
 import { Button } from '@/Components/ui/button';
 import { ref, onMounted } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { vElementVisibility } from '@vueuse/components'
 
 const props = defineProps({
     shots: Object,
@@ -30,10 +31,25 @@ const loadMore = () => {
         }
     })
 }
+
+const visible = ref([])
+const onVideoVisible = (isVisible, shot) => {
+    if(isVisible) {
+        visible.value.push(shot.id)
+    } else {
+        visible.value.splice(visible.value.findIndex(id => id === shot.id), 1)
+    }
+}
 </script>
 <template>
     <div class="space-y-4">
-        <CardShot v-for="shot in formatted" :shot="shot" :condensed="condensed"/>
+        <CardShot
+            v-for="shot in formatted"
+            v-element-visibility="(e) => onVideoVisible(e, shot)"
+            :shot="shot"
+            :condensed="condensed"
+            :visible="visible.includes(shot.id)"
+        />
 
         <div v-if="!formatted?.length" class="flex items-center justify-center text-xl text-muted-foreground">
             Nothing to see here
