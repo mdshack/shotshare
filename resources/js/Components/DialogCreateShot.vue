@@ -8,6 +8,7 @@ import { computed, ref } from 'vue';
 import { Input } from '@/Components/ui/input'
 import { Button } from '@/Components/ui/button'
 import { Label } from '@/Components/ui/label'
+import Spinner from './ui/Spinner.vue';
 
 const form = defineModel("form")
 
@@ -63,7 +64,7 @@ const previewUrls = computed(() => {
                     ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
 
                     previews.value[file.name] = canvas.toDataURL('image/jpeg')
-                }, 150);
+                }, 500);
             })
 
             return file.name in previews.value
@@ -94,6 +95,9 @@ const previewUrls = computed(() => {
                     <div class="grid grid-cols-3 gap-4">
                         <div v-for="preview in previewUrls" class="aspect-square border rounded-lg overflow-hidden">
                             <img v-if="preview" :src="preview" class="object-cover object-center w-full h-full" />
+                            <div v-else class="w-full h-full flex items-center justify-center">
+                                <Spinner/>
+                            </div>
                         </div>
                         <label for="dropzone-file"
                             class="cursor-pointer hover:border-primary hover:text-primary text-muted-foreground border border-dashed rounded-lg">
@@ -153,7 +157,10 @@ const previewUrls = computed(() => {
 
             <DialogFooter>
                 <Button variant="outline" @click="fileUploadModalOpen = false">Cancel</Button>
-                <Button @click.prevent="submitUpload">Upload Image</Button>
+                <Button @click.prevent="submitUpload" :disabled="form.processing">
+                    <Spinner v-if="form.processing" class="mr-1 text-background"/>
+                    Upload Image
+                </Button>
             </DialogFooter>
         </DialogContent>
     </Dialog>

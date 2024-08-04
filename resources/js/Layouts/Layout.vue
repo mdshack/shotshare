@@ -1,4 +1,3 @@
-0
 <script setup>
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { Button } from '@/Components/ui/button'
@@ -84,9 +83,11 @@ watch(fileUploadModalOpen, (open) => {
 })
 
 const handleFileUpload = (event) => {
-    const files = [...event?.dataTransfer?.files]
-        ?? [...event?.target?.files]
-        ?? []
+
+    const files = [
+        ...(event?.dataTransfer?.files ?? []),
+        ...(event?.target?.files ?? [])
+    ]
 
     files.forEach(file => {
         if(file.type.startsWith("video/")) {
@@ -234,7 +235,7 @@ const handleFileUpload = (event) => {
                     <h5 class="text-muted-foreground font-semibold text-primary">Drop your images here to upload</h5>
                 </div>
             </div>
-            <input ref="fileInput" id="dropzone-file" type="file" class="hidden" @change="handleFileUpload" accept="image/png, image/gif, image/jpeg" />
+            <input ref="fileInput" id="dropzone-file" type="file" class="hidden" @change="handleFileUpload" accept="image/* video/*" />
         </label>
 
         <DialogCreateShot

@@ -165,8 +165,8 @@ const editShotOpen = ref(false)
 
         <template v-else>
             <img
-                v-if="shot.uploads[0].type === 'image'"
-                :src="shot.uploads[0].url"
+                v-if="shot.uploads[0]?.type === 'image'"
+                :src="shot.uploads[0]?.url"
                 class="w-full bg-muted"
             />
 
@@ -174,7 +174,7 @@ const editShotOpen = ref(false)
                 v-else
                 ref="videos"
                 class="video-js vjs-shotshare w-full max-h-[360px]">
-                <source :src="shot.uploads[0].url">
+                <source :src="shot.uploads[0]?.url">
             </video>
         </template>
 
