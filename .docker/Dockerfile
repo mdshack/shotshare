@@ -42,7 +42,7 @@ RUN npm run build
 ###########
 # Runtime #
 ###########
-FROM dunglas/frankenphp:php8.3-alpine
+FROM dunglas/frankenphp:php8.2-alpine
 
 WORKDIR /app
 
