@@ -30,9 +30,7 @@ WORKDIR /app
 COPY package*.json /app
 RUN npm install --omit optional
 
-COPY resources /app/resources
-COPY public /app/public
-COPY vite.config.js tailwind.config.js /app/
+COPY . /app/
 COPY --from=phpsetup /app/vendor /app/vendor
 
 # Build Frontend
