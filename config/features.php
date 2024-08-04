@@ -16,4 +16,6 @@ return [
     'followers' => true,
 
     'search' => false,
+
+    'strip_exif' => true,
 ];

@@ -21,7 +21,7 @@
 
 ## About
 
-ShotShare is an open source, self hosted, configurable image sharing platform, it was built to allow easy sharing of media between friends.
+ShotShare is an open source, self hosted, configurable media sharing platform, it was built to allow easy sharing of media between friends and communities.
 
 ### Features
 
@@ -30,9 +30,9 @@ ShotShare is an open source, self hosted, configurable image sharing platform, i
 
 - [X] **Authentication** - Users may sign up and login to the platform.
 - [X] **Image Sharing** - Share images with ease, upload a new shot from any page in the application.
-- [ ] **Video Sharing** - Share videos with your friends.
-- [ ] **Invitations** - Invite users to the platform with a one-click sign up link.
+- [X] **Video Sharing** - Share videos with your friends.
 - [ ] **Administration** - Ability to administrate shots and users in your installation.
+- [ ] **Invitations** - Invite users to the platform with a one-click sign up link.
 - [ ] **S3 Support** - Support cloud-based storage with an S3 storage backend.
 
 #### Optional
@@ -41,7 +41,7 @@ ShotShare is an open source, self hosted, configurable image sharing platform, i
 - [X] **Social Functionality** - Follow your friends, react to their posts, add comments, and more!
 - [X] **Feeds** - See what those you follow are posting in your Feed. See what others you aren't following are posting in the "Explore" feed.
 - [X] **Screenshotting Clients** - Integrates with multiple major screenshot clients, such as: [ShareX](#) and [Shutter](#).
-- [ ] **EXIF Stripping** - Remove sensitive details from your uploaded images, such as location embeddings.
+- [X] **EXIF Stripping** - Remove sensitive details from your uploaded images, such as location embeddings.
 
 ## Demo
 

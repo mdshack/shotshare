@@ -14,6 +14,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 # Install Node/NPM
 RUN apk add --update --no-cache nodejs npm
 
+# Add ffmpeg (for video upload)
+RUN apk add --update --no-cache ffmpeg
+
 WORKDIR /app
 
 RUN install-php-extensions \
@@ -26,7 +29,8 @@ RUN install-php-extensions \
     xmlwriter \
     pcntl \
     pdo_mysql \
-    pdo_pgsql
+    pdo_pgsql \
+    imagick
 
 
 # Install frontend dependencies
