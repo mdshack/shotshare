@@ -60,6 +60,7 @@ const hoveringGlobalDropzone = ref(false)
 const form = useForm({
     name: "",
     images: [],
+    videos: [],
     type: 'individual',
     require_logged_in: false,
     anonymize: false,
@@ -68,6 +69,7 @@ const form = useForm({
 const clearForm = () => {
     form.name = ""
     form.images = []
+    form.videos = []
     form.type = 'individual'
     form.require_logged_in = false
     form.anonymize = false
@@ -82,15 +84,21 @@ watch(fileUploadModalOpen, (open) => {
 })
 
 const handleFileUpload = (event) => {
-    form.images = [
-        ...form.images,
-        ...(event?.dataTransfer?.files ?? []),
-        ...(event?.target?.files ?? []),
-    ]
+    const files = [...event?.dataTransfer?.files]
+        ?? [...event?.target?.files]
+        ?? []
+
+    files.forEach(file => {
+        if(file.type.startsWith("video/")) {
+            form.videos.push(file)
+        } else if (file.type.startsWith("image/")) {
+            form.images.push(file)
+        }
+    })
 
     hoveringGlobalDropzone.value = false
 
-    if(form.images.length) {
+    if(form.images.length || form.videos.length) {
         fileUploadModalOpen.value = true
     }
 }

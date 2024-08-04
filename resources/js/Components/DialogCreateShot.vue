@@ -4,9 +4,10 @@ import { Checkbox } from '@/Components/ui/checkbox';
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'radix-vue'
 import { ScrollArea } from '@/Components/ui/scroll-area';
 import { PlusCircleIcon } from '@heroicons/vue/24/outline';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { Input } from '@/Components/ui/input'
 import { Button } from '@/Components/ui/button'
+import { Label } from '@/Components/ui/label'
 
 const form = defineModel("form")
 
@@ -24,17 +25,47 @@ const uploadAsOptions = [
 ]
 
 const submitUpload = () => {
-    form.value.post(route('upload'), {
-        onFinish: () => {
-            fileUploadModalOpen.value = false
-            clearForm()
-        }
-    })
+    form.value.post(route('upload'))
 }
 
+const previews = ref({})
+
 const previewUrls = computed(() => {
-    console.log(form)
-    return form.value.images.map((file) => URL.createObjectURL(file))
+    return [
+        ...form.value.videos.map(file => {
+            if (file.name in previews.value) {
+                return previews.value[file.name]
+            }
+
+            const video = document.createElement("video")
+            video.className = "videopreview absolute bottom-0 left-0 -z-10 invisible"
+            document.body.append(video)
+
+            let reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.addEventListener('load', function(){
+                video.src = reader.result
+
+                setTimeout(() => {
+                    const canvas = document.createElement("canvas")
+
+                    canvas.width = video.videoWidth
+                    canvas.height = video.videoHeight
+
+                    let ctx = canvas.getContext('2d')
+
+                    ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
+
+                    previews.value[file.name] = canvas.toDataURL('image/jpeg')
+                }, 150);
+            })
+
+            return file.name in previews.value
+                ? previews.value[file.name]
+                : null
+        }),
+        ...form.value.images.map(file => URL.createObjectURL(file)),
+    ]
 })
 </script>
 
@@ -53,24 +84,24 @@ const previewUrls = computed(() => {
 
             <ScrollArea class="max-h-[300px]">
                 <div class="space-y-2">
-                    <Label>Image(s)</Label>
+                    <Label>Media</Label>
                     <div class="grid grid-cols-3 gap-4">
                         <div v-for="preview in previewUrls" class="aspect-square border rounded-lg overflow-hidden">
-                            <img :src="preview" class="object-cover object-center w-full h-full" />
+                            <img v-if="preview" :src="preview" class="object-cover object-center w-full h-full" />
                         </div>
                         <label for="dropzone-file"
                             class="cursor-pointer hover:border-primary hover:text-primary text-muted-foreground border border-dashed rounded-lg">
                             <div
                                 class="aspect-square flex flex-col justify-center items-center transition pointer-events-none text-xs">
                                 <PlusCircleIcon class="w-10 mb-2" />
-                                Add Image
+                                Add Media
                             </div>
                         </label>
                     </div>
                 </div>
             </ScrollArea>
 
-            <div v-if="form.images.length > 1" class="space-y-2">
+            <div v-if="form.images.length > 1 || form.videos.length > 1" class="space-y-2">
                 <Label>Upload As</Label>
                 <RadioGroupRoot
                     v-model="form.type"

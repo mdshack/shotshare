@@ -27,6 +27,11 @@ import ShotComments from '@/Components/ShotComments.vue';
 import MustBeAuthenticatedDialog from '@/Components/MustBeAuthenticatedDialog.vue';
 import RequireConfirmationDialog from '@/Components/RequireConfirmationDialog.vue';
 import DialogEditShot from '@/Components/DialogEditShot.vue';
+import videojs from 'video.js';
+
+import "video.js/dist/video-js.min.css"
+
+const videos = ref([])
 
 const props = defineProps({
     shot: Object,
@@ -68,8 +73,24 @@ const loadReactions = () => {
         })
 }
 
+// const players = ref({})
 onMounted(() => {
     loadReactions()
+
+    props.shot.uploads
+        .filter(({type}) => type === 'video')
+        .forEach((_, i) => {
+            let element
+            if(Array.isArray(videos.value)) {
+                element = videos.value[i]
+            } else {
+                element = videos.value
+            }
+
+            videojs(element, {
+                controls: true
+            })
+        })
 })
 
 const commentsOpen = ref(false)
@@ -127,13 +148,35 @@ const editShotOpen = ref(false)
 
         <Carousel v-if="shot.type === 'collection'" @init-api="setApi" class="bg-muted">
             <CarouselContent class="flex items-center">
-                <CarouselItem v-for="upload in shot.uploads"><img :src="upload.url" class="w-full bg-muted"/></CarouselItem>
+                <CarouselItem v-for="upload in shot.uploads">
+                    <img v-if="upload.type === 'image'" :src="upload.url" class="w-full bg-muted"/>
+
+                    <video
+                        v-else
+                        ref="videos"
+                        class="video-js vjs-shotshare w-full max-h-[360px]">
+                        <source :src="upload.url">
+                    </video>
+                </CarouselItem>
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
         </Carousel>
 
-        <img v-else-if="shot.type === 'individual'" :src="shot.uploads[0].url" class="w-full bg-muted"/>
+        <template v-else>
+            <img
+                v-if="shot.uploads[0].type === 'image'"
+                :src="shot.uploads[0].url"
+                class="w-full bg-muted"
+            />
+
+            <video
+                v-else
+                ref="videos"
+                class="video-js vjs-shotshare w-full max-h-[360px]">
+                <source :src="shot.uploads[0].url">
+            </video>
+        </template>
 
         <div class="p-4 flex justify-between items-end">
             <div class="text-muted-foreground">
@@ -214,3 +257,26 @@ const editShotOpen = ref(false)
         />
     </div>
 </template>
+<style>
+.vjs-shotshare {
+    color: hsl(var(--foreground));
+}
+
+.vjs-shotshare .vjs-big-play-button {
+    width: 3rem;
+    height: 3rem;
+    margin-left: -1.5rem;
+    border-radius: 50%;
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+}
+
+.vjs-shotshare:hover .vjs-big-play-button {
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+}
+
+.vjs-shotshare .vjs-control-bar {
+    background: hsl(var(--background));
+}
+</style>

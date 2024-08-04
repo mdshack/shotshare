@@ -15,6 +15,7 @@
         "laravel/prompts": "^0.1.14",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
+        "pbmedia/laravel-ffmpeg": "^8.5",
         "spatie/laravel-data": "^4.7",
         "tightenco/ziggy": "^1.0"
     },
