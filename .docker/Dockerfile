@@ -48,6 +48,7 @@ WORKDIR /app
 
 # Runtime requirements
 RUN apk add --update --no-cache ffmpeg
+# fix: imagick/imagick@master - https://github.com/Imagick/imagick/issues/643#issuecomment-2086949716
 RUN install-php-extensions \
     dom \
     fileinfo \
@@ -59,7 +60,7 @@ RUN install-php-extensions \
     pcntl \
     pdo_mysql \
     pdo_pgsql \
-    imagick
+    imagick/imagick@master
 
 # Copy Application
 COPY . /app
