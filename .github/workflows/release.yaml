@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-    - v2
+    - main
 
 name: release-please
 
@@ -41,7 +41,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: mdshack/shotshare:${{ steps.get-tag.outputs.tag }}
+        tags: mdshack/shotshare:latest,mdshack/shotshare:${{ steps.get-tag.outputs.tag }}
         cache-from: type=registry,ref=mdshack/shotshare:latest
         cache-to: type=inline
         file: ./.docker/Dockerfile
