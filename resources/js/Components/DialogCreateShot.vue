@@ -11,6 +11,8 @@ import { Label } from '@/Components/ui/label'
 
 const form = defineModel("form")
 
+const emit = defineEmits(["close"])
+
 const uploadAsOptions = [
     {
         title: "Individual",
@@ -25,7 +27,11 @@ const uploadAsOptions = [
 ]
 
 const submitUpload = () => {
-    form.value.post(route('upload'))
+    form.value.post(route('upload'), {
+        onSuccess: () => {
+            emit("close")
+        }
+    })
 }
 
 const previews = ref({})

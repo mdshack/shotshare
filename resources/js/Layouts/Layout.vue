@@ -240,6 +240,7 @@ const handleFileUpload = (event) => {
         <DialogCreateShot
             v-model:form="form"
             v-model:open="fileUploadModalOpen"
+            @close="fileUploadModalOpen = false"
         />
     </div>
 </template>
