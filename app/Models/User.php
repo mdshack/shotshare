@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -24,6 +25,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'handle',
         'email',
         'password',
     ];
@@ -71,5 +73,20 @@ class User extends Authenticatable
     public function reactions(): HasMany
     {
         return $this->hasMany(ShotReaction::class);
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, UserFollower::class, "user_id", "follower_id");
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, UserFollower::class, "follower_id", "user_id");
+    }
+
+    public function scopeWhereHandle(Builder $query, string $handle)
+    {
+        $query->where("handle", Str::ltrim($handle, '@'));
     }
 }

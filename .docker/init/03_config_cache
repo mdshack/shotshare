@@ -5,4 +5,10 @@ DEVELOP="${DEVELOP:-false}"
 if [[ $DEVELOP != *"true"* ]];then
     echo "Caching application configuration"
     php artisan config:cache
+
+    echo "Caching routes"
+    php artisan route:cache
+
+    echo "Caching views"
+    php artisan view:cache
 fi
