@@ -118,31 +118,36 @@ const focusedImage = computed(() => {
                         </TabsContent>
 
                         <TabsContent value="info" class="p-4 space-y-4">
-                            <div class="grid grid-cols-7 grid sm:gap-4">
-                                <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
-                                    Resolution
+                            <template v-if="focusedImage.resolution || focusedImage.size || focusedImage.format">
+                                <div v-if="focusedImage.resolution" class="grid grid-cols-7 grid sm:gap-4">
+                                    <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
+                                        Resolution
+                                    </div>
+                                    <div class="col-span-7 sm:col-span-5 font-semibold">
+                                        {{focusedImage.resolution}}
+                                    </div>
                                 </div>
-                                <div class="col-span-7 sm:col-span-5 font-semibold">
-                                    {{focusedImage.resolution}}
-                                </div>
-                            </div>
 
-                            <div class="grid grid-cols-7 grid sm:gap-4">
-                                <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
-                                    Size
+                                <div v-if="focusedImage.size" class="grid grid-cols-7 grid sm:gap-4">
+                                    <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
+                                        Size
+                                    </div>
+                                    <div class="col-span-7 sm:col-span-5 font-semibold">
+                                        {{focusedImage.size}}
+                                    </div>
                                 </div>
-                                <div class="col-span-7 sm:col-span-5 font-semibold">
-                                    {{focusedImage.size}}
-                                </div>
-                            </div>
 
-                            <div class="grid grid-cols-7 grid sm:gap-4">
-                                <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
-                                    Format
+                                <div v-if="focusedImage.format" class="grid grid-cols-7 grid sm:gap-4">
+                                    <div class="sm:text-right col-span-7 sm:col-span-2 text-muted-foreground">
+                                        Format
+                                    </div>
+                                    <div class="col-span-7 sm:col-span-5 font-semibold">
+                                        {{focusedImage.format}}
+                                    </div>
                                 </div>
-                                <div class="col-span-7 sm:col-span-5 font-semibold">
-                                    {{focusedImage.format}}
-                                </div>
+                            </template>
+                            <div v-else class="text-muted-foreground flex justify-center py-4">
+                                Nothing to see here
                             </div>
                         </TabsContent>
                     </div>

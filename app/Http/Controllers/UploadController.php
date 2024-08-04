@@ -63,14 +63,17 @@ class UploadController extends Controller
     {
         $this->stripExif($image);
 
+        $info = getimagesize($image->getRealPath());
+
         $path = UploadedFile::createFromBase($image)->storePublicly('uploads');
-        $info = getimagesize(Storage::path($path));
 
         return [
             'path' => $path,
             'size_in_bytes' => $image->getSize(),
-            "resolution" => $info[0] . "x" . $info[1] . "px",
-            "format" => $info["mime"],
+            "resolution" => isset($info[0]) && isset($info[1])
+                ? $info[0] . "x" . $info[1] . "px"
+                : null,
+            "format" => $info["mime"] ?? null,
             "type" => ShotUploadType::Image,
         ];
     }
