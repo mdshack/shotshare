@@ -39,12 +39,12 @@ const submit = () => {
                     Log In
                 </h1>
 
-                <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                <div v-if="$page.props.features.registration" class="mb-4 text-sm text-gray-600 dark:text-gray-400">
                     Don't have an account yet?
                     <Link :href="route('register')">
-                    <Button variant="link" class="p-0">
-                        Sign Up
-                    </Button>
+                        <Button variant="link" class="p-0">
+                            Sign Up
+                        </Button>
                     </Link>
                 </div>
             </div>

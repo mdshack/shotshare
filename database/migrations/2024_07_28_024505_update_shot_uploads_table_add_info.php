@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Illuminate\Support\Facades\Schema::table('shot_uploads', function ($table) {
+        Schema::table('shot_uploads', function (Blueprint $table) {
             $table->string("resolution")->nullable();
             $table->string("size_in_bytes")->nullable();
             $table->string("format")->nullable();
