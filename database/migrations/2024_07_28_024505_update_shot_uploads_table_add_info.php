@@ -23,7 +23,7 @@ return new class extends Migration
             $info = getimagesize(Storage::path($upload->path));
 
             $upload->update([
-                "resolution" => $info[0] . "x" . $info[1] . "px",
+                "resolution" => isset($info[0], $info[1]) ? $info[0] . "x" . $info[1] . "px" : null,
                 "size_in_bytes" => Storage::fileSize($upload->path),
                 "format" => $info["mime"],
             ]);
