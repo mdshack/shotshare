@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('shot_uploads', function (Blueprint $table) {
+        Illuminate\Support\Facades\Schema::table('shot_uploads', function ($table) {
             $table->string("resolution")->nullable();
             $table->string("size_in_bytes")->nullable();
             $table->string("format")->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
             $upload->update([
                 "resolution" => isset($info[0], $info[1]) ? $info[0] . "x" . $info[1] . "px" : null,
                 "size_in_bytes" => Storage::fileSize($upload->path),
-                "format" => $info["mime"],
+                "format" => $info["mime"] ?? null,
             ]);
         }
     }
