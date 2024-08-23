@@ -106,9 +106,15 @@ class UploadController extends Controller
 
     protected function storeVideo(SymfonyUploadedFile $video)
     {
-        $lowBitrateFormat  = (new X264)->setKiloBitrate(500);
-        $midBitrateFormat  = (new X264)->setKiloBitrate(1500);
-        $highBitrateFormat = (new X264)->setKiloBitrate(3000);
+        $lowBitrateFormat  = (new X264)
+            ->setKiloBitrate(500)
+            ->setAdditionalParameters(["-preset", "veryfast"]);
+        $midBitrateFormat  = (new X264)
+            ->setKiloBitrate(1500)
+            ->setAdditionalParameters(["-preset", "veryfast"]);
+        $highBitrateFormat = (new X264)
+            ->setKiloBitrate(3000)
+            ->setAdditionalParameters(["-preset", "veryfast"]);
 
         $preprocessedPath = UploadedFile::createFromBase($video)->store('preprocessed');
         $path = "uploads/" . explode('.', basename($preprocessedPath))[0] . ".m3u8";
