@@ -106,15 +106,15 @@ class UploadController extends Controller
 
     protected function storeVideo(SymfonyUploadedFile $video)
     {
-        $lowBitrateFormat  = (new X264)
-            ->setKiloBitrate(500)
-            ->setAdditionalParameters(["-preset", "veryfast"]);
-        $midBitrateFormat  = (new X264)
-            ->setKiloBitrate(1500)
-            ->setAdditionalParameters(["-preset", "veryfast"]);
+        // $lowBitrateFormat  = (new X264)
+        //     ->setKiloBitrate(500)
+        //     ->setAdditionalParameters(["-preset", "veryfast"]);
+        // $midBitrateFormat  = (new X264)
+        //     ->setKiloBitrate(1500)
+        //     ->setAdditionalParameters(["-preset", "veryfast"]);
         $highBitrateFormat = (new X264)
             ->setKiloBitrate(3000)
-            ->setAdditionalParameters(["-preset", "veryfast"]);
+            ->setAdditionalParameters(["-preset", "ultrafast"]);
 
         $preprocessedPath = UploadedFile::createFromBase($video)->store('preprocessed');
         $path = "uploads/" . explode('.', basename($preprocessedPath))[0] . ".m3u8";
@@ -127,16 +127,16 @@ class UploadController extends Controller
             //         $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
             //     });
             // })
-            ->addFormat($midBitrateFormat, function($media) {
-                $media->addFilter(function($filters, $in, $out) {
-                    $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
-                });
-            })
-            // ->addFormat($highBitrateFormat, function($media) {
+            // ->addFormat($midBitrateFormat, function($media) {
             //     $media->addFilter(function($filters, $in, $out) {
             //         $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
             //     });
             // })
+            ->addFormat($highBitrateFormat, function($media) {
+                $media->addFilter(function($filters, $in, $out) {
+                    $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
+                });
+            })
             ->save($path);
 
         Storage::delete($preprocessedPath);
