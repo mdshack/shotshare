@@ -1,19 +1,16 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { Input } from '@/Components/ui/input'
+import { Aperture, Scan, Search } from 'lucide-vue-next';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-        <div>
-            <Link href="/" class="text-2xl font-bold">
-                ShotShare
-            </Link>
+    <div class="flex flex-col items-center w-full pt-16">
+        <div class="flex items-center tracking-widest">
+            <ApplicationLogo size="md"/>
+            <div class="text-4xl ml-2 font-semibold">ShotShare</div>
         </div>
-
-        <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg"
-        >
-            <slot />
-        </div>
+        <slot />
     </div>
 </template>

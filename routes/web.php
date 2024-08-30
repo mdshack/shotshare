@@ -1,9 +1,14 @@
 <?php
 
 use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\ExploreController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShotCommentController;
 use App\Http\Controllers\ShotController;
+use App\Http\Controllers\ShotReactionController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,24 +24,53 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/', FeedController::class)
+    ->name('feed')
+    ->middleware(['auth', 'verified']);
+
+Route::get('/explore', ExploreController::class)
+    ->name('explore')
+    ->middleware(['auth', 'verified', "feature:explore"]);
 
 Route::prefix('shots')
     ->name('shots.')
     ->controller(ShotController::class)
     ->group(function () {
-        Route::get('', 'index')
-            ->middleware(['auth', 'verified'])
-            ->name('index');
         Route::get('{id}', 'show')->name('show');
         Route::patch('{id}', 'update')->name('update');
         Route::delete('{id}', 'destroy')->name('destroy');
 
-        Route::post('{id}/react', 'react')
-            ->name('react')
-            ->middleware('feature:reactions');
+        Route::middleware("feature:comments")
+            ->prefix("{shotId}/comments")
+            ->name('comments.')
+            ->controller(ShotCommentController::class)
+            ->group(function() {
+                Route::get("", "index")->name("index");
+                Route::post("", "store")
+                    ->name("store")
+                    ->middleware("throttle:comment");
+            });
+
+        Route::middleware("feature:reactions")
+            ->prefix("{shotId}/reactions")
+            ->name('reactions.')
+            ->controller(ShotReactionController::class)
+            ->group(function() {
+                Route::get("", "index")->name("index");
+                Route::post("", "store")->name("store");
+            });
+    });
+
+Route::prefix('users')
+    ->name('users.')
+    ->controller(UserController::class)
+    ->group(function() {
+        Route::get("{handle}", "show")->name("show");
+
+        Route::middleware("feature:followers")->group(function() {
+            Route::post("{handle}/follow", "follow")->name("follow");
+            Route::delete("{handle}/unfollow", "unfollow")->name("unfollow");
+        });
     });
 
 Route::prefix('api-keys')

@@ -25,7 +25,7 @@ const redirectToLogin = () => {
 
 <template>
     <AlertDialog v-if="!$page.props.auth.user?.id">
-        <AlertDialogTrigger>
+        <AlertDialogTrigger class="w-full">
             <slot/>
         </AlertDialogTrigger>
         <AlertDialogContent>

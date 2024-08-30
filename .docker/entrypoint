@@ -1,0 +1,14 @@
+#!/bin/sh
+
+HOST="${HOST:-0.0.0.0}"
+ADMIN_PORT="${ADMIN_PORT:-2019}"
+PORT="${PORT:-80}"
+FLAGS="${FLAGS}"
+
+for file in "/docker-init"/*; do
+    if [ -f "$file" ]; then
+      /bin/sh $file
+    fi
+done
+
+php artisan octane:frankenphp --host=$HOST --admin-port=$ADMIN_PORT --port=$PORT $FLAGS

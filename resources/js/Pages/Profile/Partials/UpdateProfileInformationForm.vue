@@ -1,9 +1,10 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import { Button } from '@/Components/ui/button'
-import TextInput from '@/Components/TextInput.vue';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+import { AtSymbolIcon } from '@heroicons/vue/24/outline';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import InputError from '@/Components/InputError.vue';
 
 defineProps({
     mustVerifyEmail: {
@@ -18,6 +19,7 @@ const user = usePage().props.auth.user;
 
 const form = useForm({
     name: user.name,
+    handle: user.handle,
     email: user.email,
 });
 </script>
@@ -26,9 +28,10 @@ const form = useForm({
     <section>
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
+                <Label for="name">
+                    Name
+                </Label>
+                <Input
                     id="name"
                     type="text"
                     class="mt-1 block w-full"
@@ -42,9 +45,34 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <Label for="handle">
+                    Handle
+                </Label>
+                <div class="relative">
+                    <Input
+                        id="handle"
+                        type="text"
+                        class="mt-1 block w-full pl-10"
+                        v-model="form.handle"
+                        required
+                        autocomplete="handle"
+                    />
+                    <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+                        <AtSymbolIcon class="size-6 text-muted-foreground" />
+                    </span>
+                </div>
 
-                <TextInput
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.handle"
+                />
+            </div>
+
+            <div>
+                <Label for="email">
+                    Email
+                </Label>
+                <Input
                     id="email"
                     type="email"
                     class="mt-1 block w-full"

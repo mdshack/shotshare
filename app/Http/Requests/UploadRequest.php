@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ShotType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UploadRequest extends FormRequest
 {
@@ -24,6 +26,11 @@ class UploadRequest extends FormRequest
         return [
             'images' => ['array', 'min:1'],
             'images.*' => ['mimes:'.implode(',', $this->allowedTypes)],
+
+            'name' => ['string', 'sometimes', 'nullable'],
+            'type' => [Rule::enum(ShotType::class), 'sometimes', 'nullable'],
+            'require_logged_in' => ['boolean', 'sometimes', 'nullable'],
+            'anonymize' => ['boolean', 'sometimes', 'nullable'],
         ];
     }
 
