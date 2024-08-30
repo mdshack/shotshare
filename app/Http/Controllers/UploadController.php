@@ -122,21 +122,21 @@ class UploadController extends Controller
         FFMpeg::fromDisk(config("filesystems.default"))
             ->open($preprocessedPath)
             ->exportForHLS()
-            ->addFormat($lowBitrateFormat, function($media) {
-                $media->addFilter(function($filters, $in, $out) {
-                    $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
-                });
-            })
+            // ->addFormat($lowBitrateFormat, function($media) {
+            //     $media->addFilter(function($filters, $in, $out) {
+            //         $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
+            //     });
+            // })
             ->addFormat($midBitrateFormat, function($media) {
                 $media->addFilter(function($filters, $in, $out) {
                     $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
                 });
             })
-            ->addFormat($highBitrateFormat, function($media) {
-                $media->addFilter(function($filters, $in, $out) {
-                    $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
-                });
-            })
+            // ->addFormat($highBitrateFormat, function($media) {
+            //     $media->addFilter(function($filters, $in, $out) {
+            //         $filters->custom($in, 'pad=ceil(iw/2)*2:ceil(ih/2)*2', $out);
+            //     });
+            // })
             ->save($path);
 
         Storage::delete($preprocessedPath);
