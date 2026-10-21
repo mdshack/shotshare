@@ -1,4 +1,4 @@
-FROM mdshack/php:8.3-fpm-alpine-caddy
+FROM php:8.3.36-fpm-alpine
 
 ARG CI=false
 
@@ -12,8 +12,10 @@ EXPOSE 443
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Install Node/NPM
-RUN apk add --update --no-cache nodejs npm
+RUN apk add --update --no-cache nodejs npm caddy
 
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions
 WORKDIR /app
 
 RUN install-php-extensions \
@@ -32,6 +34,8 @@ RUN install-php-extensions \
 # Install frontend dependencies
 COPY package*.json /app
 RUN npm install --omit optional
+
+COPY .docker/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 # Copy Application
 COPY --chown=www-data . /app
@@ -52,3 +56,5 @@ COPY --chown=www-data ./.docker/init/* /docker-init/
 
 RUN touch /app/.env
 RUN chown www-data:www-data /app/.env
+
+ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]

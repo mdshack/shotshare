@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Run all "docker-init" scripts
+for file in "/docker-init"/*; do
+    if [ -f "$file" ]; then
+      /bin/sh $file
+    fi
+done
+
+php-fpm -c /etc/php.d/ & caddy run --config /etc/caddy/Caddyfile
